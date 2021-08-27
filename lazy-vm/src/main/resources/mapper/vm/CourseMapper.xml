@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.CourseMapper">
+
+    <resultMap type="Course" id="CourseResult">
+        <result property="id" column="id"/>
+        <result property="teacherId" column="teacher_id"/>
+        <result property="subjectId" column="subject_id"/>
+        <result property="subjectParentId" column="subject_parent_id"/>
+        <result property="task" column="task"/>
+        <result property="title" column="title"/>
+        <result property="subtitle" column="subtitle"/>
+        <result property="price" column="price"/>
+        <result property="lessonNum" column="lesson_num"/>
+        <result property="cover" column="cover"/>
+        <result property="buyCount" column="buy_count"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="version" column="version"/>
+        <result property="status" column="status"/>
+        <result property="isDeleted" column="is_deleted"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+        <association property="teacher" column="teacher_id" javaType="Teacher" resultMap="teacherResult"/>
+        <association property="resource" column="cover" javaType="SysResource" resultMap="SysResourceResult"/>
+        <collection property="subjects" column="subject_id" javaType="java.util.List" resultMap="SubjectResult"/>
+    </resultMap>
+
+    <resultMap id="teacherResult" type="Teacher">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="intro" column="intro"/>
+        <result property="career" column="career"/>
+        <result property="level" column="level"/>
+        <result property="avatar" column="avatar"/>
+        <result property="sort" column="sort"/>
+        <result property="isDeleted" column="is_deleted"/>
+    </resultMap>
+    <resultMap type="Subject" id="SubjectResult">
+        <result property="id" column="teacher_id"/>
+        <result property="title" column="title"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="sort" column="sort"/>
+        <result property="gmtCreate" column="gmt_create"/>
+        <result property="gmtModified" column="gmt_modified"/>
+    </resultMap>
+
+    <resultMap type="SysResource" id="SysResourceResult">
+        <result property="id" column="resource_id"/>
+        <result property="fileUid" column="file_uid"/>
+        <result property="fileName" column="file_name"/>
+        <result property="fileMd5" column="file_md5"/>
+        <result property="fileSize" column="file_size"/>
+        <result property="fileType" column="file_type"/>
+        <result property="url" column="url"/>
+        <result property="filePath" column="file_path"/>
+        <result property="fileFullPath" column="file_full_path"/>
+        <result property="groupName" column="group_name"/>
+    </resultMap>
+    <sql id="selectCourseVo">
+        select id,
+               teacher_id,
+               subject_id,
+               subject_parent_id,
+               task,
+               title,
+               subtitle,
+               price,
+               lesson_num,
+               cover,
+               buy_count,
+               view_count,
+               version,
+               status,
+               is_deleted,
+               gmt_create,
+               gmt_modified
+        from edu_course
+    </sql>
+
+    <sql id="selectCourseVoJoin">
+        SELECT  c.id,c.teacher_id,c.subject_id,c.subject_parent_id,c.task,c.title,
+                c.subtitle,c.price,c.lesson_num,c.cover,c.buy_count,c.view_count,c.version,
+                c.status,c.is_deleted,c.gmt_create,c.gmt_modified,t.name,r.id resource_id,r.file_uid,r.file_name,
+                r.file_md5,r.file_size,r.file_type,r.url,r.file_path, r.file_full_path
+        FROM
+            edu_course c
+    </sql>
+
+    <select id="selectCourseList" parameterType="Course" resultMap="CourseResult">
+        SELECT  c.id,c.teacher_id,c.subject_id,c.subject_parent_id,c.task,c.title,
+                c.subtitle,c.price,c.lesson_num,c.cover,c.buy_count,c.view_count,c.version,
+                c.status,c.is_deleted,c.gmt_create,c.gmt_modified,t.name,t.id teacher_id,r.id,r.file_uid,r.file_name,
+                r.file_md5,r.file_size,r.file_type,r.url,r.file_path, r.file_full_path
+        FROM
+        edu_course c
+        LEFT JOIN edu_teacher t ON c.teacher_id = t.id
+        LEFT JOIN sys_resource r on c.cover = r.id
+        <!--        <include refid="selectCourseVo"/>-->
+        <!--        <where>-->
+        <!--            <if test="teacherId != null  and teacherId != ''">and teacher_id = #{teacherId}</if>-->
+        <!--            <if test="subjectId != null  and subjectId != ''">and subject_id = #{subjectId}</if>-->
+        <!--            <if test="subjectParentId != null  and subjectParentId != ''">and subject_parent_id = #{subjectParentId}-->
+        <!--            </if>-->
+        <!--            <if test="task != null ">and task = #{task}</if>-->
+        <!--            <if test="title != null  and title != ''">and title = #{title}</if>-->
+        <!--            <if test="subtitle != null  and subtitle != ''">and subtitle = #{subtitle}</if>-->
+        <!--            <if test="price != null ">and price = #{price}</if>-->
+        <!--            <if test="lessonNum != null ">and lesson_num = #{lessonNum}</if>-->
+        <!--            <if test="cover != null  and cover != ''">and cover = #{cover}</if>-->
+        <!--            <if test="buyCount != null ">and buy_count = #{buyCount}</if>-->
+        <!--            <if test="viewCount != null ">and view_count = #{viewCount}</if>-->
+        <!--            <if test="version != null ">and version = #{version}</if>-->
+        <!--            <if test="status != null  and status != ''">and status = #{status}</if>-->
+        <!--            <if test="isDeleted != null ">and is_deleted = #{isDeleted}</if>-->
+        <!--            <if test="gmtCreate != null ">and gmt_create = #{gmtCreate}</if>-->
+        <!--            <if test="gmtModified != null ">and gmt_modified = #{gmtModified}</if>-->
+        <!--        </where>-->
+    </select>
+
+    <select id="selectCourseById" parameterType="String" resultMap="CourseResult">
+        <include refid="selectCourseVoJoin"/>
+        LEFT JOIN edu_teacher t ON c.teacher_id = t.id
+        LEFT JOIN sys_resource r on c.cover = r.id
+        where c.id = #{id}
+    </select>
+
+    <insert id="insertCourse" parameterType="Course">
+        insert into edu_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="teacherId != null and teacherId != ''">teacher_id,</if>
+            <if test="subjectId != null and subjectId != ''">subject_id,</if>
+            <if test="subjectParentId != null and subjectParentId != ''">subject_parent_id,</if>
+            <if test="task != null">task,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="subtitle != null">subtitle,</if>
+            <if test="price != null">price,</if>
+            <if test="lessonNum != null">lesson_num,</if>
+            <if test="cover != null and cover != ''">cover,</if>
+            <if test="buyCount != null">buy_count,</if>
+            <if test="viewCount != null">view_count,</if>
+            <if test="version != null">version,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="isDeleted != null">is_deleted,</if>
+            <if test="gmtCreate != null">gmt_create,</if>
+            <if test="gmtModified != null">gmt_modified,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="teacherId != null and teacherId != ''">#{teacherId},</if>
+            <if test="subjectId != null and subjectId != ''">#{subjectId},</if>
+            <if test="subjectParentId != null and subjectParentId != ''">#{subjectParentId},</if>
+            <if test="task != null">#{task},</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="subtitle != null">#{subtitle},</if>
+            <if test="price != null">#{price},</if>
+            <if test="lessonNum != null">#{lessonNum},</if>
+            <if test="cover != null and cover != ''">#{cover},</if>
+            <if test="buyCount != null">#{buyCount},</if>
+            <if test="viewCount != null">#{viewCount},</if>
+            <if test="version != null">#{version},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="isDeleted != null">#{isDeleted},</if>
+            <if test="gmtCreate != null">#{gmtCreate},</if>
+            <if test="gmtModified != null">#{gmtModified},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCourse" parameterType="Course">
+        update edu_course
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="teacherId != null and teacherId != ''">teacher_id = #{teacherId},</if>
+            <if test="subjectId != null and subjectId != ''">subject_id = #{subjectId},</if>
+            <if test="subjectParentId != null and subjectParentId != ''">subject_parent_id = #{subjectParentId},</if>
+            <if test="task != null">task = #{task},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="subtitle != null">subtitle = #{subtitle},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="lessonNum != null">lesson_num = #{lessonNum},</if>
+            <if test="cover != null and cover != ''">cover = #{cover},</if>
+            <if test="buyCount != null">buy_count = #{buyCount},</if>
+            <if test="viewCount != null">view_count = #{viewCount},</if>
+            <if test="version != null">version = #{version},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="isDeleted != null">is_deleted = #{isDeleted},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="gmtModified != null">gmt_modified = #{gmtModified},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCourseById" parameterType="String">
+        delete
+        from edu_course
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteCourseByIds" parameterType="String">
+        delete from edu_course where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

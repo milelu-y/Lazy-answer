@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.SysResourceMapper">
+
+    <resultMap type="SysResource" id="SysResourceResult">
+        <result property="id"    column="id"    />
+        <result property="fileUid"    column="file_uid"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileMd5"    column="file_md5"    />
+        <result property="fileSize"    column="file_size"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="url"    column="url"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="fileFullPath"    column="file_full_path"    />
+        <result property="groupName"    column="group_name"    />
+        <result property="createId"    column="create_id"    />
+        <result property="modifiedId"    column="modified_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSysResourceVo">
+        select id, file_uid, file_name, file_md5, file_size, file_type, url, file_path, file_full_path, group_name, create_id, modified_id, create_time, update_time from sys_resource
+    </sql>
+
+    <select id="selectSysResourceList" parameterType="SysResource" resultMap="SysResourceResult">
+        <include refid="selectSysResourceVo"/>
+        <where>
+            <if test="fileUid != null  and fileUid != ''"> and file_uid = #{fileUid}</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="fileMd5 != null  and fileMd5 != ''"> and file_md5 = #{fileMd5}</if>
+            <if test="fileSize != null "> and file_size = #{fileSize}</if>
+            <if test="fileType != null  and fileType != ''"> and file_type = #{fileType}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
+            <if test="fileFullPath != null  and fileFullPath != ''"> and file_full_path = #{fileFullPath}</if>
+            <if test="groupName != null  and groupName != ''"> and group_name like concat('%', #{groupName}, '%')</if>
+            <if test="createId != null  and createId != ''"> and create_id = #{createId}</if>
+            <if test="modifiedId != null  and modifiedId != ''"> and modified_id = #{modifiedId}</if>
+        </where>
+    </select>
+
+    <select id="selectSysResourceById" parameterType="String" resultMap="SysResourceResult">
+        <include refid="selectSysResourceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysResource" parameterType="SysResource">
+        insert into sys_resource
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="fileUid != null">file_uid,</if>
+            <if test="fileName != null">file_name,</if>
+            <if test="fileMd5 != null">file_md5,</if>
+            <if test="fileSize != null">file_size,</if>
+            <if test="fileType != null">file_type,</if>
+            <if test="url != null">url,</if>
+            <if test="filePath != null">file_path,</if>
+            <if test="fileFullPath != null">file_full_path,</if>
+            <if test="groupName != null">group_name,</if>
+            <if test="createId != null and createId != ''">create_id,</if>
+            <if test="modifiedId != null">modified_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="fileUid != null">#{fileUid},</if>
+            <if test="fileName != null">#{fileName},</if>
+            <if test="fileMd5 != null">#{fileMd5},</if>
+            <if test="fileSize != null">#{fileSize},</if>
+            <if test="fileType != null">#{fileType},</if>
+            <if test="url != null">#{url},</if>
+            <if test="filePath != null">#{filePath},</if>
+            <if test="fileFullPath != null">#{fileFullPath},</if>
+            <if test="groupName != null">#{groupName},</if>
+            <if test="createId != null and createId != ''">#{createId},</if>
+            <if test="modifiedId != null">#{modifiedId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysResource" parameterType="SysResource">
+        update sys_resource
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fileUid != null">file_uid = #{fileUid},</if>
+            <if test="fileName != null">file_name = #{fileName},</if>
+            <if test="fileMd5 != null">file_md5 = #{fileMd5},</if>
+            <if test="fileSize != null">file_size = #{fileSize},</if>
+            <if test="fileType != null">file_type = #{fileType},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="filePath != null">file_path = #{filePath},</if>
+            <if test="fileFullPath != null">file_full_path = #{fileFullPath},</if>
+            <if test="groupName != null">group_name = #{groupName},</if>
+            <if test="createId != null and createId != ''">create_id = #{createId},</if>
+            <if test="modifiedId != null">modified_id = #{modifiedId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysResourceById" parameterType="String">
+        delete from sys_resource where id = #{id}
+    </delete>
+
+    <delete id="deleteSysResourceByIds" parameterType="String">
+        delete from sys_resource where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
