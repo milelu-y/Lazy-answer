@@ -45,3 +45,8 @@ nbdist/
 !*/build/*.html
 !*/build/*.xml
 
+/ry.sh
+/ry.bat
+/LICENSE
+/bin/
+/doc/
