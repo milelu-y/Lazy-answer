@@ -17,7 +17,7 @@ public interface TaskMapper
      * @param id 作业ID
      * @return 作业
      */
-    public Task selectTaskById(Long id);
+    public Task selectTaskById(String  id);
 
     /**
      * 查询作业列表

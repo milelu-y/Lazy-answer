@@ -62,10 +62,17 @@
 
     <el-table border v-loading="false" :data="taskList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="作业标题" align="center" prop="title" />
+      <el-table-column label="题库名称" align="center" prop="title">
+        <template slot-scope="data">
+
+          <router-link :to="{ name: 'quForm', params:{id: data.row.id}}"  style="color: #00afff">
+            {{ data.row.title }}
+          </router-link>
+        </template>
+      </el-table-column>
       <el-table-column label="题库分类" align="center" prop="type" />
       <el-table-column label="试题数量" align="center" prop="multipleCount" />
-      <el-table-column label="创建时间" align="center" prop="create_time" />
+      <el-table-column label="创建时间" align="center" prop="gmtCreate" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -88,7 +95,7 @@
 </template>
 
 <script>
-// import { listTask, getTask, delTask, addTask, updateTask, exportTask } from "@/api/vm/task";
+ import { listTask, getTask, delTask, addTask, updateTask, exportTask } from "@/api/vm/task";
 
 export default {
   name: "Task",
@@ -192,8 +199,9 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      this.open = true;
-      this.title = "添加作业";
+      // this.open = true;
+      // this.title = "添加作业";
+      this.$router.push('/vm/question/form/index/'+123)
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

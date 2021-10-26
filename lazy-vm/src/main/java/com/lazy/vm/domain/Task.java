@@ -1,12 +1,16 @@
 package com.lazy.vm.domain;
 
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lazy.common.annotation.CreateTime;
+import com.lazy.common.annotation.UpdateTime;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.lazy.common.annotation.Excel;
 import com.lazy.common.core.domain.BaseEntity;
 
 /**
- * 作业对象 edu_task
+ * 题库对象 edu_task
  *
  * @author lazy
  * @date 2021-10-26
@@ -15,20 +19,20 @@ public class Task extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
-    /** 作业id */
-    private Long id;
+    /** 题库id */
+    private String id;
 
     /** 课程id */
     @Excel(name = "课程id")
     private String courseId;
 
-    /** 作业标题 */
-    @Excel(name = "作业标题")
-    private String title;
-
     /** 题目类型 */
     @Excel(name = "题目类型")
     private String type;
+
+    /** 作业标题 */
+    @Excel(name = "作业标题")
+    private String title;
 
     /** 单选题数量 */
     @Excel(name = "单选题数量")
@@ -50,9 +54,17 @@ public class Task extends BaseEntity
     @Excel(name = "问答题数量")
     private Integer aqCount;
 
-    /** 预留 */
-    @Excel(name = "预留")
-    private String reserveField;
+    /** 创建时间 */
+    @CreateTime
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date gmtCreate;
+
+    /** 更新时间 */
+    @UpdateTime
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date gmtModified;
 
     /** 预留 */
     @Excel(name = "预留")
@@ -66,12 +78,12 @@ public class Task extends BaseEntity
     @Excel(name = "预留")
     private String reserveField3;
 
-    public void setId(Long id)
+    public void setId(String id)
     {
         this.id = id;
     }
 
-    public Long getId()
+    public String getId()
     {
         return id;
     }
@@ -84,15 +96,6 @@ public class Task extends BaseEntity
     {
         return courseId;
     }
-    public void setTitle(String title)
-    {
-        this.title = title;
-    }
-
-    public String getTitle()
-    {
-        return title;
-    }
     public void setType(String type)
     {
         this.type = type;
@@ -101,6 +104,15 @@ public class Task extends BaseEntity
     public String getType()
     {
         return type;
+    }
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
+    public String getTitle()
+    {
+        return title;
     }
     public void setSingleCount(Integer singleCount)
     {
@@ -147,14 +159,23 @@ public class Task extends BaseEntity
     {
         return aqCount;
     }
-    public void setReserveField(String reserveField)
+    public void setGmtCreate(Date gmtCreate)
     {
-        this.reserveField = reserveField;
+        this.gmtCreate = gmtCreate;
     }
 
-    public String getReserveField()
+    public Date getGmtCreate()
     {
-        return reserveField;
+        return gmtCreate;
+    }
+    public void setGmtModified(Date gmtModified)
+    {
+        this.gmtModified = gmtModified;
+    }
+
+    public Date getGmtModified()
+    {
+        return gmtModified;
     }
     public void setReserveField1(String reserveField1)
     {
@@ -189,16 +210,16 @@ public class Task extends BaseEntity
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
                 .append("id", getId())
                 .append("courseId", getCourseId())
-                .append("title", getTitle())
                 .append("type", getType())
+                .append("title", getTitle())
                 .append("singleCount", getSingleCount())
-                .append("createTime", getCreateTime())
                 .append("multipleCount", getMultipleCount())
                 .append("judgment", getJudgment())
-                .append("updateTime", getUpdateTime())
                 .append("fillCount", getFillCount())
                 .append("aqCount", getAqCount())
-                .append("reserveField", getReserveField())
+                .append("remark", getRemark())
+                .append("gmtCreate", getGmtCreate())
+                .append("gmtModified", getGmtModified())
                 .append("reserveField1", getReserveField1())
                 .append("reserveField2", getReserveField2())
                 .append("reserveField3", getReserveField3())

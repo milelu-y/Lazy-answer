@@ -1,6 +1,8 @@
 package com.lazy.web.controller.vm;
 
 import java.util.List;
+
+import com.lazy.vm.domain.vo.TaskVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +65,7 @@ public class TaskController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('vm:task:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
+    public AjaxResult getInfo(@PathVariable("id") String id)
     {
         return AjaxResult.success(taskService.selectTaskById(id));
     }
@@ -74,9 +76,9 @@ public class TaskController extends BaseController
     @PreAuthorize("@ss.hasPermi('vm:task:add')")
     @Log(title = "作业", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Task task)
+    public AjaxResult add(@RequestBody TaskVo taskVo)
     {
-        return toAjax(taskService.insertTask(task));
+        return toAjax(taskService.insertTask(taskVo));
     }
 
     /**
@@ -85,9 +87,9 @@ public class TaskController extends BaseController
     @PreAuthorize("@ss.hasPermi('vm:task:edit')")
     @Log(title = "作业", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody Task task)
+    public AjaxResult edit(@RequestBody TaskVo taskVo)
     {
-        return toAjax(taskService.updateTask(task));
+        return toAjax(taskService.updateTask(taskVo));
     }
 
     /**

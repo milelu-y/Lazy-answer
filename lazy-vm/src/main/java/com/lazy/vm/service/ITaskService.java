@@ -2,6 +2,7 @@ package com.lazy.vm.service;
 
 import java.util.List;
 import com.lazy.vm.domain.Task;
+import com.lazy.vm.domain.vo.TaskVo;
 
 /**
  * 作业Service接口
@@ -17,7 +18,7 @@ public interface ITaskService
      * @param id 作业ID
      * @return 作业
      */
-    public Task selectTaskById(Long id);
+    public TaskVo selectTaskById(String id);
 
     /**
      * 查询作业列表
@@ -33,7 +34,7 @@ public interface ITaskService
      * @param task 作业
      * @return 结果
      */
-    public int insertTask(Task task);
+    public int insertTask(TaskVo task);
 
     /**
      * 修改作业
@@ -41,7 +42,7 @@ public interface ITaskService
      * @param task 作业
      * @return 结果
      */
-    public int updateTask(Task task);
+    public int updateTask(TaskVo taskVo);
 
     /**
      * 批量删除作业

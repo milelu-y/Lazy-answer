@@ -7,44 +7,45 @@
     <resultMap type="Task" id="TaskResult">
         <result property="id"    column="id"    />
         <result property="courseId"    column="course_id"    />
-        <result property="title"    column="title"    />
         <result property="type"    column="type"    />
+        <result property="title"    column="title"    />
         <result property="singleCount"    column="single_count"    />
-        <result property="createTime"    column="create_time"    />
         <result property="multipleCount"    column="multiple_count"    />
         <result property="judgment"    column="judgment"    />
-        <result property="updateTime"    column="update_time"    />
         <result property="fillCount"    column="fill_count"    />
         <result property="aqCount"    column="aq_count"    />
-        <result property="reserveField"    column="reserve_field"    />
+        <result property="remark"    column="remark"    />
+        <result property="gmtCreate"    column="gmt_create"    />
+        <result property="gmtModified"    column="gmt_modified"    />
         <result property="reserveField1"    column="reserve_field1"    />
         <result property="reserveField2"    column="reserve_field2"    />
         <result property="reserveField3"    column="reserve_field3"    />
     </resultMap>
 
     <sql id="selectTaskVo">
-        select id, course_id, title, type, single_count, create_time, multiple_count, judgment, update_time, fill_count, aq_count, reserve_field, reserve_field1, reserve_field2, reserve_field3 from edu_task
+        select id, course_id, type, title, single_count, multiple_count, judgment, fill_count, aq_count, remark, gmt_create, gmt_modified, reserve_field1, reserve_field2, reserve_field3 from edu_task
     </sql>
 
     <select id="selectTaskList" parameterType="Task" resultMap="TaskResult">
         <include refid="selectTaskVo"/>
         <where>
             <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
             <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
             <if test="singleCount != null "> and single_count = #{singleCount}</if>
             <if test="multipleCount != null "> and multiple_count = #{multipleCount}</if>
             <if test="judgment != null "> and judgment = #{judgment}</if>
             <if test="fillCount != null "> and fill_count = #{fillCount}</if>
             <if test="aqCount != null "> and aq_count = #{aqCount}</if>
-            <if test="reserveField != null  and reserveField != ''"> and reserve_field = #{reserveField}</if>
+            <if test="gmtCreate != null "> and gmt_create = #{gmtCreate}</if>
+            <if test="gmtModified != null "> and gmt_modified = #{gmtModified}</if>
             <if test="reserveField1 != null  and reserveField1 != ''"> and reserve_field1 = #{reserveField1}</if>
             <if test="reserveField2 != null  and reserveField2 != ''"> and reserve_field2 = #{reserveField2}</if>
             <if test="reserveField3 != null  and reserveField3 != ''"> and reserve_field3 = #{reserveField3}</if>
         </where>
     </select>
 
-    <select id="selectTaskById" parameterType="Long" resultMap="TaskResult">
+    <select id="selectTaskById" parameterType="String" resultMap="TaskResult">
         <include refid="selectTaskVo"/>
         where id = #{id}
     </select>
@@ -54,16 +55,16 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="courseId != null">course_id,</if>
-            <if test="title != null">title,</if>
             <if test="type != null">type,</if>
+            <if test="title != null">title,</if>
             <if test="singleCount != null">single_count,</if>
-            <if test="createTime != null">create_time,</if>
             <if test="multipleCount != null">multiple_count,</if>
             <if test="judgment != null">judgment,</if>
-            <if test="updateTime != null">update_time,</if>
             <if test="fillCount != null">fill_count,</if>
             <if test="aqCount != null">aq_count,</if>
-            <if test="reserveField != null">reserve_field,</if>
+            <if test="remark != null">remark,</if>
+            <if test="gmtCreate != null">gmt_create,</if>
+            <if test="gmtModified != null">gmt_modified,</if>
             <if test="reserveField1 != null">reserve_field1,</if>
             <if test="reserveField2 != null">reserve_field2,</if>
             <if test="reserveField3 != null">reserve_field3,</if>
@@ -71,16 +72,16 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="courseId != null">#{courseId},</if>
-            <if test="title != null">#{title},</if>
             <if test="type != null">#{type},</if>
+            <if test="title != null">#{title},</if>
             <if test="singleCount != null">#{singleCount},</if>
-            <if test="createTime != null">#{createTime},</if>
             <if test="multipleCount != null">#{multipleCount},</if>
             <if test="judgment != null">#{judgment},</if>
-            <if test="updateTime != null">#{updateTime},</if>
             <if test="fillCount != null">#{fillCount},</if>
             <if test="aqCount != null">#{aqCount},</if>
-            <if test="reserveField != null">#{reserveField},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="gmtCreate != null">#{gmtCreate},</if>
+            <if test="gmtModified != null">#{gmtModified},</if>
             <if test="reserveField1 != null">#{reserveField1},</if>
             <if test="reserveField2 != null">#{reserveField2},</if>
             <if test="reserveField3 != null">#{reserveField3},</if>
@@ -91,16 +92,16 @@
         update edu_task
         <trim prefix="SET" suffixOverrides=",">
             <if test="courseId != null">course_id = #{courseId},</if>
-            <if test="title != null">title = #{title},</if>
             <if test="type != null">type = #{type},</if>
+            <if test="title != null">title = #{title},</if>
             <if test="singleCount != null">single_count = #{singleCount},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
             <if test="multipleCount != null">multiple_count = #{multipleCount},</if>
             <if test="judgment != null">judgment = #{judgment},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="fillCount != null">fill_count = #{fillCount},</if>
             <if test="aqCount != null">aq_count = #{aqCount},</if>
-            <if test="reserveField != null">reserve_field = #{reserveField},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="gmtModified != null">gmt_modified = #{gmtModified},</if>
             <if test="reserveField1 != null">reserve_field1 = #{reserveField1},</if>
             <if test="reserveField2 != null">reserve_field2 = #{reserveField2},</if>
             <if test="reserveField3 != null">reserve_field3 = #{reserveField3},</if>
@@ -108,7 +109,7 @@
         where id = #{id}
     </update>
 
-    <delete id="deleteTaskById" parameterType="Long">
+    <delete id="deleteTaskById" parameterType="String">
         delete from edu_task where id = #{id}
     </delete>
 

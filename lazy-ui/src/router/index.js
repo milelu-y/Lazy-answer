@@ -120,6 +120,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/vm/question/form',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'index/:id(\\d+)',
+        component: (resolve) => require(['@/views/vm/question/form'], resolve),
+        name: 'quForm',
+        meta: { title: '添加题库', activeMenu: '/vm/question'}
+      }
+    ]
+  },
+  {
     path: '/monitor/job-log',
     component: Layout,
     hidden: true,

@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lazy.common.annotation.CreateTime;
 import com.lazy.common.annotation.IDField;
 import com.lazy.common.annotation.UpdateTime;
@@ -23,7 +25,7 @@ import javax.validation.constraints.Size;
  * @author lazy
  * @date 2021-08-03
  */
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Course extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
