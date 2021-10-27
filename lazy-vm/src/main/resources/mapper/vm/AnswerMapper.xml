@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.AnswerMapper">
+
+    <resultMap type="Answer" id="AnswerResult">
+        <result property="id"    column="id"    />
+        <result property="type"    column="type"    />
+        <result property="content"    column="content"    />
+        <result property="answer"    column="answer"    />
+        <result property="level"    column="level"    />
+        <result property="options"    column="options"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="chapterId"    column="chapter_id"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="analysis"    column="analysis"    />
+        <result property="taskId"    column="task_id"    />
+    </resultMap>
+
+    <sql id="selectAnswerVo">
+        select id, type, content, answer, level, options, create_time, chapter_id, update_time, analysis, task_id from edu_answer
+    </sql>
+
+    <select id="selectAnswerList" parameterType="Answer" resultMap="AnswerResult">
+        <include refid="selectAnswerVo"/>
+        <where>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="answer != null  and answer != ''"> and answer = #{answer}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="options != null  and options != ''"> and options = #{options}</if>
+            <if test="chapterId != null  and chapterId != ''"> and chapter_id = #{chapterId}</if>
+            <if test="analysis != null  and analysis != ''"> and analysis = #{analysis}</if>
+            <if test="taskId != null  and taskId != ''"> and task_id = #{taskId}</if>
+        </where>
+    </select>
+
+    <select id="selectAnswerById" parameterType="Long" resultMap="AnswerResult">
+        <include refid="selectAnswerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertAnswer" parameterType="Answer">
+        insert into edu_answer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="type != null">type,</if>
+            <if test="content != null">content,</if>
+            <if test="answer != null">answer,</if>
+            <if test="level != null">level,</if>
+            <if test="options != null">options,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="chapterId != null">chapter_id,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="analysis != null">analysis,</if>
+            <if test="taskId != null">task_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="type != null">#{type},</if>
+            <if test="content != null">#{content},</if>
+            <if test="answer != null">#{answer},</if>
+            <if test="level != null">#{level},</if>
+            <if test="options != null">#{options},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="chapterId != null">#{chapterId},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="analysis != null">#{analysis},</if>
+            <if test="taskId != null">#{taskId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAnswer" parameterType="Answer">
+        update edu_answer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="answer != null">answer = #{answer},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="options != null">options = #{options},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="chapterId != null">chapter_id = #{chapterId},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="analysis != null">analysis = #{analysis},</if>
+            <if test="taskId != null">task_id = #{taskId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAnswerById" parameterType="Long">
+        delete from edu_answer where id = #{id}
+    </delete>
+
+    <delete id="deleteAnswerByIds" parameterType="String">
+        delete from edu_answer where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
