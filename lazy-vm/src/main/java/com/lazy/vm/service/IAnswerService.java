@@ -66,5 +66,7 @@ public interface IAnswerService
      * @param answerVo
      * @return
      */
-    int testScore(List<AnswerVo> answerVo);
+    public int testScore(List<AnswerVo> answerVo);
+
+    public List<Answer> getTestPaperAnswer(String testPaperId);
 }

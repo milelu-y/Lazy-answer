@@ -67,4 +67,5 @@ public interface AnswerMapper
     public int testScore(List<AnswerVo> answerVo);
 
 
+    public List<Answer> getTestPaperAnswer(String testPaperId);
 }

@@ -100,4 +100,11 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="getTestPaperAnswer"  parameterType="String">
+        select a.id, a.type, a.content, a.answer, a.level, a.options, a.create_time, a.chapter_id, a.update_time, a.analysis, a.task_id
+        from edu_answer a,  edu_answer_testPaper b
+        where a.id = b.answer_id  and  b.test_paper_id = #{testPaperId}
+    </select>
+
 </mapper>

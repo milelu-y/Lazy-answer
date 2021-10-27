@@ -2,6 +2,8 @@ package com.lazy.vm.domain.vo;
 
 import com.lazy.common.annotation.Excel;
 
+import java.util.List;
+
 public class AnswerVo {
 
     /** 题目id */
@@ -29,11 +31,22 @@ public class AnswerVo {
     private String chapterId;
 
     /** 考生答案 */
-    private String userAnswer;
+    private int userAnswer;
 
     /** 题目难度 */
     private int level;
 
+    /** 试卷id */
+    private String  testPaperId;
+
+
+    public String getTestPaperId() {
+        return testPaperId;
+    }
+
+    public void setTestPaperId(String testPaperId) {
+        this.testPaperId = testPaperId;
+    }
 
     public int getLevel() {
         return level;
@@ -75,14 +88,6 @@ public class AnswerVo {
         this.answer = answer;
     }
 
-    public String getOptions() {
-        return options;
-    }
-
-    public void setOptions(String options) {
-        this.options = options;
-    }
-
     public String getTaskId() {
         return taskId;
     }
@@ -91,11 +96,11 @@ public class AnswerVo {
         this.taskId = taskId;
     }
 
-    public String getUserAnswer() {
+    public int getUserAnswer() {
         return userAnswer;
     }
 
-    public void setUserAnswer(String userAnswer) {
+    public void setUserAnswer(int userAnswer) {
         this.userAnswer = userAnswer;
     }
 
@@ -113,5 +118,13 @@ public class AnswerVo {
 
     public void setChapterId(String chapterId) {
         this.chapterId = chapterId;
+    }
+
+    public String getOptions() {
+        return options;
+    }
+
+    public void setOptions(String options) {
+        this.options = options;
     }
 }

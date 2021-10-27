@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.ExperimentMapper">
+    
+    <resultMap type="Experiment" id="ExperimentResult">
+        <result property="id"    column="id"    />
+        <result property="courseId"    column="course_id"    />
+        <result property="experimentName"    column="experiment_name"    />
+        <result property="introduce"    column="introduce"    />
+        <result property="gmtCreate"    column="gmt_create"    />
+        <result property="gmtModified"    column="gmt_modified"    />
+    </resultMap>
+
+    <sql id="selectExperimentVo">
+        select id, course_id, experiment_name, introduce, gmt_create, gmt_modified from edu_experiment
+    </sql>
+
+    <select id="selectExperimentList" parameterType="Experiment" resultMap="ExperimentResult">
+        <include refid="selectExperimentVo"/>
+        <where>  
+            <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
+            <if test="experimentName != null  and experimentName != ''"> and experiment_name like concat('%', #{experimentName}, '%')</if>
+            <if test="introduce != null  and introduce != ''"> and introduce = #{introduce}</if>
+            <if test="gmtCreate != null "> and gmt_create = #{gmtCreate}</if>
+            <if test="gmtModified != null "> and gmt_modified = #{gmtModified}</if>
+        </where>
+    </select>
+    
+    <select id="selectExperimentById" parameterType="String" resultMap="ExperimentResult">
+        <include refid="selectExperimentVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertExperiment" parameterType="Experiment">
+        insert into edu_experiment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="courseId != null">course_id,</if>
+            <if test="experimentName != null">experiment_name,</if>
+            <if test="introduce != null">introduce,</if>
+            <if test="gmtCreate != null">gmt_create,</if>
+            <if test="gmtModified != null">gmt_modified,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="courseId != null">#{courseId},</if>
+            <if test="experimentName != null">#{experimentName},</if>
+            <if test="introduce != null">#{introduce},</if>
+            <if test="gmtCreate != null">#{gmtCreate},</if>
+            <if test="gmtModified != null">#{gmtModified},</if>
+         </trim>
+    </insert>
+
+    <update id="updateExperiment" parameterType="Experiment">
+        update edu_experiment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="courseId != null">course_id = #{courseId},</if>
+            <if test="experimentName != null">experiment_name = #{experimentName},</if>
+            <if test="introduce != null">introduce = #{introduce},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="gmtModified != null">gmt_modified = #{gmtModified},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteExperimentById" parameterType="String">
+        delete from edu_experiment where id = #{id}
+    </delete>
+
+    <delete id="deleteExperimentByIds" parameterType="String">
+        delete from edu_experiment where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

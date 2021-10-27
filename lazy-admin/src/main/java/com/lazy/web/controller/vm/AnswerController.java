@@ -3,6 +3,7 @@ package com.lazy.web.controller.vm;
 import java.util.List;
 
 import com.lazy.vm.domain.vo.AnswerVo;
+import com.lazy.vm.domain.vo.TestPaperVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -114,4 +115,13 @@ public class AnswerController extends BaseController
     public AjaxResult testScore(@RequestBody List<AnswerVo> answerVo){
         return toAjax(answerService.testScore(answerVo));
     };
+
+    @PreAuthorize("@ss.hasPermi('vm:Answer:edit')")
+    @Log(title = "根据试卷标题查询相应题目", businessType = BusinessType.UPDATE)
+    @PostMapping("/getTestPaperAnswer")
+    public AjaxResult getTestPaperAnswer(@RequestBody String testPaperId){
+
+        return  AjaxResult.success(answerService.getTestPaperAnswer(testPaperId));
+    };
+
 }

@@ -1,9 +1,16 @@
 package com.lazy.vm.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lazy.common.utils.DateUtils;
+import com.lazy.common.utils.SecurityUtils;
+import com.lazy.vm.domain.Achievement;
+import com.lazy.vm.domain.TestPaper;
+import com.lazy.vm.domain.vo.AnswerTypeVo;
 import com.lazy.vm.domain.vo.AnswerVo;
+import com.lazy.vm.mapper.AchievementMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +25,13 @@ import com.lazy.vm.service.IAnswerService;
  * @date 2021-10-26
  */
 @Service
-public class AnswerServiceImpl implements IAnswerService {
+public class AnswerServiceImpl implements IAnswerService
+{
     @Autowired
     private AnswerMapper answerMapper;
+
+    @Autowired
+    private AchievementMapper achievementMapper;
 
     /**
      * 查询作业题目
@@ -29,7 +40,8 @@ public class AnswerServiceImpl implements IAnswerService {
      * @return 作业题目
      */
     @Override
-    public Answer selectAnswerById(Long id) {
+    public Answer selectAnswerById(Long id)
+    {
         return answerMapper.selectAnswerById(id);
     }
 
@@ -40,7 +52,8 @@ public class AnswerServiceImpl implements IAnswerService {
      * @return 作业题目
      */
     @Override
-    public List<Answer> selectAnswerList(Answer answer) {
+    public List<Answer> selectAnswerList(Answer answer)
+    {
         return answerMapper.selectAnswerList(answer);
     }
 
@@ -64,7 +77,8 @@ public class AnswerServiceImpl implements IAnswerService {
      * @return 结果
      */
     @Override
-    public int updateAnswer(Answer answer) {
+    public int updateAnswer(Answer answer)
+    {
         answer.setUpdateTime(DateUtils.getNowDate());
         return answerMapper.updateAnswer(answer);
     }
@@ -76,7 +90,8 @@ public class AnswerServiceImpl implements IAnswerService {
      * @return 结果
      */
     @Override
-    public int deleteAnswerByIds(Long[] ids) {
+    public int deleteAnswerByIds(Long[] ids)
+    {
         return answerMapper.deleteAnswerByIds(ids);
     }
 
@@ -87,15 +102,49 @@ public class AnswerServiceImpl implements IAnswerService {
      * @return 结果
      */
     @Override
-    public int deleteAnswerById(Long id) {
+    public int deleteAnswerById(Long id)
+    {
         return answerMapper.deleteAnswerById(id);
     }
 
 
+    /**
+     * 考试分数
+     * @param answerVo
+     * @return
+     */
     @Override
     public int testScore(List<AnswerVo> answerVo) {
+        int  fs = 0;
+        if(answerVo.size()>0){
+            int count = 0;
+            for (AnswerVo an : answerVo ){
+                List<AnswerTypeVo> answerTypeVo = (List<AnswerTypeVo>) JSONObject.parse(an.getOptions());
+                if(answerTypeVo.get(an.getUserAnswer()).getIsRight() == "true"){
+                    count++;
+                }
+            }
+            fs = count * 100 /  answerVo.size();
+            Achievement achievement = new Achievement ();
+            achievement.setId(UUID.randomUUID().toString().replaceAll("-", "").toString());
+            achievement.setChapterId(answerVo.get(0).getTestPaperId());
+            achievement.setUesrId(String.valueOf(SecurityUtils.getLoginUser().getUser().getUserId()));
+            achievement.setAchievement(String.valueOf(fs));
+            achievementMapper.insertAchievement(achievement);
 
-
-        return 0;
+            return fs;
+        }
+        return fs;
     }
+
+
+    @Override
+    public List<Answer> getTestPaperAnswer(String testPaperId) {
+        if(!testPaperId.equals("")){
+            List<Answer> testPaperAnswer = answerMapper.getTestPaperAnswer(testPaperId);
+            return  testPaperAnswer;
+        }
+        return null;
+    }
+
 }

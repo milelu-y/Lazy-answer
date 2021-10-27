@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.AchievementMapper">
+    
+    <resultMap type="Achievement" id="AchievementResult">
+        <result property="id"    column="id"    />
+        <result property="chapterId"    column="chapter_id"    />
+        <result property="uesrId"    column="uesr_id"    />
+        <result property="achievement"    column="achievement"    />
+        <result property="gmtCreate"    column="gmt_create"    />
+        <result property="gmtModified"    column="gmt_modified"    />
+    </resultMap>
+
+    <sql id="selectAchievementVo">
+        select id, chapter_id, uesr_id, achievement, gmt_create, gmt_modified from edu_achievement
+    </sql>
+
+    <select id="selectAchievementList" parameterType="Achievement" resultMap="AchievementResult">
+        <include refid="selectAchievementVo"/>
+        <where>  
+            <if test="chapterId != null  and chapterId != ''"> and chapter_id = #{chapterId}</if>
+            <if test="uesrId != null  and uesrId != ''"> and uesr_id = #{uesrId}</if>
+            <if test="achievement != null  and achievement != ''"> and achievement = #{achievement}</if>
+            <if test="gmtCreate != null "> and gmt_create = #{gmtCreate}</if>
+            <if test="gmtModified != null "> and gmt_modified = #{gmtModified}</if>
+        </where>
+    </select>
+    
+    <select id="selectAchievementById" parameterType="String" resultMap="AchievementResult">
+        <include refid="selectAchievementVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertAchievement" parameterType="Achievement">
+        insert into edu_achievement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="chapterId != null and chapterId != ''">chapter_id,</if>
+            <if test="uesrId != null and uesrId != ''">uesr_id,</if>
+            <if test="achievement != null">achievement,</if>
+            <if test="gmtCreate != null">gmt_create,</if>
+            <if test="gmtModified != null">gmt_modified,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="chapterId != null and chapterId != ''">#{chapterId},</if>
+            <if test="uesrId != null and uesrId != ''">#{uesrId},</if>
+            <if test="achievement != null">#{achievement},</if>
+            <if test="gmtCreate != null">#{gmtCreate},</if>
+            <if test="gmtModified != null">#{gmtModified},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAchievement" parameterType="Achievement">
+        update edu_achievement
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="chapterId != null and chapterId != ''">chapter_id = #{chapterId},</if>
+            <if test="uesrId != null and uesrId != ''">uesr_id = #{uesrId},</if>
+            <if test="achievement != null">achievement = #{achievement},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="gmtModified != null">gmt_modified = #{gmtModified},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAchievementById" parameterType="String">
+        delete from edu_achievement where id = #{id}
+    </delete>
+
+    <delete id="deleteAchievementByIds" parameterType="String">
+        delete from edu_achievement where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
