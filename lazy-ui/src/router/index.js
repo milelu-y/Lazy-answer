@@ -125,10 +125,36 @@ export const constantRoutes = [
     hidden: true,
     children: [
       {
-        path: 'index/:id(\\d+)',
+        path: ':id?',
         component: (resolve) => require(['@/views/vm/question/form'], resolve),
         name: 'quForm',
         meta: { title: '添加题库', activeMenu: '/vm/question'}
+      }
+    ]
+  },
+  {
+    path: '/vm/question/testQuestions',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/vm/question/TestQuestions'], resolve),
+        name: 'quManage',
+        meta: { title: '试题管理', activeMenu: '/vm/question'}
+      }
+    ]
+  },
+  {
+    path: '/vm/question/testQuestionForm',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/vm/question/TestQuestionForm'], resolve),
+        name: 'quAdd',
+        meta: { title: '添加试题', activeMenu: '/vm/question'}
       }
     ]
   },

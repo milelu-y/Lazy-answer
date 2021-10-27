@@ -102,7 +102,6 @@ export default {
       this.courseOptions = response.rows;
     })
     getTask(id).then(response => {
-      console.log(response)
       this.postForm = response.data
       this.tableData = response.data.chapters
     })

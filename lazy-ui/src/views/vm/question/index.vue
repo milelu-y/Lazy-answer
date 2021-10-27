@@ -4,7 +4,7 @@
       <el-form-item prop="title">
         <el-input
           v-model="queryParams.title"
-          placeholder="请输入题库名称"
+          placeholder="题库名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -22,7 +22,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['vm:task:add']"
-        >新增</el-button>
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -33,7 +34,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['vm:task:edit']"
-        >修改</el-button>
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -44,7 +46,8 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['vm:task:remove']"
-        >删除</el-button>
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -55,31 +58,30 @@
           :loading="exportLoading"
           @click="handleExport"
           v-hasPermi="['vm:task:export']"
-        >导出</el-button>
+        >导出
+        </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table border v-loading="false" :data="taskList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="题库名称" align="center" prop="title">
         <template slot-scope="data">
 
-          <router-link :to="{ name: 'quForm', params:{id: data.row.id}}"  style="color: #00afff">
+          <router-link :to="{ name: 'quForm', params:{id: data.row.id}}" style="color: #00afff">
             {{ data.row.title }}
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column label="题库分类" align="center" prop="type" />
-      <el-table-column label="试题数量" align="center" prop="multipleCount" />
-      <el-table-column label="创建时间" align="center" prop="gmtCreate" />
+      <el-table-column label="题库分类" align="center" prop="type"/>
+      <el-table-column label="试题数量" align="center" prop="multipleCount"/>
+      <el-table-column label="创建时间" align="center" prop="gmtCreate"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-document"
-          >试题管理</el-button>
+          <router-link :to="{ name: 'quManage', params:{id: scope.row.id}}" style="color: #00afff">
+            <i class="el-icon-document"></i> 试题管理
+          </router-link>
         </template>
       </el-table-column>
     </el-table>
@@ -95,7 +97,7 @@
 </template>
 
 <script>
- import { listTask, getTask, delTask, addTask, updateTask, exportTask } from "@/api/vm/task";
+import {listTask, getTask, delTask, addTask, updateTask, exportTask} from "@/api/vm/task";
 
 export default {
   name: "Task",
@@ -138,10 +140,10 @@ export default {
       // 表单校验
       rules: {
         createTime: [
-          { required: true, message: "创建时间不能为空", trigger: "blur" }
+          {required: true, message: "创建时间不能为空", trigger: "blur"}
         ],
         updateTime: [
-          { required: true, message: "更新时间不能为空", trigger: "blur" }
+          {required: true, message: "更新时间不能为空", trigger: "blur"}
         ],
       }
     };
@@ -193,7 +195,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -201,7 +203,7 @@ export default {
       this.reset();
       // this.open = true;
       // this.title = "添加作业";
-      this.$router.push('/vm/question/form/index/'+123)
+      this.$router.push('/vm/question/form/')
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -233,6 +235,10 @@ export default {
         }
       });
     },
+    /** 链接到试题管理 */
+    handleLink(row) {
+      console.log(row)
+    },
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
@@ -240,12 +246,13 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(function() {
+      }).then(function () {
         return delTask(ids);
       }).then(() => {
         this.getList();
         this.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {
@@ -260,7 +267,8 @@ export default {
       }).then(response => {
         this.download(response.msg);
         this.exportLoading = false;
-      }).catch(() => {});
+      }).catch(() => {
+      });
     }
   }
 };

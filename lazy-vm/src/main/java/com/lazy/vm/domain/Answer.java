@@ -1,5 +1,10 @@
 package com.lazy.vm.domain;
 
+import java.util.Date;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lazy.common.annotation.CreateTime;
+import com.lazy.common.annotation.IDField;
+import com.lazy.common.annotation.UpdateTime;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.lazy.common.annotation.Excel;
@@ -9,14 +14,15 @@ import com.lazy.common.core.domain.BaseEntity;
  * 作业题目对象 edu_answer
  *
  * @author fgq
- * @date 2021-10-26
+ * @date 2021-10-27
  */
 public class Answer extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 作业id */
-    private Long id;
+    @IDField
+    private String id;
 
     /** 题目类型：1（single: 单选题）、2（multiple: 多选题）、3 （fill: 填空题）、4（aq: 问答题）、5（judgment: 判断题） */
     @Excel(name = "题目类型：1", readConverterExp = "s=ingle:,单=选题")
@@ -50,12 +56,24 @@ public class Answer extends BaseEntity
     @Excel(name = "题库id")
     private String taskId;
 
-    public void setId(Long id)
+    /** 创建时间 */
+    @CreateTime
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date gmtCreate;
+
+    /** 更新时间 */
+    @UpdateTime
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date gmtModified;
+
+    public void setId(String id)
     {
         this.id = id;
     }
 
-    public Long getId()
+    public String getId()
     {
         return id;
     }
@@ -131,6 +149,24 @@ public class Answer extends BaseEntity
     {
         return taskId;
     }
+    public void setGmtCreate(Date gmtCreate)
+    {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public Date getGmtCreate()
+    {
+        return gmtCreate;
+    }
+    public void setGmtModified(Date gmtModified)
+    {
+        this.gmtModified = gmtModified;
+    }
+
+    public Date getGmtModified()
+    {
+        return gmtModified;
+    }
 
     @Override
     public String toString() {
@@ -141,11 +177,11 @@ public class Answer extends BaseEntity
                 .append("answer", getAnswer())
                 .append("level", getLevel())
                 .append("options", getOptions())
-                .append("createTime", getCreateTime())
                 .append("chapterId", getChapterId())
-                .append("updateTime", getUpdateTime())
                 .append("analysis", getAnalysis())
                 .append("taskId", getTaskId())
+                .append("gmtCreate", getGmtCreate())
+                .append("gmtModified", getGmtModified())
                 .toString();
     }
 }

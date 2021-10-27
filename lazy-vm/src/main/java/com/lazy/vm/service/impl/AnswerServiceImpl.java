@@ -1,8 +1,10 @@
 package com.lazy.vm.service.impl;
 
 import java.util.List;
+
 import com.lazy.common.utils.DateUtils;
 import com.lazy.vm.domain.vo.AnswerVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.lazy.vm.mapper.AnswerMapper;
@@ -16,8 +18,7 @@ import com.lazy.vm.service.IAnswerService;
  * @date 2021-10-26
  */
 @Service
-public class AnswerServiceImpl implements IAnswerService
-{
+public class AnswerServiceImpl implements IAnswerService {
     @Autowired
     private AnswerMapper answerMapper;
 
@@ -28,8 +29,7 @@ public class AnswerServiceImpl implements IAnswerService
      * @return 作业题目
      */
     @Override
-    public Answer selectAnswerById(Long id)
-    {
+    public Answer selectAnswerById(Long id) {
         return answerMapper.selectAnswerById(id);
     }
 
@@ -40,21 +40,20 @@ public class AnswerServiceImpl implements IAnswerService
      * @return 作业题目
      */
     @Override
-    public List<Answer> selectAnswerList(Answer answer)
-    {
+    public List<Answer> selectAnswerList(Answer answer) {
         return answerMapper.selectAnswerList(answer);
     }
 
     /**
      * 新增作业题目
      *
-     * @param answer 作业题目
+     * @param answerVo 作业题目
      * @return 结果
      */
     @Override
-    public int insertAnswer(Answer answer)
-    {
-        answer.setCreateTime(DateUtils.getNowDate());
+    public int insertAnswer(AnswerVo answerVo) {
+        Answer answer = new Answer();
+        BeanUtils.copyProperties(answerVo,answer);
         return answerMapper.insertAnswer(answer);
     }
 
@@ -65,8 +64,7 @@ public class AnswerServiceImpl implements IAnswerService
      * @return 结果
      */
     @Override
-    public int updateAnswer(Answer answer)
-    {
+    public int updateAnswer(Answer answer) {
         answer.setUpdateTime(DateUtils.getNowDate());
         return answerMapper.updateAnswer(answer);
     }
@@ -78,8 +76,7 @@ public class AnswerServiceImpl implements IAnswerService
      * @return 结果
      */
     @Override
-    public int deleteAnswerByIds(Long[] ids)
-    {
+    public int deleteAnswerByIds(Long[] ids) {
         return answerMapper.deleteAnswerByIds(ids);
     }
 
@@ -90,8 +87,7 @@ public class AnswerServiceImpl implements IAnswerService
      * @return 结果
      */
     @Override
-    public int deleteAnswerById(Long id)
-    {
+    public int deleteAnswerById(Long id) {
         return answerMapper.deleteAnswerById(id);
     }
 

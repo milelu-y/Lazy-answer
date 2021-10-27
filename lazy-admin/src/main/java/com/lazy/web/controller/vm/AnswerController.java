@@ -76,9 +76,9 @@ public class AnswerController extends BaseController
     @PreAuthorize("@ss.hasPermi('vm:Answer:add')")
     @Log(title = "作业题目", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Answer answer)
+    public AjaxResult add(@RequestBody AnswerVo answerVo)
     {
-        return toAjax(answerService.insertAnswer(answer));
+        return toAjax(answerService.insertAnswer(answerVo));
     }
 
     /**

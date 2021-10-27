@@ -6,15 +6,15 @@ import com.lazy.vm.domain.vo.AnswerVo;
 
 /**
  * 作业题目Service接口
- * 
+ *
  * @author fgq
  * @date 2021-10-26
  */
-public interface IAnswerService 
+public interface IAnswerService
 {
     /**
      * 查询作业题目
-     * 
+     *
      * @param id 作业题目ID
      * @return 作业题目
      */
@@ -22,7 +22,7 @@ public interface IAnswerService
 
     /**
      * 查询作业题目列表
-     * 
+     *
      * @param answer 作业题目
      * @return 作业题目集合
      */
@@ -30,15 +30,15 @@ public interface IAnswerService
 
     /**
      * 新增作业题目
-     * 
+     *
      * @param answer 作业题目
      * @return 结果
      */
-    public int insertAnswer(Answer answer);
+    public int insertAnswer(AnswerVo answerVo);
 
     /**
      * 修改作业题目
-     * 
+     *
      * @param answer 作业题目
      * @return 结果
      */
@@ -46,7 +46,7 @@ public interface IAnswerService
 
     /**
      * 批量删除作业题目
-     * 
+     *
      * @param ids 需要删除的作业题目ID
      * @return 结果
      */
@@ -54,7 +54,7 @@ public interface IAnswerService
 
     /**
      * 删除作业题目信息
-     * 
+     *
      * @param id 作业题目ID
      * @return 结果
      */

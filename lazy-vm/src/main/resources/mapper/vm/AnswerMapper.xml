@@ -11,15 +11,15 @@
         <result property="answer"    column="answer"    />
         <result property="level"    column="level"    />
         <result property="options"    column="options"    />
-        <result property="createTime"    column="create_time"    />
         <result property="chapterId"    column="chapter_id"    />
-        <result property="updateTime"    column="update_time"    />
         <result property="analysis"    column="analysis"    />
         <result property="taskId"    column="task_id"    />
+        <result property="gmtCreate"    column="gmt_create"    />
+        <result property="gmtModified"    column="gmt_modified"    />
     </resultMap>
 
     <sql id="selectAnswerVo">
-        select id, type, content, answer, level, options, create_time, chapter_id, update_time, analysis, task_id from edu_answer
+        select id, type, content, answer, level, options, chapter_id, analysis, task_id, gmt_create, gmt_modified from edu_answer
     </sql>
 
     <select id="selectAnswerList" parameterType="Answer" resultMap="AnswerResult">
@@ -33,6 +33,8 @@
             <if test="chapterId != null  and chapterId != ''"> and chapter_id = #{chapterId}</if>
             <if test="analysis != null  and analysis != ''"> and analysis = #{analysis}</if>
             <if test="taskId != null  and taskId != ''"> and task_id = #{taskId}</if>
+            <if test="gmtCreate != null "> and gmt_create = #{gmtCreate}</if>
+            <if test="gmtModified != null "> and gmt_modified = #{gmtModified}</if>
         </where>
     </select>
 
@@ -50,11 +52,11 @@
             <if test="answer != null">answer,</if>
             <if test="level != null">level,</if>
             <if test="options != null">options,</if>
-            <if test="createTime != null">create_time,</if>
             <if test="chapterId != null">chapter_id,</if>
-            <if test="updateTime != null">update_time,</if>
             <if test="analysis != null">analysis,</if>
             <if test="taskId != null">task_id,</if>
+            <if test="gmtCreate != null">gmt_create,</if>
+            <if test="gmtModified != null">gmt_modified,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -63,11 +65,11 @@
             <if test="answer != null">#{answer},</if>
             <if test="level != null">#{level},</if>
             <if test="options != null">#{options},</if>
-            <if test="createTime != null">#{createTime},</if>
             <if test="chapterId != null">#{chapterId},</if>
-            <if test="updateTime != null">#{updateTime},</if>
             <if test="analysis != null">#{analysis},</if>
             <if test="taskId != null">#{taskId},</if>
+            <if test="gmtCreate != null">#{gmtCreate},</if>
+            <if test="gmtModified != null">#{gmtModified},</if>
         </trim>
     </insert>
 
@@ -79,11 +81,11 @@
             <if test="answer != null">answer = #{answer},</if>
             <if test="level != null">level = #{level},</if>
             <if test="options != null">options = #{options},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
             <if test="chapterId != null">chapter_id = #{chapterId},</if>
-            <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="analysis != null">analysis = #{analysis},</if>
             <if test="taskId != null">task_id = #{taskId},</if>
+            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
+            <if test="gmtModified != null">gmt_modified = #{gmtModified},</if>
         </trim>
         where id = #{id}
     </update>

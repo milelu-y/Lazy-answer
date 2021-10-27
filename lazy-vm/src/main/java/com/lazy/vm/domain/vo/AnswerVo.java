@@ -22,6 +22,11 @@ public class AnswerVo {
     /** 题库id */
     private String taskId;
 
+    /** 整题解析 */
+    private String analysis;
+
+    /** 章节*/
+    private String chapterId;
 
     /** 考生答案 */
     private String userAnswer;
@@ -92,5 +97,21 @@ public class AnswerVo {
 
     public void setUserAnswer(String userAnswer) {
         this.userAnswer = userAnswer;
+    }
+
+    public String getAnalysis() {
+        return analysis;
+    }
+
+    public void setAnalysis(String analysis) {
+        this.analysis = analysis;
+    }
+
+    public String getChapterId() {
+        return chapterId;
+    }
+
+    public void setChapterId(String chapterId) {
+        this.chapterId = chapterId;
     }
 }
