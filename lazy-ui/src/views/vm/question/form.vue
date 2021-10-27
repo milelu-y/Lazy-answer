@@ -87,8 +87,13 @@ export default {
     }
   },
   computed: {
-    sort() {
-      return this.tableData.length
+    sort:{
+      get(){
+        return this.tableData.length
+      },
+      set(newValue){
+        return newValue;
+      }
     }
   },
   created() {
@@ -136,7 +141,7 @@ export default {
           if (response.code === 200) {
             this.$notify({
               title: '成功',
-              message: '添加题库成功',
+              message: '修改题库成功',
               type: 'success'
             });
             this.$router.go(-1)

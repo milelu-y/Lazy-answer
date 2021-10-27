@@ -91,18 +91,27 @@ public class TaskServiceImpl implements ITaskService {
      * @param taskVo 作业
      * @return 结果
      */
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int updateTask(TaskVo taskVo) {
         List<ChapterVo> chapters = taskVo.getChapters();
-        for (ChapterVo chapter : chapters) {
-            if ("".equals(chapter.getId())) {
-                    //TODO:空的，插入
-            }else {
+        for (ChapterVo chapterVo : chapters) {
+            if ("".equals(chapterVo.getId())) {
+                //TODO:空的，插入
+                Chapter chapter = new Chapter();
+                chapterVo.setTaskId(taskVo.getId());
+                BeanUtils.copyProperties(chapterVo, chapter);
+                chapterMapper.insertChapter(chapter);
+            } else {
                 //修改
+                Chapter chapter = new Chapter();
+                BeanUtils.copyProperties(chapterVo, chapter);
+                chapterMapper.updateChapter(chapter);
             }
         }
-        //return taskMapper.updateTask();
-        return 0;
+        Task task = new Task();
+        BeanUtils.copyProperties(taskVo, task);
+        return taskMapper.updateTask(task);
     }
 
     /**
