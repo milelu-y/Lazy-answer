@@ -79,7 +79,9 @@ export default {
   name: "form",
   data() {
     return {
-      postForm: {},
+      postForm: {
+        title:''
+      },
       loading: false,
       tableData: [],
       courseOptions: [],
@@ -101,10 +103,12 @@ export default {
     listCourse().then(response => {
       this.courseOptions = response.rows;
     })
-    getTask(id).then(response => {
-      this.postForm = response.data
-      this.tableData = response.data.chapters
-    })
+    if (id!=null){
+      getTask(id).then(response => {
+        this.postForm = response.data
+        this.tableData = response.data.chapters
+      })
+    }
   },
   mounted() {
     this.setSort()
