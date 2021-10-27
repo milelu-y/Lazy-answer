@@ -40,6 +40,9 @@ public class TaskServiceImpl implements ITaskService {
     public TaskVo selectTaskById(String id) {
         List<ChapterVo> chapterVos = chapterMapper.selectChapterByTaskId(id);
         Task task = taskMapper.selectTaskById(id);
+        if (task==null){
+            return null;
+        }
         TaskVo taskVo = new TaskVo();
         BeanUtils.copyProperties(task, taskVo);
         taskVo.setChapters(chapterVos);
