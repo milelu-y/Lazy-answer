@@ -53,7 +53,7 @@
       <el-table-column label="题型" align="center" prop="type" :formatter="typeFormat"></el-table-column>
       <el-table-column label="难度" align="center" prop="level" :formatter="levelFormat"></el-table-column>
       <el-table-column label="章节" align="center" prop="chapterId" :formatter="chapterFormat"></el-table-column>
-      <el-table-column label="试题内容" align="center" prop="content">
+      <el-table-column label="试题内容" align="center" prop="content" show-overflow-tooltip>
         <template slot-scope="scope">
           <router-link :to="{ name: 'quAdd', params:{id: scope.row.id,chapters:chapters}}" style="color: #00afff">
             {{ scope.row.content }}
