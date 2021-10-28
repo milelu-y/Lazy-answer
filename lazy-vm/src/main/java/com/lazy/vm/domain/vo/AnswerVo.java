@@ -39,7 +39,7 @@ public class AnswerVo {
     /** 试卷id */
     private String  testPaperId;
 
-
+    private List<AnswerOptionVo> answerList;
     public String getTestPaperId() {
         return testPaperId;
     }
@@ -126,5 +126,13 @@ public class AnswerVo {
 
     public void setOptions(String options) {
         this.options = options;
+    }
+
+    public List<AnswerOptionVo> getAnswerList() {
+        return answerList;
+    }
+
+    public void setAnswerList(List<AnswerOptionVo> answerList) {
+        this.answerList = answerList;
     }
 }

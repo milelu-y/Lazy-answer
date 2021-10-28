@@ -30,7 +30,7 @@ import com.lazy.common.core.page.TableDataInfo;
  * @date 2021-10-27
  */
 @RestController
-@RequestMapping("/cm/testPaper")
+@RequestMapping("/vm/testPaper")
 public class TestPaperController extends BaseController
 {
     @Autowired
@@ -39,7 +39,7 @@ public class TestPaperController extends BaseController
     /**
      * 查询试卷列表
      */
-    @PreAuthorize("@ss.hasPermi('cm:testPaper:list')")
+    @PreAuthorize("@ss.hasPermi('vm:testPaper:list')")
     @GetMapping("/list")
     public TableDataInfo list(TestPaper testPaper)
     {
@@ -51,7 +51,7 @@ public class TestPaperController extends BaseController
     /**
      * 导出试卷列表
      */
-    @PreAuthorize("@ss.hasPermi('cm:testPaper:export')")
+    @PreAuthorize("@ss.hasPermi('vm:testPaper:export')")
     @Log(title = "试卷", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(TestPaper testPaper)
@@ -64,7 +64,7 @@ public class TestPaperController extends BaseController
     /**
      * 获取试卷详细信息
      */
-    @PreAuthorize("@ss.hasPermi('cm:testPaper:query')")
+    @PreAuthorize("@ss.hasPermi('vm:testPaper:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -74,10 +74,10 @@ public class TestPaperController extends BaseController
     /**
      * 新增试卷
      */
-    @PreAuthorize("@ss.hasPermi('cm:testPaper:add')")
+    @PreAuthorize("@ss.hasPermi('vm:testPaper:add')")
     @Log(title = "试卷", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody TestPaper testPaper)
+    public AjaxResult add(@RequestBody TestPaperVo testPaper)
     {
         return toAjax(testPaperService.insertTestPaper(testPaper));
     }
@@ -85,7 +85,7 @@ public class TestPaperController extends BaseController
     /**
      * 修改试卷
      */
-    @PreAuthorize("@ss.hasPermi('cm:testPaper:edit')")
+    @PreAuthorize("@ss.hasPermi('vm:testPaper:edit')")
     @Log(title = "试卷", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TestPaper testPaper)
@@ -96,7 +96,7 @@ public class TestPaperController extends BaseController
     /**
      * 删除试卷
      */
-    @PreAuthorize("@ss.hasPermi('cm:testPaper:remove')")
+    @PreAuthorize("@ss.hasPermi('vm:testPaper:remove')")
     @Log(title = "试卷", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
@@ -110,7 +110,7 @@ public class TestPaperController extends BaseController
      * @param testPaperVo
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('cm:testPaper:add')")
+    @PreAuthorize("@ss.hasPermi('vm:testPaper:add')")
     @Log(title = "添加试卷", businessType = BusinessType.UPDATE)
     @PostMapping("/addTestPaper")
     public AjaxResult testScore(@RequestBody TestPaperVo testPaperVo){

@@ -159,6 +159,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/vm/testPaper/paperForm',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/vm/testPaper/paperForm'], resolve),
+        name: 'paperAdd',
+        meta: { title: '添加试卷', activeMenu: '/vm/question'}
+      }
+    ]
+  },
+  {
     path: '/monitor/job-log',
     component: Layout,
     hidden: true,

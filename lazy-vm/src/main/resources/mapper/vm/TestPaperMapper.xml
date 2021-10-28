@@ -7,7 +7,7 @@
     <resultMap type="TestPaper" id="TestPaperResult">
         <result property="id"    column="id"    />
         <result property="title"    column="title"    />
-        <result property="fraction"    column="fraction"    />
+        <result property="totalScore"    column="total_score"    />
         <result property="type"    column="type"    />
         <result property="category"    column="category"    />
         <result property="gmtCreate"    column="gmt_create"    />
@@ -21,14 +21,14 @@
     </resultMap>
 
     <sql id="selectTestPaperVo">
-        select id, title, fraction, type, category, gmt_create, gmt_modified, user_id, reserve_field1, reserve_field2, reserve_field3, reserve_field4, reserve_field5 from edu_test_paper
+        select id, title, totalScore, type, category, gmt_create, gmt_modified, user_id, reserve_field1, reserve_field2, reserve_field3, reserve_field4, reserve_field5 from edu_test_paper
     </sql>
 
     <select id="selectTestPaperList" parameterType="TestPaper" resultMap="TestPaperResult">
         <include refid="selectTestPaperVo"/>
         <where>
             <if test="title != null  and title != ''"> and title = #{title}</if>
-            <if test="fraction != null "> and fraction = #{fraction}</if>
+            <if test="totalScore != null "> and total_score = #{totalScore}</if>
             <if test="type != null "> and type = #{type}</if>
             <if test="category != null "> and category = #{category}</if>
             <if test="gmtCreate != null "> and gmt_create = #{gmtCreate}</if>
@@ -52,7 +52,7 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="title != null and title != ''">title,</if>
-            <if test="fraction != null">fraction,</if>
+            <if test="totalScore != null">total_score,</if>
             <if test="type != null">type,</if>
             <if test="category != null">category,</if>
             <if test="gmtCreate != null">gmt_create,</if>
@@ -67,7 +67,7 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="title != null and title != ''">#{title},</if>
-            <if test="fraction != null">#{fraction},</if>
+            <if test="totalScore != null">#{total_score},</if>
             <if test="type != null">#{type},</if>
             <if test="category != null">#{category},</if>
             <if test="gmtCreate != null">#{gmtCreate},</if>
@@ -85,7 +85,7 @@
         update edu_test_paper
         <trim prefix="SET" suffixOverrides=",">
             <if test="title != null and title != ''">title = #{title},</if>
-            <if test="fraction != null">fraction = #{fraction},</if>
+            <if test="totalScore != null">total_score = #{totalScore},</if>
             <if test="type != null">type = #{type},</if>
             <if test="category != null">category = #{category},</if>
             <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>

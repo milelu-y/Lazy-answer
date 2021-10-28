@@ -5,7 +5,10 @@ import java.util.UUID;
 
 import com.lazy.common.utils.DateUtils;
 import com.lazy.common.utils.SecurityUtils;
+import com.lazy.common.utils.uuid.SnowflakeIdWorker;
 import com.lazy.vm.domain.Answer;
+import com.lazy.vm.domain.vo.AnswerVo;
+import com.lazy.vm.domain.vo.GroupVo;
 import com.lazy.vm.domain.vo.TestPaperVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,13 +57,26 @@ public class TestPaperServiceImpl implements ITestPaperService
     /**
      * 新增试卷
      *
-     * @param testPaper 试卷
+     * @param testPaperVo 试卷
      * @return 结果
      */
     @Override
-    public int insertTestPaper(TestPaper testPaper)
+    public int insertTestPaper(TestPaperVo testPaperVo)
     {
-        return testPaperMapper.insertTestPaper(testPaper);
+        TestPaper testPaper = new TestPaper();
+        String paperId = SnowflakeIdWorker.getId();
+        testPaper.setId(paperId);
+
+        for (GroupVo groupVo : testPaperVo.getGroupList()) {
+            groupVo.setPaperId(paperId);
+            String groupId = SnowflakeIdWorker.getId();//分组ID
+            for (AnswerVo answerVo : groupVo.getQuList()) {
+                String answerId = answerVo.getId(); //题目ID
+                //TODO: 插入中间表
+            }
+        }
+        return 0;
+       // return testPaperMapper.insertTestPaper(testPaper);
     }
 
     /**
@@ -110,7 +126,7 @@ public class TestPaperServiceImpl implements ITestPaperService
             BeanUtils.copyProperties(testPaperVo,testPaper);
             testPaper.setUserId(String.valueOf(SecurityUtils.getLoginUser().getUser().getUserId()));
             testPaper.setId(id);
-            this.insertTestPaper(testPaper);
+            testPaperMapper.insertTestPaper(testPaper);
             for (Answer ans : testPaperVo.getAnswers()){
                 testPaperMapper.addTestPaper(id,String.valueOf(ans.getId()));
             }

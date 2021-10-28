@@ -3,7 +3,7 @@
   <!--    <h4>当前题库：{{}}</h4>-->
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item prop="title">
+      <el-form-item prop="content">
         <el-input
           v-model="queryParams.content"
           placeholder="试题内容"

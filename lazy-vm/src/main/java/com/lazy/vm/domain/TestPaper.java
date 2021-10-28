@@ -3,7 +3,6 @@ package com.lazy.vm.domain;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lazy.common.annotation.CreateTime;
-import com.lazy.common.annotation.IDField;
 import com.lazy.common.annotation.UpdateTime;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -34,7 +33,7 @@ public class TestPaper extends BaseEntity {
      * 分数
      */
     @Excel(name = "分数")
-    private Long fraction;
+    private Long totalScore;
 
     /**
      * 0 系统出题   1  老师选题
@@ -117,12 +116,12 @@ public class TestPaper extends BaseEntity {
         return title;
     }
 
-    public void setFraction(Long fraction) {
-        this.fraction = fraction;
+    public void setTotalScore(Long totalScore) {
+        this.totalScore = totalScore;
     }
 
-    public Long getFraction() {
-        return fraction;
+    public Long getTotalScore() {
+        return totalScore;
     }
 
     public void setType(Long type) {
@@ -210,7 +209,7 @@ public class TestPaper extends BaseEntity {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("id", getId())
                 .append("title", getTitle())
-                .append("fraction", getFraction())
+                .append("fraction", getTotalScore())
                 .append("type", getType())
                 .append("category", getCategory())
                 .append("gmtCreate", getGmtCreate())

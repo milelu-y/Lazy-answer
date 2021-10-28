@@ -1,13 +1,7 @@
 package com.lazy.vm.domain.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lazy.common.annotation.CreateTime;
-import com.lazy.common.annotation.Excel;
-import com.lazy.common.annotation.IDField;
-import com.lazy.common.annotation.UpdateTime;
 import com.lazy.vm.domain.Answer;
 
-import java.util.Date;
 import java.util.List;
 
 public class TestPaperVo {
@@ -25,7 +19,7 @@ public class TestPaperVo {
     /**
      * 分数
      */
-    private Long fraction;
+    private Long totalScore;
 
     /**
      * 0 系统出题   1  老师选题
@@ -45,7 +39,7 @@ public class TestPaperVo {
     /**
      * 预留
      */
-    private String reserveField1;
+    private List<GroupVo> groupList;
 
     /**
      * 预留
@@ -68,7 +62,7 @@ public class TestPaperVo {
     private String reserveField5;
 
 
-    private List<Answer>  answers;
+    private List<Answer> answers;
 
 
     public String getId() {
@@ -87,12 +81,12 @@ public class TestPaperVo {
         this.title = title;
     }
 
-    public Long getFraction() {
-        return fraction;
+    public Long getTotalScore() {
+        return totalScore;
     }
 
-    public void setFraction(Long fraction) {
-        this.fraction = fraction;
+    public void setTotalScore(Long totalScore) {
+        this.totalScore = totalScore;
     }
 
     public Long getType() {
@@ -119,12 +113,12 @@ public class TestPaperVo {
         this.userId = userId;
     }
 
-    public String getReserveField1() {
-        return reserveField1;
+    public List<GroupVo> getReserveField1() {
+        return groupList;
     }
 
-    public void setReserveField1(String reserveField1) {
-        this.reserveField1 = reserveField1;
+    public void setReserveField1(List<GroupVo> groupList) {
+        this.groupList = groupList;
     }
 
     public String getReserveField2() {
@@ -165,5 +159,13 @@ public class TestPaperVo {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    public List<GroupVo> getGroupList() {
+        return groupList;
+    }
+
+    public void setGroupList(List<GroupVo> groupList) {
+        this.groupList = groupList;
     }
 }
