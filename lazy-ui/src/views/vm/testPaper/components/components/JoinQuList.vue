@@ -148,7 +148,7 @@ export default {
         var quList = item.quList;
         for (var j = 0; j < quList.length; j++) {
           totalScore += parseInt(quList[j].score); // 排除的ID
-          excludes.push({id:quList[j].quId});
+          excludes.push({id:quList[j].id});
         }
         item.totalScore = totalScore;
         item.quCount = quList.length;
