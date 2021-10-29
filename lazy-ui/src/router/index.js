@@ -167,7 +167,7 @@ export const constantRoutes = [
         path: ':id?',
         component: (resolve) => require(['@/views/vm/testPaper/paperForm'], resolve),
         name: 'paperAdd',
-        meta: {title: '添加试卷', activeMenu: '/vm/question'}
+        meta: {title: '添加试卷', activeMenu: '/vm/testPaper'}
       }
     ]
   },
@@ -180,7 +180,20 @@ export const constantRoutes = [
         path: ':id?',
         component: (resolve) => require(['@/views/vm/testPaper/paperForm'], resolve),
         name: 'paperUpdate',
-        meta: {title: '修改试卷', activeMenu: '/vm/question'}
+        meta: {title: '修改试卷', activeMenu: '/vm/testPaper'}
+      }
+    ]
+  },
+  {
+    path: '/vm/exam/form',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/vm/exam/form'], resolve),
+        name: 'examAdd',
+        meta: {title: '添加考试', activeMenu: '/vm/exam'}
       }
     ]
   },
@@ -209,7 +222,17 @@ export const constantRoutes = [
         meta: {title: '修改生成配置', activeMenu: '/tool/gen'}
       }
     ]
-  }
+  },
+  {
+    path: '/web/index',
+    component: (resolve) => require(['@/views/web/index'], resolve),
+    hidden: true
+  },
+  {
+    path: '/web/exam/start',
+    component: (resolve) => require(['@/views/web/exam/start'], resolve),
+    hidden: true
+  },
 ]
 
 export default new Router({
