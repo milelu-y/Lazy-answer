@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.GroupMapper">
+
+    <resultMap type="Group" id="GroupResult">
+        <result property="id" column="id"/>
+        <result property="itemRand" column="item_rand"/>
+        <result property="paperId" column="paper_id"/>
+        <result property="perScore" column="per_score"/>
+        <result property="quCount" column="qu_count"/>
+        <result property="quType" column="qu_type"/>
+        <result property="title" column="title"/>
+        <result property="totalScore" column="total_score"/>
+    </resultMap>
+
+    <sql id="selectGroupVo">
+        select id,
+               item_rand,
+               paper_id,
+               per_score,
+               qu_count,
+               qu_type,
+               title,
+               total_score
+        from edu_group
+    </sql>
+
+    <select id="selectGroupList" parameterType="Group" resultMap="GroupResult">
+        <include refid="selectGroupVo"/>
+        <where>
+            <if test="itemRand != null ">and item_rand = #{itemRand}</if>
+            <if test="paperId != null  and paperId != ''">and paper_id = #{paperId}</if>
+            <if test="perScore != null ">and per_score = #{perScore}</if>
+            <if test="quCount != null ">and qu_count = #{quCount}</if>
+            <if test="quType != null  and quType != ''">and qu_type = #{quType}</if>
+            <if test="title != null  and title != ''">and title = #{title}</if>
+            <if test="totalScore != null  and title != ''">and total_score = #{totalScore}</if>
+        </where>
+    </select>
+
+    <select id="selectGroupById" parameterType="String" resultMap="GroupResult">
+        <include refid="selectGroupVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectGroupByPaperId" resultType="com.lazy.vm.domain.Group">
+        select id, item_rand itemRand, paper_id paperId, per_score perScore, qu_count quCount, qu_type quType, title,total_score totalScore
+        from edu_group
+        where paper_id = #{paperId}
+    </select>
+
+    <insert id="insertGroup" parameterType="Group">
+        insert into edu_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="itemRand != null">item_rand,</if>
+            <if test="paperId != null">paper_id,</if>
+            <if test="perScore != null">per_score,</if>
+            <if test="quCount != null">qu_count,</if>
+            <if test="quType != null">qu_type,</if>
+            <if test="title != null">title,</if>
+            <if test="totalScore != null">total_score,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="itemRand != null">#{itemRand},</if>
+            <if test="paperId != null">#{paperId},</if>
+            <if test="perScore != null">#{perScore},</if>
+            <if test="quCount != null">#{quCount},</if>
+            <if test="quType != null">#{quType},</if>
+            <if test="title != null">#{title},</if>
+            <if test="totalScore != null">#{totalScore},</if>
+        </trim>
+    </insert>
+
+    <update id="updateGroup" parameterType="Group">
+        update edu_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemRand != null">item_rand = #{itemRand},</if>
+            <if test="paperId != null">paper_id = #{paperId},</if>
+            <if test="perScore != null">per_score = #{perScore},</if>
+            <if test="quCount != null">qu_count = #{quCount},</if>
+            <if test="quType != null">qu_type = #{quType},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="totalScore != null">total_score = #{totalScore},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGroupById" parameterType="String">
+        delete
+        from edu_group
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteGroupByIds" parameterType="String">
+        delete from edu_group where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

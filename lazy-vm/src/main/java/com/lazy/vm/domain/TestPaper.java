@@ -3,6 +3,7 @@ package com.lazy.vm.domain;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lazy.common.annotation.CreateTime;
+import com.lazy.common.annotation.IDField;
 import com.lazy.common.annotation.UpdateTime;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -21,6 +22,7 @@ public class TestPaper extends BaseEntity {
     /**
      * $column.columnComment
      */
+//    @IDField
     private String id;
 
     /**
@@ -45,7 +47,7 @@ public class TestPaper extends BaseEntity {
      * 试卷类别（0：理工类   1：文工类）
      */
     @Excel(name = "试卷类别", readConverterExp = "0=：理工类,1=：文工类")
-    private Long category;
+    private String category;
 
     /**
      * 添加时间
@@ -70,10 +72,10 @@ public class TestPaper extends BaseEntity {
     private String userId;
 
     /**
-     * 预留
+     * 总题数
      */
-    @Excel(name = "预留")
-    private String reserveField1;
+    @Excel(name = "总题数")
+    private Integer quCount;
 
     /**
      * 预留
@@ -132,11 +134,11 @@ public class TestPaper extends BaseEntity {
         return type;
     }
 
-    public void setCategory(Long category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
-    public Long getCategory() {
+    public String getCategory() {
         return category;
     }
 
@@ -164,12 +166,12 @@ public class TestPaper extends BaseEntity {
         return userId;
     }
 
-    public void setReserveField1(String reserveField1) {
-        this.reserveField1 = reserveField1;
+    public Integer getQuCount() {
+        return quCount;
     }
 
-    public String getReserveField1() {
-        return reserveField1;
+    public void setQuCount(Integer quCount) {
+        this.quCount = quCount;
     }
 
     public void setReserveField2(String reserveField2) {
@@ -215,7 +217,7 @@ public class TestPaper extends BaseEntity {
                 .append("gmtCreate", getGmtCreate())
                 .append("gmtModified", getGmtModified())
                 .append("userId", getUserId())
-                .append("reserveField1", getReserveField1())
+                .append("quCount", getQuCount())
                 .append("reserveField2", getReserveField2())
                 .append("reserveField3", getReserveField3())
                 .append("reserveField4", getReserveField4())

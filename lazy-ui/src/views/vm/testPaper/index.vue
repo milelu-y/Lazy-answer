@@ -46,18 +46,23 @@
       </el-col>
     </el-row>
     <el-table border :data="paperList" @selection-change="handleSelectionChange">
-      <el-table-column label="试卷名称" align="center" prop="title"></el-table-column>
-      <el-table-column label="组卷方式" align="center" prop="type"></el-table-column>
+      <el-table-column type="selection" width="55" align="center"/>
+      <el-table-column label="试卷名称" align="center" prop="title" width="100">
+        <template slot-scope="scope">
+          <el-button type="text" @click="handleUpdate(scope.row)">{{ scope.row.title }}</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="组卷方式" align="center" prop="type" width="150"></el-table-column>
       <el-table-column label="试卷分类" align="center" prop="category"></el-table-column>
-      <el-table-column label="总分" align="center" prop="fraction" show-overflow-tooltip></el-table-column>
-      <el-table-column label="创建人" align="center" prop="user_id" show-overflow-tooltip></el-table-column>
+      <el-table-column label="总分" align="center" prop="totalScore" show-overflow-tooltip></el-table-column>
+      <el-table-column label="创建人" align="center" prop="userId" show-overflow-tooltip></el-table-column>
       <el-table-column label="创建时间" align="center" prop="gmtCreate"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <router-link :to="{ name: 'quManage', params:{id: scope.row.id}}" style="color: #00afff">
             <i class="el-icon-view"></i> 预览
           </router-link>
-          <el-button icon="el-icon-document-copy">复制</el-button>
+          <el-button icon="el-icon-document-copy" type="text">复制</el-button>
           <router-link :to="{ name: 'quManage', params:{id: scope.row.id}}" style="color: #00afff">
             <i class="el-icon-loading"></i> 创建考试
           </router-link>
@@ -149,7 +154,7 @@ export default {
     getList() {
       this.loading = true;
       listTestPaper(this.queryParams).then(response => {
-        this.taskList = response.rows;
+        this.paperList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -177,6 +182,12 @@ export default {
           name: 'paperAdd',
           params: {title: this.postForm.title, type: this.postForm.type, category: this.postForm.category}
         })
+      })
+    },
+    handleUpdate(row) {
+      this.$router.push({
+        name: 'paperUpdate',
+        params: {id:row.id,title: this.postForm.title, type: this.postForm.type, category: this.postForm.category}
       })
     },
     // 多选框选中数据

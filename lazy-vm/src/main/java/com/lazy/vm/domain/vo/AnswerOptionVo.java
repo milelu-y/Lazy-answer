@@ -1,9 +1,12 @@
 package com.lazy.vm.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 /**
  * @author Lazy
  * @date 2021/10/28 18:22
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AnswerOptionVo {
     private String analysis;
     private String answerId;

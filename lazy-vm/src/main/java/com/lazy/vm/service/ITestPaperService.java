@@ -18,7 +18,7 @@ public interface ITestPaperService
      * @param id 试卷ID
      * @return 试卷
      */
-    public TestPaper selectTestPaperById(String id);
+    public TestPaperVo selectTestPaperById(String id);
 
     /**
      * 查询试卷列表
@@ -42,7 +42,7 @@ public interface ITestPaperService
      * @param testPaper 试卷
      * @return 结果
      */
-    public int updateTestPaper(TestPaper testPaper);
+    public int updateTestPaper(TestPaperVo testPaper);
 
     /**
      * 批量删除试卷

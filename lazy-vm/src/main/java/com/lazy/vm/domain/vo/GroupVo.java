@@ -46,6 +46,9 @@ public class GroupVo extends BaseEntity {
      */
     private String quType;
 
+
+    private String totalScore;
+
     /**
      * 标题
      */
@@ -116,7 +119,13 @@ public class GroupVo extends BaseEntity {
     public void setQuList(List<AnswerVo> quList) {
         this.quList = quList;
     }
+    public String getTotalScore() {
+        return totalScore;
+    }
 
+    public void setTotalScore(String totalScore) {
+        this.totalScore = totalScore;
+    }
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)

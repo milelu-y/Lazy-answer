@@ -1,9 +1,11 @@
 package com.lazy.vm.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lazy.vm.domain.Answer;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TestPaperVo {
 
     /**
@@ -29,7 +31,7 @@ public class TestPaperVo {
     /**
      * 试卷类别（0：理工类   1：文工类）
      */
-    private Long category;
+    private String category;
 
     /**
      * 选择老师
@@ -44,7 +46,7 @@ public class TestPaperVo {
     /**
      * 预留
      */
-    private String reserveField2;
+    private Integer quCount;
 
     /**
      * 预留
@@ -97,11 +99,11 @@ public class TestPaperVo {
         this.type = type;
     }
 
-    public Long getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Long category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -113,20 +115,12 @@ public class TestPaperVo {
         this.userId = userId;
     }
 
-    public List<GroupVo> getReserveField1() {
-        return groupList;
+    public Integer getQuCount() {
+        return quCount;
     }
 
-    public void setReserveField1(List<GroupVo> groupList) {
-        this.groupList = groupList;
-    }
-
-    public String getReserveField2() {
-        return reserveField2;
-    }
-
-    public void setReserveField2(String reserveField2) {
-        this.reserveField2 = reserveField2;
+    public void setQuCount(Integer quCount) {
+        this.quCount = quCount;
     }
 
     public String getReserveField3() {

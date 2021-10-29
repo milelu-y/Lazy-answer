@@ -2,7 +2,8 @@
   <div>
     <h4>题目列表</h4>
     <el-alert v-if="groupList.length===0" title="请点击右侧【添加新的大题】开始添加数据" type="info"></el-alert>
-    <qu-select-dialog :dialogShow.sync="dialogVisible" @select="select" :quType.sync="quType" :excludes.sync="excludes"></qu-select-dialog>
+    <qu-select-dialog :dialogShow.sync="dialogVisible" @select="select" @close="closeDialog" :quType.sync="quType"
+                      :excludes.sync="excludes"></qu-select-dialog>
     <el-card class="content-card" v-for="(item,index) in groupList">
       <div slot="header" class="clearfix" style="background: rgb(238, 238, 238); margin: -20px; padding: 20px">
         <el-input size="small" v-model="item.title" style="width: 200px"></el-input>
@@ -76,10 +77,11 @@ export default {
       excludes: []
     }
   },
-  watch:{
+  watch: {
     // 内部改动题目列表
     groupList: {
-      handler: function handler() {
+      handler: function handler(val) {
+        this.postForm.groupList=val
         this.handleScoreChange();
       },
       deep: true
@@ -96,13 +98,13 @@ export default {
       this.dialogVisible = true
     },
     select(data) {
+      this.dialogVisible = false
       if (data == undefined || !data || data.length == 0) {
         return;
       }
       data.forEach(row => {
         row.answerList = JSON.parse(row.options)
       })
-      this.dialogVisible = false
       var list = this.postForm.groupList[this.index].quList;
       for (let i = 0; i < data.length; i++) {
         var fixedAnswers = [];
@@ -132,9 +134,9 @@ export default {
     },
     // 移除题目
     removeItem(list, index) {
-      if (list.length===1){
-        list=[]
-      }else {
+      if (list.length === 1) {
+        list = []
+      } else {
         list.splice(index, 1);
       }
     },
@@ -148,7 +150,7 @@ export default {
         var quList = item.quList;
         for (var j = 0; j < quList.length; j++) {
           totalScore += parseInt(quList[j].score); // 排除的ID
-          excludes.push({id:quList[j].id});
+          excludes.push({id: quList[j].id});
         }
         item.totalScore = totalScore;
         item.quCount = quList.length;
@@ -159,6 +161,9 @@ export default {
       this.$emit('count', paperQu);
       this.$emit('score', paperScore);
     },
+    closeDialog() {
+      this.dialogVisible = false
+    }
   }
 }
 </script>

@@ -6,23 +6,23 @@ import com.lazy.vm.domain.vo.AnswerVo;
 
 /**
  * 作业题目Mapper接口
- * 
+ *
  * @author fgq
  * @date 2021-10-26
  */
-public interface AnswerMapper 
+public interface AnswerMapper
 {
     /**
      * 查询作业题目
-     * 
+     *
      * @param id 作业题目ID
      * @return 作业题目
      */
-    public Answer selectAnswerById(Long id);
+    public Answer selectAnswerById(String id);
 
     /**
      * 查询作业题目列表
-     * 
+     *
      * @param answer 作业题目
      * @return 作业题目集合
      */
@@ -30,7 +30,7 @@ public interface AnswerMapper
 
     /**
      * 新增作业题目
-     * 
+     *
      * @param answer 作业题目
      * @return 结果
      */
@@ -38,7 +38,7 @@ public interface AnswerMapper
 
     /**
      * 修改作业题目
-     * 
+     *
      * @param answer 作业题目
      * @return 结果
      */
@@ -46,7 +46,7 @@ public interface AnswerMapper
 
     /**
      * 删除作业题目
-     * 
+     *
      * @param id 作业题目ID
      * @return 结果
      */
@@ -54,7 +54,7 @@ public interface AnswerMapper
 
     /**
      * 批量删除作业题目
-     * 
+     *
      * @param ids 需要删除的数据ID
      * @return 结果
      */

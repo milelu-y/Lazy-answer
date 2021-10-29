@@ -17,7 +17,7 @@ public class Group extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 分组id */
-    @IDField
+//    @IDField
     private String id;
 
     /** $column.columnComment */
@@ -43,6 +43,10 @@ public class Group extends BaseEntity
     /** 标题 */
     @Excel(name = "标题")
     private String title;
+
+    /** 分组总题数 */
+    @Excel(name = "分组总题数")
+    private String totalScore;
 
     public void setId(String id)
     {
@@ -106,6 +110,14 @@ public class Group extends BaseEntity
     public String getTitle()
     {
         return title;
+    }
+
+    public String getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(String totalScore) {
+        this.totalScore = totalScore;
     }
 
     @Override

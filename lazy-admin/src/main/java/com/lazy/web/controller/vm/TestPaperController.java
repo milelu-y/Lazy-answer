@@ -88,9 +88,9 @@ public class TestPaperController extends BaseController
     @PreAuthorize("@ss.hasPermi('vm:testPaper:edit')")
     @Log(title = "试卷", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody TestPaper testPaper)
+    public AjaxResult edit(@RequestBody TestPaperVo testPaperVo)
     {
-        return toAjax(testPaperService.updateTestPaper(testPaper));
+        return toAjax(testPaperService.updateTestPaper(testPaperVo));
     }
 
     /**

@@ -38,7 +38,7 @@
         </where>
     </select>
 
-    <select id="selectAnswerById" parameterType="Long" resultMap="AnswerResult">
+    <select id="selectAnswerById" parameterType="String" resultMap="AnswerResult">
         <include refid="selectAnswerVo"/>
         where id = #{id}
     </select>

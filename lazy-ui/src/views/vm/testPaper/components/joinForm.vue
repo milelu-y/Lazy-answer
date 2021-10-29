@@ -33,7 +33,7 @@
                 </span>
               </div>
               <div class="group-card-body">
-                <div> 共 <i class="num">{{ item.quCount }}</i> 题，共 <i class="num">{{ item.totalScore }}</i></div>
+                <div> 共 <i class="num">{{ item.quCount }}</i> 题，共 <i class="num">{{ item.totalScore }}</i> 分 </div>
                 <div>每题
                   <el-input size="mini" v-model="item.perScore" style="width: 60px;" @input="handlePerChange($event, item, index)"></el-input>
                   分
@@ -54,7 +54,7 @@
 <script>
 import JoinTopNav from "@/views/vm/testPaper/components/components/JoinTopNav";
 import JoinQuList from "@/views/vm/testPaper/components/components/JoinQuList";
-import {addTestPaper} from "@/api/vm/testPaper";
+import {addTestPaper, updateTestPaper} from "@/api/vm/testPaper";
 
 export default {
   name: "joinForm",
@@ -67,6 +67,9 @@ export default {
       type: String
     },
     category: {
+      type: String
+    },
+    id: {
       type: String
     },
     data: Object
@@ -157,10 +160,32 @@ export default {
       quGroup.totalScore = e * quList.length;
     },
     handleSave(){
-      console.log(this.postForm)
-      addTestPaper(this.postForm).then(response=>{
-        console.log(response)
-      })
+      console.log(this.id)
+      if (this.id!='' && this.id!=undefined){
+        console.log(this.postForm)
+        updateTestPaper(this.postForm).then(response=>{
+          if (response.code === 200) {
+            this.$notify({
+              title: '成功',
+              message: '试卷保存成功',
+              type: 'success'
+            });
+            this.$router.go(-1)
+          }
+        })
+      }else {
+        addTestPaper(this.postForm).then(response => {
+          if (response.code === 200) {
+            this.$notify({
+              title: '成功',
+              message: '试卷保存成功',
+              type: 'success'
+            });
+            this.$router.go(-1)
+          }
+        })
+      }
+
     }
   }
 }

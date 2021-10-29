@@ -301,7 +301,6 @@ export default {
     },
     getSubjects() {
       listSubject().then(response => {
-        console.log(response)
         this.categorys = response.rows;
       })
     },

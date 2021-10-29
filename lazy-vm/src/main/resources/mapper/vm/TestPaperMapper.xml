@@ -13,7 +13,7 @@
         <result property="gmtCreate"    column="gmt_create"    />
         <result property="gmtModified"    column="gmt_modified"    />
         <result property="userId"    column="user_id"    />
-        <result property="reserveField1"    column="reserve_field1"    />
+        <result property="quCount"    column="qu_count"    />
         <result property="reserveField2"    column="reserve_field2"    />
         <result property="reserveField3"    column="reserve_field3"    />
         <result property="reserveField4"    column="reserve_field4"    />
@@ -21,7 +21,7 @@
     </resultMap>
 
     <sql id="selectTestPaperVo">
-        select id, title, totalScore, type, category, gmt_create, gmt_modified, user_id, reserve_field1, reserve_field2, reserve_field3, reserve_field4, reserve_field5 from edu_test_paper
+        select id, title, total_score, type, category, gmt_create, gmt_modified, user_id, qu_count, reserve_field2, reserve_field3, reserve_field4, reserve_field5 from edu_test_paper
     </sql>
 
     <select id="selectTestPaperList" parameterType="TestPaper" resultMap="TestPaperResult">
@@ -34,7 +34,7 @@
             <if test="gmtCreate != null "> and gmt_create = #{gmtCreate}</if>
             <if test="gmtModified != null "> and gmt_modified = #{gmtModified}</if>
             <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
-            <if test="reserveField1 != null  and reserveField1 != ''"> and reserve_field1 = #{reserveField1}</if>
+            <if test="quCount != null  and reserveField1 != ''"> and qu_count = #{quCount}</if>
             <if test="reserveField2 != null  and reserveField2 != ''"> and reserve_field2 = #{reserveField2}</if>
             <if test="reserveField3 != null  and reserveField3 != ''"> and reserve_field3 = #{reserveField3}</if>
             <if test="reserveField4 != null  and reserveField4 != ''"> and reserve_field4 = #{reserveField4}</if>
@@ -58,7 +58,7 @@
             <if test="gmtCreate != null">gmt_create,</if>
             <if test="gmtModified != null">gmt_modified,</if>
             <if test="userId != null">user_id,</if>
-            <if test="reserveField1 != null">reserve_field1,</if>
+            <if test="quCount != null">qu_count,</if>
             <if test="reserveField2 != null">reserve_field2,</if>
             <if test="reserveField3 != null">reserve_field3,</if>
             <if test="reserveField4 != null">reserve_field4,</if>
@@ -67,13 +67,13 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="title != null and title != ''">#{title},</if>
-            <if test="totalScore != null">#{total_score},</if>
+            <if test="totalScore != null">#{totalScore},</if>
             <if test="type != null">#{type},</if>
             <if test="category != null">#{category},</if>
             <if test="gmtCreate != null">#{gmtCreate},</if>
             <if test="gmtModified != null">#{gmtModified},</if>
             <if test="userId != null">#{userId},</if>
-            <if test="reserveField1 != null">#{reserveField1},</if>
+            <if test="quCount != null">#{quCount},</if>
             <if test="reserveField2 != null">#{reserveField2},</if>
             <if test="reserveField3 != null">#{reserveField3},</if>
             <if test="reserveField4 != null">#{reserveField4},</if>
@@ -91,7 +91,7 @@
             <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
             <if test="gmtModified != null">gmt_modified = #{gmtModified},</if>
             <if test="userId != null">user_id = #{userId},</if>
-            <if test="reserveField1 != null">reserve_field1 = #{reserveField1},</if>
+            <if test="quCount != null">qu_count = #{quCount},</if>
             <if test="reserveField2 != null">reserve_field2 = #{reserveField2},</if>
             <if test="reserveField3 != null">reserve_field3 = #{reserveField3},</if>
             <if test="reserveField4 != null">reserve_field4 = #{reserveField4},</if>

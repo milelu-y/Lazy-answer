@@ -66,7 +66,7 @@ public class AnswerController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('vm:Answer:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
+    public AjaxResult getInfo(@PathVariable("id") String id)
     {
         return AjaxResult.success(answerService.selectAnswerById(id));
     }

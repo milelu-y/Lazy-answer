@@ -1,45 +1,72 @@
 package com.lazy.vm.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lazy.common.annotation.Excel;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AnswerVo {
 
-    /** 题目id */
+    /**
+     * 题目id
+     */
     private String id;
 
-    /** 题目类型：1（single: 单选题）、2（multiple: 多选题）、3 （fill: 填空题）、4（aq: 问答题）、5（judgment: 判断题） */
+    /**
+     * 题目类型：1（single: 单选题）、2（multiple: 多选题）、3 （fill: 填空题）、4（aq: 问答题）、5（judgment: 判断题）
+     */
     private Integer type;
 
-    /** 题目内容 */
+    /**
+     * 题目内容
+     */
     private String content;
 
-    /** 答案 */
+    /**
+     * 答案
+     */
     private String answer;
 
-    /** 选项 */
+    /**
+     * 选项
+     */
     private String options;
 
-    /** 题库id */
+    /**
+     * 题库id
+     */
     private String taskId;
 
-    /** 整题解析 */
+    /**
+     * 整题解析
+     */
     private String analysis;
 
-    /** 章节*/
+    /**
+     * 章节
+     */
     private String chapterId;
 
-    /** 考生答案 */
+    /**
+     * 考生答案
+     */
     private int userAnswer;
 
-    /** 题目难度 */
+    /**
+     * 题目难度
+     */
     private int level;
 
-    /** 试卷id */
-    private String  testPaperId;
+    private String score;
+
+    /**
+     * 试卷id
+     */
+    private String testPaperId;
 
     private List<AnswerOptionVo> answerList;
+
     public String getTestPaperId() {
         return testPaperId;
     }
@@ -134,5 +161,13 @@ public class AnswerVo {
 
     public void setAnswerList(List<AnswerOptionVo> answerList) {
         this.answerList = answerList;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
     }
 }

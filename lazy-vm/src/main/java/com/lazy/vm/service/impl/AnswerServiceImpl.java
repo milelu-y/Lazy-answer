@@ -40,7 +40,7 @@ public class AnswerServiceImpl implements IAnswerService
      * @return 作业题目
      */
     @Override
-    public Answer selectAnswerById(Long id)
+    public Answer selectAnswerById(String id)
     {
         return answerMapper.selectAnswerById(id);
     }
