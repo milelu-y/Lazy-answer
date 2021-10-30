@@ -233,6 +233,21 @@ export const constantRoutes = [
     component: (resolve) => require(['@/views/web/exam/start'], resolve),
     hidden: true
   },
+  {
+    path: '/web/vm/liShuToSatellitePosition',
+    component: (resolve) => require(['@/views/web/vm/LiShuToSatellitePosition'], resolve),
+    hidden: true
+  },
+  {
+    path: '/web/vm/TimeTransition',
+    component: (resolve) => require(['@/views/web/vm/TimeTransition'], resolve),
+    hidden: true
+  },
+  {
+    path: '/web/vm/BeijingToUTC',
+    component: (resolve) => require(['@/views/web/vm/BeijingToUTC'], resolve),
+    hidden: true
+  },
 ]
 
 export default new Router({
