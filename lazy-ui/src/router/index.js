@@ -248,6 +248,21 @@ export const constantRoutes = [
     component: (resolve) => require(['@/views/web/vm/BeijingToUTC'], resolve),
     hidden: true
   },
+  {
+    path: '/web/vm/dxdgzjzbx',
+    component: (resolve) => require(['@/views/web/vm/GeocenGeostatiRectan'], resolve),
+    hidden: true
+  },
+  {
+    path: '/web/vm/dongbei',
+    component: (resolve) => require(['@/views/web/vm/dongbei'], resolve),
+    hidden: true
+  },
+  {
+    path: '/web/vm/GSM',
+    component: (resolve) => require(['@/views/web/vm/GSM'], resolve),
+    hidden: true
+  },
 ]
 
 export default new Router({
