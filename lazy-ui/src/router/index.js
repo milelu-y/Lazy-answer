@@ -263,6 +263,16 @@ export const constantRoutes = [
     component: (resolve) => require(['@/views/web/vm/GSM'], resolve),
     hidden: true
   },
+  {
+    path: '/web/vm/Navigation',
+    component: (resolve) => require(['@/views/web/vm/Navigation'], resolve),
+    hidden: true
+  },
+  {
+    path: '/web/vm/GPS',
+    component: (resolve) => require(['@/views/web/vm/GPS'], resolve),
+    hidden: true
+  },
 ]
 
 export default new Router({

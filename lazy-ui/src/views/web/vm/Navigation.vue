@@ -1,27 +1,26 @@
 <template>
   <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
-    <div><h2>双频电离层改正实验</h2></div>
+    <div><h2>导航电文计算卫星钟差实验</h2></div>
     <el-divider/>
     <el-card>
-      <span >伪距:{{ 123 }}、TGD:{{2312}}</span>
+      <span >BDT:{{ 123 }}、GPST:{{2312}}</span>
     </el-card>
     <el-card class="card" style="margin-top: 10px">
-      <p v-if="isType">ps:计算各频点的伪距修正值，得到修正后的伪距</p>
-      <p v-else >ps:计算各频点的电离层延迟值</p>
+      <p>ps:请输入BDT钟差与提示GPST钟差</p>
       <div style="text-align: center">
         <div style="padding-top: 25px;">
           <el-form ref="form" size="medium" label-width="100px">
             <el-row :gutter="24">
               <el-col :span="24">
-                <el-form-item label="伪距" prop="time">
-                  <el-input :disabled="!isType" :style="{width: '100%'}" placeholder="伪距"></el-input>
+                <el-form-item label="BDT钟差" prop="time">
+                  <el-input  :style="{width: '100%'}" placeholder="BDT钟差"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="24" v-if="!isType">
+            <el-row :gutter="24">
               <el-col :span="24">
-                <el-form-item label="电离层延迟" prop="time">
-                  <el-input :style="{width: '100%'}" placeholder="电离层延迟"></el-input>
+                <el-form-item label="GPST钟差" prop="time">
+                  <el-input :style="{width: '100%'}" placeholder="GPST钟差"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -41,7 +40,7 @@
 
 <script>
 export default {
-  name: "GSM",
+  name: "Navigation",
   data(){
     return{
       isType:true
