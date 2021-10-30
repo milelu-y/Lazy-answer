@@ -7,9 +7,9 @@
       </a-steps>
     </div>
     <div class="card" style="margin-top: 10px">
-      <p>ps:请先将北斗时转换成北京时间进行输入</p>
+      <p>ps:请先将北斗时转换成UTC进行输入</p>
       <div style="text-align: center">
-        <a>北斗时转换成北京时间></a>
+        <a>北斗时转换成UTC></a>
         <!--        <a>儒略日转格里高利时></a>-->
         <div style="padding-top: 25px">
           <a-form :form="form">
@@ -21,8 +21,8 @@
                 </a-form-item>
               </a-col>
               <a-col :span="12">
-                <a-form-item :label-col="formItemLayout.labelCol" :wrapper-col="formItemLayout.wrapperCol" label="北京时间">
-                  <a-input placeholder="请输入北京时间"/>
+                <a-form-item :label-col="formItemLayout.labelCol" :wrapper-col="formItemLayout.wrapperCol" label="UTC">
+                  <a-input placeholder="请输入UTC"/>
                   <!--                  <a-date-picker show-time placeholder="选择时间" @change="onChange" @ok="onOk" />-->
                 </a-form-item>
               </a-col>
@@ -51,7 +51,7 @@ const formTailLayout = {
   wrapperCol: {span: 8, offset: 4},
 };
 export default {
-  name: "BeijingTo北京时间",
+  name: "BeijingToUTC",
   data() {
     return {
       form: {},
