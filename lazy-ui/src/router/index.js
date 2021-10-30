@@ -273,6 +273,11 @@ export const constantRoutes = [
     component: (resolve) => require(['@/views/web/vm/GPS'], resolve),
     hidden: true
   },
+  {
+    path: '/web/vm/xingliTOweixing',
+    component: (resolve) => require(['@/views/web/vm/xingliTOweixing'], resolve),
+    hidden: true
+  },
 ]
 
 export default new Router({
