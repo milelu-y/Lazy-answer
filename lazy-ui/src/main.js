@@ -5,11 +5,11 @@ import Cookies from 'js-cookie'
 import Element from 'element-ui'
 import './assets/styles/element-variables.scss'
 
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
+// import Vuetify from 'vuetify'
+// import 'vuetify/dist/vuetify.min.css'
 
-import Antd from 'ant-design-vue';
-import 'ant-design-vue/dist/antd.css';
+// import Antd from 'ant-design-vue';
+// import 'ant-design-vue/dist/antd.css';
 
 import '@/assets/styles/index.scss' // global css
 import '@/assets/styles/lazy.scss' // lazy css
@@ -83,28 +83,11 @@ Vue.use(VueMeta)
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
-Vue.use(Antd);
+// Vue.use(Antd);
 Vue.config.productionTip = false
-Vue.use(Vuetify)
 new Vue({
   el: '#app',
   router,
-  vuetify:new Vuetify,
   store,
   render: h => h(App)
 })
-Vue.prototype.notifyError = function (msg) {
-  this.$notify.error({
-    title: '错误',
-    message: msg,
-    position: 'bottom-right'
-  });
-}
-Vue.prototype.notifySuccess = function (title,msg) {
-  this.$notify.success({
-    title: title,
-    message: msg,
-    type: 'success',
-    position: 'bottom-right'
-  });
-}
