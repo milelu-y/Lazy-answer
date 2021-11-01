@@ -8,11 +8,22 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AnswerOptionVo {
+    /**
+     * 真题解析
+     */
     private String analysis;
     private String answerId;
+    /**
+     * 内容
+     */
     private String content;
+    /**
+     * 是否正确
+     */
     private Boolean isRight;
+    private String paperId;
     private Integer pathScore;
+    private String quId;
 
     public String getAnalysis() {
         return analysis;
@@ -52,5 +63,21 @@ public class AnswerOptionVo {
 
     public void setAnswerId(String answerId) {
         this.answerId = answerId;
+    }
+
+    public String getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(String paperId) {
+        this.paperId = paperId;
+    }
+
+    public String getQuId() {
+        return quId;
+    }
+
+    public void setQuId(String quId) {
+        this.quId = quId;
     }
 }
