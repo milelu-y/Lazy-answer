@@ -18,8 +18,12 @@
               <el-col :span="18">
                 <el-row>
                   <el-col :span="18" style="line-height: 60px">
-                    <el-button class="nav active">在线答题</el-button>
-                    <el-button class="nav">虚拟实验</el-button>
+                    <el-button class="nav active">
+                      <router-link to="/web/index"> 在线答题</router-link>
+                    </el-button>
+                    <el-button class="nav">
+                      <router-link to="/web/vm/vmIndex"> 虚拟实验</router-link>
+                    </el-button>
                   </el-col>
                   <el-col :span="6" class="right-user">
                     <el-image class="top-avatar"
@@ -125,11 +129,13 @@ export default {
   height: 30px;
   border-radius: 15px;
 }
-.right-user a{
+
+.right-user a {
   color: #efefef;
   font-size: 14px;
   font-weight: 500;
 }
+
 right-user :nth-child(1), .right-user :nth-child(2) {
   margin-right: 10px;
 }

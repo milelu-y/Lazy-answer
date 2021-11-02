@@ -242,6 +242,7 @@ export const constantRoutes = [
       }
     ]
   },
+  //web首页
   {
     path: '/web/index',
     component: webLayout,
@@ -255,6 +256,22 @@ export const constantRoutes = [
       }
     ]
   },
+  //虚拟实验
+  {
+    path: '/web/vm/vmIndex',
+    component: webLayout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/web/vm/VmIndex'], resolve),
+        name: 'vmIndex',
+        meta: {title: '实验'}
+      }
+    ]
+  },
+
+
   {
     path: '/web/vm/liShuToSatellitePosition',
     component: (resolve) => require(['@/views/web/vm/LiShuToSatellitePosition'], resolve),
