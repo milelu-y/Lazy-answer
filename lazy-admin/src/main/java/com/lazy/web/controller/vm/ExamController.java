@@ -27,7 +27,7 @@ import com.lazy.common.core.page.TableDataInfo;
  * @date 2021-11-01
  */
 @RestController
-@RequestMapping("/vm/Exam")
+@RequestMapping("/vm/exam")
 public class ExamController extends BaseController
 {
     @Autowired
@@ -36,7 +36,7 @@ public class ExamController extends BaseController
     /**
      * 查询试卷添加列表
      */
-    @PreAuthorize("@ss.hasPermi('vm:Exam:list')")
+    @PreAuthorize("@ss.hasPermi('vm:exam:list')")
     @GetMapping("/list")
     public TableDataInfo list(Exam exam)
     {
@@ -48,7 +48,7 @@ public class ExamController extends BaseController
     /**
      * 导出试卷添加列表
      */
-    @PreAuthorize("@ss.hasPermi('vm:Exam:export')")
+    @PreAuthorize("@ss.hasPermi('vm:exam:export')")
     @Log(title = "试卷添加", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(Exam exam)
@@ -61,7 +61,7 @@ public class ExamController extends BaseController
     /**
      * 获取试卷添加详细信息
      */
-    @PreAuthorize("@ss.hasPermi('vm:Exam:query')")
+    @PreAuthorize("@ss.hasPermi('vm:exam:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -71,7 +71,7 @@ public class ExamController extends BaseController
     /**
      * 新增试卷添加
      */
-    @PreAuthorize("@ss.hasPermi('vm:Exam:add')")
+    @PreAuthorize("@ss.hasPermi('vm:exam:add')")
     @Log(title = "试卷添加", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Exam exam)
@@ -82,7 +82,7 @@ public class ExamController extends BaseController
     /**
      * 修改试卷添加
      */
-    @PreAuthorize("@ss.hasPermi('vm:Exam:edit')")
+    @PreAuthorize("@ss.hasPermi('vm:exam:edit')")
     @Log(title = "试卷添加", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Exam exam)
@@ -93,7 +93,7 @@ public class ExamController extends BaseController
     /**
      * 删除试卷添加
      */
-    @PreAuthorize("@ss.hasPermi('vm:Exam:remove')")
+    @PreAuthorize("@ss.hasPermi('vm:exam:remove')")
     @Log(title = "试卷添加", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable String[] ids)
