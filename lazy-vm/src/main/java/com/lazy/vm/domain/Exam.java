@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lazy.common.annotation.CreateTime;
 import com.lazy.common.annotation.IDField;
 import com.lazy.common.annotation.UpdateTime;
+import com.lazy.common.enums.ExamState;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.lazy.common.annotation.Excel;
@@ -72,6 +73,16 @@ public class Exam extends BaseEntity
     /** 密码 */
     @Excel(name = "密码")
     private Integer password;
+
+    /** 状态 */
+    @Excel(name = "状态")
+    private Integer status;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endTime;
 
     /** 创建时间 */
     @CreateTime
@@ -218,6 +229,53 @@ public class Exam extends BaseEntity
 
     public void setTotalScore(Long totalScore) {
         this.totalScore = totalScore;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    /**
+     * 是否结束
+     * @return
+     */
+    public Integer getStatus(){
+
+        if(this.limitTime!=null && this.limitTime){
+
+//            if(System.currentTimeMillis() < startTime.getTime() ){
+//                return ExamState.READY_START;
+//            }
+//
+//            if(System.currentTimeMillis() > endTime.getTime()){
+//                return ExamState.OVERDUE;
+//            }
+//
+//            if(System.currentTimeMillis() > startTime.getTime()
+//                    && System.currentTimeMillis() < endTime.getTime()
+//                    && !ExamState.DISABLED.equals(this.status)){
+//                return ExamState.ENABLE;
+//            }
+
+        }
+
+        return this.status;
     }
 
     @Override

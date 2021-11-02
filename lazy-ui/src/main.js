@@ -83,6 +83,21 @@ Vue.use(VueMeta)
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
+Vue.prototype.notifyError = function (msg) {
+  this.$notify.error({
+    title: '错误',
+    message: msg,
+    position: 'bottom-right'
+  });
+}
+Vue.prototype.notifySuccess = function (title,msg) {
+  this.$notify.success({
+    title: title,
+    message: msg,
+    type: 'success',
+    position: 'bottom-right'
+  });
+}
 // Vue.use(Antd);
 Vue.config.productionTip = false
 new Vue({

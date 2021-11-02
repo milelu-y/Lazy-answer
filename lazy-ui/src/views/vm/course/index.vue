@@ -288,7 +288,6 @@ export default {
     getList() {
       this.loading = true;
       listCourse(this.queryParams).then(response => {
-        console.log(response)
         this.courseList = response.rows;
         this.total = response.total;
         this.loading = false;

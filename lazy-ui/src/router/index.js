@@ -5,6 +5,7 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
+import webLayout from '@/views/web/webLayout'
 
 /**
  * Note: 路由配置项
@@ -224,14 +225,35 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/web/index',
-    component: (resolve) => require(['@/views/web/index'], resolve),
-    hidden: true
-  },
-  {
     path: '/web/exam/start',
     component: (resolve) => require(['@/views/web/exam/start'], resolve),
     hidden: true
+  },
+  {
+    path: '/web/exam/check',
+    component: webLayout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/web/exam/check'], resolve),
+        name: 'check',
+        meta: {title: '检查'}
+      }
+    ]
+  },
+  {
+    path: '/web/index',
+    component: webLayout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/web/exam/List'], resolve),
+        name: 'onlineList',
+        meta: {title: '作业列表'}
+      }
+    ]
   },
   {
     path: '/web/vm/liShuToSatellitePosition',
@@ -271,6 +293,11 @@ export const constantRoutes = [
   {
     path: '/web/vm/GPS',
     component: (resolve) => require(['@/views/web/vm/GPS'], resolve),
+    hidden: true
+  },
+  {
+    path: '/web/vm/BDS',
+    component: (resolve) => require(['@/views/web/vm/BDS'], resolve),
     hidden: true
   },
   {

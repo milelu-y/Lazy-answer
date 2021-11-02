@@ -45,6 +45,8 @@ public class ExamVo {
     /** 密码 */
     private Integer password;
 
+    private String status;
+
     private List<SysUser> personList;
 
     private List<String> departIds;
@@ -159,5 +161,13 @@ public class ExamVo {
 
     public void setDepartIds(List<String> departIds) {
         this.departIds = departIds;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

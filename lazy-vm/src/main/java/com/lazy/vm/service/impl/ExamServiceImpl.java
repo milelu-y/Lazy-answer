@@ -55,7 +55,10 @@ public class ExamServiceImpl implements IExamService {
     public int insertExam(ExamVo examVo) {
         Exam exam = new Exam();
         exam.setCreateBy(SecurityUtils.getLoginUser().getUser().getUserId().toString());
-        BeanUtils.copyProperties(examVo,exam);
+        BeanUtils.copyProperties(examVo, exam);
+        if (exam.getLimitTime() != null && !exam.getLimitTime() && exam.getStatus() != null && exam.getStatus() == 2) {
+            exam.setStatus(0);
+        }
         return examMapper.insertExam(exam);
     }
 
