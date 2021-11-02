@@ -1,9 +1,15 @@
 package com.lazy.vm.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lazy.common.annotation.CreateTime;
+import com.lazy.common.annotation.IDField;
+import com.lazy.common.annotation.UpdateTime;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.lazy.common.annotation.Excel;
 import com.lazy.common.core.domain.BaseEntity;
+
+import java.util.Date;
 
 /**
  * 试卷添加对象 edu_exam
@@ -16,6 +22,7 @@ public class Exam extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 考试id */
+    @IDField
     private String id;
 
     /** 试卷ID */
@@ -32,17 +39,15 @@ public class Exam extends BaseEntity
 
     /** 考试时长 */
     @Excel(name = "考试时长")
-    private Long totaltime;
+    private Long totalTime;
 
     /** 限考次数 */
     @Excel(name = "限考次数")
     private String limitCount;
 
-    /** 是否限制考试时间
- */
-    @Excel(name = "是否限制考试时间
-")
-    private Integer limitTime;
+    /** 是否限制考试时间*/
+    @Excel(name = "是否限制考试时间")
+    private Boolean limitTime;
 
     /** 返回结果类型 */
     @Excel(name = "返回结果类型")
@@ -63,6 +68,16 @@ public class Exam extends BaseEntity
     /** 密码 */
     @Excel(name = "密码")
     private Integer password;
+
+    /** 创建时间 */
+    @CreateTime
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
+
+    /** 更新时间 */
+    @UpdateTime
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date updateTime;
 
     public void setId(String id)
     {
@@ -100,14 +115,14 @@ public class Exam extends BaseEntity
     {
         return qualifyScore;
     }
-    public void setTotaltime(Long totaltime)
+    public void setTotalTime(Long totalTime)
     {
-        this.totaltime = totaltime;
+        this.totalTime = totalTime;
     }
 
-    public Long getTotaltime()
+    public Long getTotalTime()
     {
-        return totaltime;
+        return totalTime;
     }
     public void setLimitCount(String limitCount)
     {
@@ -118,12 +133,12 @@ public class Exam extends BaseEntity
     {
         return limitCount;
     }
-    public void setLimitTime(Integer limitTime)
+    public void setLimitTime(Boolean limitTime)
     {
         this.limitTime = limitTime;
     }
 
-    public Integer getLimitTime()
+    public Boolean getLimitTime()
     {
         return limitTime;
     }
@@ -174,13 +189,33 @@ public class Exam extends BaseEntity
     }
 
     @Override
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    @Override
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    @Override
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    @Override
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("paperId", getPaperId())
             .append("title", getTitle())
             .append("qualifyScore", getQualifyScore())
-            .append("totaltime", getTotaltime())
+            .append("totalTime", getTotalTime())
             .append("limitCount", getLimitCount())
             .append("limitTime", getLimitTime())
             .append("resultType", getResultType())

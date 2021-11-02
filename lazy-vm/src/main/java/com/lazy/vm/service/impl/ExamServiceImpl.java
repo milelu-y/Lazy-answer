@@ -1,7 +1,11 @@
 package com.lazy.vm.service.impl;
 
 import java.util.List;
+
 import com.lazy.common.utils.DateUtils;
+import com.lazy.common.utils.SecurityUtils;
+import com.lazy.vm.domain.vo.ExamVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.lazy.vm.mapper.ExamMapper;
@@ -15,8 +19,7 @@ import com.lazy.vm.service.IExamService;
  * @date 2021-11-01
  */
 @Service
-public class ExamServiceImpl implements IExamService
-{
+public class ExamServiceImpl implements IExamService {
     @Autowired
     private ExamMapper examMapper;
 
@@ -27,8 +30,7 @@ public class ExamServiceImpl implements IExamService
      * @return 试卷添加
      */
     @Override
-    public Exam selectExamById(String id)
-    {
+    public Exam selectExamById(String id) {
         return examMapper.selectExamById(id);
     }
 
@@ -39,21 +41,21 @@ public class ExamServiceImpl implements IExamService
      * @return 试卷添加
      */
     @Override
-    public List<Exam> selectExamList(Exam exam)
-    {
+    public List<Exam> selectExamList(Exam exam) {
         return examMapper.selectExamList(exam);
     }
 
     /**
      * 新增试卷添加
      *
-     * @param exam 试卷添加
+     * @param examVo 试卷添加
      * @return 结果
      */
     @Override
-    public int insertExam(Exam exam)
-    {
-        exam.setCreateTime(DateUtils.getNowDate());
+    public int insertExam(ExamVo examVo) {
+        Exam exam = new Exam();
+        exam.setCreateBy(SecurityUtils.getLoginUser().getUser().getUserId().toString());
+        BeanUtils.copyProperties(examVo,exam);
         return examMapper.insertExam(exam);
     }
 
@@ -64,8 +66,7 @@ public class ExamServiceImpl implements IExamService
      * @return 结果
      */
     @Override
-    public int updateExam(Exam exam)
-    {
+    public int updateExam(Exam exam) {
         exam.setUpdateTime(DateUtils.getNowDate());
         return examMapper.updateExam(exam);
     }
@@ -77,8 +78,7 @@ public class ExamServiceImpl implements IExamService
      * @return 结果
      */
     @Override
-    public int deleteExamByIds(String[] ids)
-    {
+    public int deleteExamByIds(String[] ids) {
         return examMapper.deleteExamByIds(ids);
     }
 
@@ -89,8 +89,7 @@ public class ExamServiceImpl implements IExamService
      * @return 结果
      */
     @Override
-    public int deleteExamById(String id)
-    {
+    public int deleteExamById(String id) {
         return examMapper.deleteExamById(id);
     }
 }

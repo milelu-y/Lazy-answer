@@ -1,6 +1,8 @@
 package com.lazy.web.controller.vm;
 
 import java.util.List;
+
+import com.lazy.vm.domain.vo.ExamVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,9 +76,9 @@ public class ExamController extends BaseController
     @PreAuthorize("@ss.hasPermi('vm:exam:add')")
     @Log(title = "试卷添加", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody Exam exam)
+    public AjaxResult add(@RequestBody ExamVo examVo)
     {
-        return toAjax(examService.insertExam(exam));
+        return toAjax(examService.insertExam(examVo));
     }
 
     /**
