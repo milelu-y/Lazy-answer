@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="title"    column="title"    />
         <result property="qualifyScore"    column="qualify_score"    />
         <result property="totalTime"    column="total_time"    />
+        <result property="totalScore"    column="total_score"    />
         <result property="limitCount"    column="limit_count"    />
         <result property="limitTime"    column="limit_time"    />
         <result property="resultType"    column="result_type"    />
@@ -23,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectExamVo">
-        select id, paper_id, title, qualify_score, total_time, limit_count, limit_time, result_type, content, thanks, open_type, password, create_by, create_time, update_time from edu_exam
+        select id, paper_id, title, qualify_score, total_time,total_score, limit_count, limit_time, result_type, content, thanks, open_type, password, create_by, create_time, update_time from edu_exam
     </sql>
 
     <select id="selectExamList" parameterType="Exam" resultMap="ExamResult">
@@ -33,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="title != null  and title != ''"> and title = #{title}</if>
             <if test="qualifyScore != null "> and qualify_score = #{qualifyScore}</if>
             <if test="totalTime != null "> and total_time = #{totalTime}</if>
+            <if test="totalScore != null "> and total_score = #{totalScore}</if>
             <if test="limitCount != null  and limitCount != ''"> and limit_count = #{limitCount}</if>
             <if test="limitTime != null "> and limit_time = #{limitTime}</if>
             <if test="resultType != null "> and result_type = #{resultType}</if>
@@ -56,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="title != null">title,</if>
             <if test="qualifyScore != null">qualify_score,</if>
             <if test="totalTime != null">total_time,</if>
+            <if test="totalScore != null">total_score,</if>
             <if test="limitCount != null">limit_count,</if>
             <if test="limitTime != null">limit_time,</if>
             <if test="resultType != null">result_type,</if>
@@ -73,6 +76,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="title != null">#{title},</if>
             <if test="qualifyScore != null">#{qualifyScore},</if>
             <if test="totalTime != null">#{totalTime},</if>
+            <if test="totalScore != null">#{totalScore},</if>
             <if test="limitCount != null">#{limitCount},</if>
             <if test="limitTime != null">#{limitTime},</if>
             <if test="resultType != null">#{resultType},</if>
@@ -93,6 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="title != null">title = #{title},</if>
             <if test="qualifyScore != null">qualify_score = #{qualifyScore},</if>
             <if test="totalTime != null">total_time = #{totalTime},</if>
+            <if test="totalScore != null">total_score = #{totalScore},</if>
             <if test="limitCount != null">limit_count = #{limitCount},</if>
             <if test="limitTime != null">limit_time = #{limitTime},</if>
             <if test="resultType != null">result_type = #{resultType},</if>

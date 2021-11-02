@@ -52,7 +52,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table border v-loading="false" :data="taskList" @selection-change="handleSelectionChange">
+    <el-table border v-loading="loading" :data="examList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="考试名称" align="center" prop="title">
       </el-table-column>
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import {listTask, getTask, delTask, addTask, updateTask, exportTask} from "@/api/vm/task";
+import {addExam, delExam, exportExam, getExam, listExam, updateExam} from "@/api/vm/exam";
 
 export default {
   name: "Task",
@@ -102,7 +102,7 @@ export default {
       // 总条数
       total: 0,
       // 作业表格数据
-      taskList: [],
+      examList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -111,13 +111,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        courseId: null,
         title: null,
-        singleCount: null,
-        multipleCount: null,
-        judgment: null,
-        fillCount: null,
-        aqCount: null
       },
     };
   },
@@ -128,8 +122,8 @@ export default {
     /** 查询作业列表 */
     getList() {
       this.loading = true;
-      listTask(this.queryParams).then(response => {
-        this.taskList = response.rows;
+      listExam(this.queryParams).then(response => {
+        this.examList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -163,7 +157,7 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getTask(id).then(response => {
+      getExam(id).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改作业";
@@ -174,13 +168,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateTask(this.form).then(response => {
+            updateExam(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addTask(this.form).then(response => {
+            addExam(this.form).then(response => {
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -201,7 +195,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(function () {
-        return delTask(ids);
+        return delExam(ids);
       }).then(() => {
         this.getList();
         this.msgSuccess("删除成功");
@@ -217,7 +211,7 @@ export default {
         type: "warning"
       }).then(() => {
         this.exportLoading = true;
-        return exportTask(queryParams);
+        return exportExam(queryParams);
       }).then(response => {
         this.download(response.msg);
         this.exportLoading = false;

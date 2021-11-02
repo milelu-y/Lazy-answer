@@ -41,6 +41,10 @@ public class Exam extends BaseEntity
     @Excel(name = "考试时长")
     private Long totalTime;
 
+    /** 考试总分 */
+    @Excel(name = "考试总分")
+    private Long totalScore;
+
     /** 限考次数 */
     @Excel(name = "限考次数")
     private String limitCount;
@@ -206,6 +210,14 @@ public class Exam extends BaseEntity
     @Override
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Long getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Long totalScore) {
+        this.totalScore = totalScore;
     }
 
     @Override
