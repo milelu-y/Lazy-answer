@@ -15,13 +15,13 @@
         <result property="examId"    column="exam_id"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
-        <result property="reserveField3"    column="reserve_field3"    />
+        <result property="userSroce"    column="user_sroce"    />
         <result property="reserveField4"    column="reserve_field4"    />
         <result property="reserveField5"    column="reserve_field5"    />
     </resultMap>
 
     <sql id="selectExamPaperVo">
-        select id, user_id, title, total_score, type, category, qu_count, exam_id, create_time, update_time, reserve_field3, reserve_field4, reserve_field5 from edu_exam_paper
+        select id, user_id, title, total_score, type, category, qu_count, exam_id, create_time, update_time, user_sroce, reserve_field4, reserve_field5 from edu_exam_paper
     </sql>
 
     <select id="selectExamPaperList" parameterType="ExamPaper" resultMap="ExamPaperResult">
@@ -34,7 +34,7 @@
             <if test="category != null  and category != ''"> and category = #{category}</if>
             <if test="quCount != null "> and qu_count = #{quCount}</if>
             <if test="examId != null  and examId != ''"> and exam_id = #{examId}</if>
-            <if test="reserveField3 != null  and reserveField3 != ''"> and reserve_field3 = #{reserveField3}</if>
+            <if test="userSroce != null "> and user_sroce = #{userSroce}</if>
             <if test="reserveField4 != null  and reserveField4 != ''"> and reserve_field4 = #{reserveField4}</if>
             <if test="reserveField5 != null  and reserveField5 != ''"> and reserve_field5 = #{reserveField5}</if>
         </where>
@@ -58,7 +58,7 @@
             <if test="examId != null">exam_id,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
-            <if test="reserveField3 != null">reserve_field3,</if>
+            <if test="userSroce != null">user_sroce,</if>
             <if test="reserveField4 != null">reserve_field4,</if>
             <if test="reserveField5 != null">reserve_field5,</if>
         </trim>
@@ -73,7 +73,7 @@
             <if test="examId != null">#{examId},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
-            <if test="reserveField3 != null">#{reserveField3},</if>
+            <if test="userSroce != null">#{userSroce},</if>
             <if test="reserveField4 != null">#{reserveField4},</if>
             <if test="reserveField5 != null">#{reserveField5},</if>
         </trim>
@@ -91,7 +91,7 @@
             <if test="examId != null">exam_id = #{examId},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
-            <if test="reserveField3 != null">reserve_field3 = #{reserveField3},</if>
+            <if test="userSroce != null">user_sroce = #{userSroce},</if>
             <if test="reserveField4 != null">reserve_field4 = #{reserveField4},</if>
             <if test="reserveField5 != null">reserve_field5 = #{reserveField5},</if>
         </trim>
