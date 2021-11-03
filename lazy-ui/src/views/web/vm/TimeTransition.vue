@@ -157,7 +157,7 @@ export default {
       // this.julianToTime(this.answer);
     },
     julianTime(str) {
-      var now = new Date(str);
+      /*var now = new Date(str);
       var month = now.getUTCMonth() + 1;
       var day = now.getUTCDate();
       var year = now.getUTCFullYear();
@@ -170,10 +170,74 @@ export default {
       var h = eval(hours);
       var min = eval(minutes);
       var s = eval(seconds);
+
+      if(!((y%4==0 && y%100!=0) || y%400==0)){
+        d=d+1;
+      }
+
       let temp = Math.floor(7.0 * (y + Math.floor((m + 9.0) / 12.0)) / 4.0);
       let tem = Math.floor(275.0 * m / 9.0);
       let res = 1721013.5 + 367 * y - temp + d + h / 24 + min / 1440 + s / 86400 + tem;
+      return res;*/
+
+
+
+      var now = new Date(str);
+      var month = now.getUTCMonth() + 1;
+      var day = now.getDate();
+      // var day = now.getDay();
+      var year = now.getUTCFullYear();
+      var hours = now.getHours();
+      var minutes = now.getMinutes();
+      var seconds = now.getSeconds();
+      var y = eval(year);
+      var m = eval(month);
+      var d = eval(day);
+      var h = eval(hours);
+      var min = eval(minutes);
+      var s = eval(seconds);
+
+      // if(!((y%4==0 && y%100!=0) || y%400==0)){
+      //   d=d+1;
+      // }
+
+      let temp = Math.floor(7.0 * (y + Math.floor((m + 9.0) / 12.0)) / 4.0);
+      let tem = Math.floor(275.0 * m / 9.0);
+      let res = 1721013.5 + 367 * y - temp + d + h / 24 + min / 1440 + s / 86400 + tem;
+      // let temp = Math.floor(7.0 * (y + Math.floor((m + 9.0) / 12.0)) / 4.0);
+      // let tem = Math.floor(275.0 * m / 9.0);
+      // let res = 1721013.5 + 367 * y - temp + d + h / 24 + min / 1440 + s / 86400 + tem;
       return res;
+
+      // var now = new Date(str);
+      // var month = now.getUTCMonth() +1;
+      // var day = now.getUTCDate() + 1;
+      // var year = now.getUTCFullYear();
+      // var hours = now.getHours();
+      // var minutes = now.getMinutes();
+      // var seconds = now.getSeconds();
+      // var y = eval(year);
+      // var m = eval(month);
+      // var d = eval(day);
+      // var h = eval(hours);
+      // var min = eval(minutes);
+      // var s = eval(seconds);
+      //
+      // if (m==1 || m==2){
+      //   m = m + 12
+      //   y = y -1
+      // }
+      // let B = 0
+      // if(y > 1582 || (y == 1582 && m > 10) || (y == 1582 && m == 10 && d >= 15) ){
+      //   B = 2 - (y / 100) + (y / 400)
+      // }
+      //
+      // var JD = (365.25 * (y + 4712)) + (30.61 * (m + 1)) + d - 63.5 + B
+      // JD = JD + h/24 + min/60/24 + s/60/60/24
+      // console.log(JD)
+      // return JD
+
+
     },
     julianTimeSimple(str) {
       var now = new Date(str);

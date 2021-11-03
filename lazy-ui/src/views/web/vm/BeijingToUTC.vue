@@ -2,39 +2,39 @@
   <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
     <div><h2>北斗时与北京时的转换</h2></div>
     <div style="margin-top: 10px">
-      <a-steps :current="current">
-        <a-step v-for="item in steps" :key="item.title" :title="item.title" />
-      </a-steps>
+      <el-steps :current="current">
+        <el-step v-for="item in steps" :key="item.title" :title="item.title" />
+      </el-steps>
     </div>
     <div class="card" style="margin-top: 10px">
       <p>ps:请先将北斗时转换成UTC进行输入</p>
       <div style="text-align: center">
-        <a>北斗时转换成UTC></a>
+        <el>北斗时转换成UTC></el>
         <!--        <a>儒略日转格里高利时></a>-->
         <div style="padding-top: 25px">
-          <a-form :form="form">
-            <a-row :gutter="24">
-              <a-col :span="12">
-                <a-form-item :label-col="formItemLayout.labelCol" :wrapper-col="formItemLayout.wrapperCol"
+          <el-form :form="form">
+            <el-row :gutter="24">
+              <el-col :span="12">
+                <el-form-item :label-col="formItemLayout.labelCol" :wrapper-col="formItemLayout.wrapperCol"
                              label="北斗时">
-                  <a-input placeholder="请输入北斗时"/>
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item :label-col="formItemLayout.labelCol" :wrapper-col="formItemLayout.wrapperCol" label="UTC">
-                  <a-input placeholder="请输入UTC"/>
+                  <el-input placeholder="请输入北斗时" v-model="form.bd"/>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item :label-col="formItemLayout.labelCol" :wrapper-col="formItemLayout.wrapperCol" label="UTC">
+                  <el-input placeholder="请输入UTC" v-model="form.utc"/>
                   <!--                  <a-date-picker show-time placeholder="选择时间" @change="onChange" @ok="onOk" />-->
-                </a-form-item>
-              </a-col>
-            </a-row>
-            <a-row>
-              <a-col :span="24" :style="{ textAlign: 'center' }">
-                <a-button type="primary" html-type="submit">
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24" :style="{ textAlign: 'center' }">
+                <el-button type="primary" html-type="submit" @click="bdsWeekWIS2UTC">
                   提交
-                </a-button>
-              </a-col>
-            </a-row>
-          </a-form>
+                </el-button>
+              </el-col>
+            </el-row>
+          </el-form>
         </div>
       </div>
     </div>
@@ -50,6 +50,7 @@ const formTailLayout = {
   labelCol: {span: 4},
   wrapperCol: {span: 8, offset: 4},
 };
+import moment from 'moment'
 export default {
   name: "BeijingToUTC",
   data() {
@@ -71,6 +72,12 @@ export default {
       ],
     }
   },
+  created() {
+
+    var bdsWeek = Math.floor(Math.random()*1000+1);
+    var bdsWIS = Math.floor(Math.random()*604800+1);
+    this.form.bd=bdsWeek+"周"+bdsWIS
+  },
   methods: {
     onChange(value, dateString) {
       console.log('Selected Time: ', value);
@@ -85,6 +92,37 @@ export default {
     prev() {
       this.current--;
     },
+    bdsWeekWIS2UTC(bdsWeek,bdsWIS){
+      var bd=  this.form.bd;
+      var utc=  this.form.utc;
+      var arr= bd.split("周");
+      bdsWeek = arr[0]*1;
+      bdsWIS = arr[1]*1;
+
+      var difFromBegin = bdsWeek * 604800 + bdsWIS;
+      var bdsBeginTime = new Date(2006, 1, 1, 0, 0, 0);
+      console.log("bdsBeginTime",bdsBeginTime)
+      var ts = bdsBeginTime.getSeconds() + difFromBegin - 4.0
+      console.log("ts",ts)
+      // 北京时间
+      bdsBeginTime.setSeconds(ts)
+      console.log("bdsBeginTime",bdsBeginTime)
+      // UTC
+      console.log( bdsBeginTime.getUTCFullYear(), bdsBeginTime.getUTCMonth(), bdsBeginTime.getUTCDate(), bdsBeginTime.getUTCHours(),bdsBeginTime.getUTCMinutes(), bdsBeginTime.getUTCSeconds() )
+
+     var date  =  moment(bdsBeginTime.getUTCFullYear()+"-"+bdsBeginTime.getUTCMonth()+"-"+bdsBeginTime.getUTCDate()
+       + " "+bdsBeginTime.getUTCHours()+":"+bdsBeginTime.getUTCMinutes()+":"+bdsBeginTime.getUTCSeconds()).format('YYYY-MM-DD HH:mm:ss');
+     console.log("date ",date)
+      var da = new Date(date);
+      var db = new Date(utc);
+      if(da.getTime() === db.getTime()){
+        this.notifySuccess("正确", "转换正确")
+      }else{
+        this.notifyError("转换错误，请重试")
+      }
+    }
+
+
   },
 }
 </script>
