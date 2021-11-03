@@ -43,7 +43,7 @@ public class ExamVo {
     private Integer openType;
 
     /** 密码 */
-    private Integer password;
+    private String password;
 
     private String status;
 
@@ -139,11 +139,11 @@ public class ExamVo {
         this.openType = openType;
     }
 
-    public Integer getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(Integer password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 

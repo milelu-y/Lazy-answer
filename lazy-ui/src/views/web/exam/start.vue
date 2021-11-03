@@ -81,7 +81,10 @@
 
 <script>
 export default {
-  name: "start"
+  name: "start",
+  created() {
+    console.log(this.$route.params.id)
+  }
 }
 </script>
 

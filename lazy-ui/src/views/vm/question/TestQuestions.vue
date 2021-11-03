@@ -55,13 +55,20 @@
       <el-table-column label="章节" align="center" prop="chapterId" :formatter="chapterFormat"></el-table-column>
       <el-table-column label="试题内容" align="center" prop="content" show-overflow-tooltip>
         <template slot-scope="scope">
-          <router-link :to="{ name: 'quAdd', params:{id: scope.row.id,chapters:chapters}}" style="color: #00afff">
+          <router-link :to="{ name: 'quAdd', params:{id: scope.row.id,quId:taskId,chapters:chapters}}" style="color: #00afff">
             {{ scope.row.content }}
           </router-link>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" align="center" prop="gmtCreate"></el-table-column>
     </el-table>
+    <pagination
+      v-show="total>0"
+      :total="total"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
+      @pagination="getList"
+    />
   </div>
 </template>
 
@@ -83,6 +90,7 @@ export default {
       ids: [],
       // 非单个禁用
       single: true,
+      total:0,
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -92,6 +100,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         courseId: null,
+        taskId:null,
         title: null,
         singleCount: null,
         multipleCount: null,
@@ -103,6 +112,8 @@ export default {
   },
   created() {
     const id = this.$route.params.id
+    this.queryParams.taskId=id
+    this.taskId=id
     getTask(id).then(response => {
       this.chapters = response.data.chapters
     })
@@ -154,7 +165,8 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       // this.$router.push('/vm/question/testQuestionForm/')
-      this.$router.push({path: '/vm/question/testQuestionForm/', query: {chapters: this.chapters}})
+      console.log(this.taskId)
+      this.$router.push({path: '/vm/question/testQuestionForm/', query: {quId:this.taskId,chapters: this.chapters}})
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

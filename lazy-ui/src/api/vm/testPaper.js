@@ -51,3 +51,12 @@ export function exportTestPaper(query) {
     params: query
   })
 }
+
+// 新增试卷
+export function createPaper(data) {
+  return request({
+    url: '/vm/examPaper/createPaper',
+    method: 'post',
+    data: data
+  })
+}

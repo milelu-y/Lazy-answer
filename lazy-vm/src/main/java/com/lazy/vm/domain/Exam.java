@@ -72,7 +72,7 @@ public class Exam extends BaseEntity
 
     /** 密码 */
     @Excel(name = "密码")
-    private Integer password;
+    private String password;
 
     /** 状态 */
     @Excel(name = "状态")
@@ -193,12 +193,12 @@ public class Exam extends BaseEntity
     {
         return openType;
     }
-    public void setPassword(Integer password)
+    public void setPassword(String password)
     {
         this.password = password;
     }
 
-    public Integer getPassword()
+    public String getPassword()
     {
         return password;
     }

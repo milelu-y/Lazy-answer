@@ -44,7 +44,9 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button >取 消</el-button>
+        <el-button >
+          <router-link to="/web/index">取 消</router-link>
+        </el-button>
         <el-button type="primary" @click="handleCreate">开始答题</el-button>
       </span>
     </el-dialog>
@@ -53,6 +55,7 @@
 
 <script>
 import {getExam} from "@/api/vm/exam";
+import {createPaper} from "@/api/vm/testPaper";
 
 export default {
   name: "check",
@@ -84,6 +87,16 @@ export default {
         this.$message.error('答题密码不能为空！');
         return
       }
+      //创建试卷
+      createPaper(this.postForm).then(response=>{
+        console.log(response)
+        if(response.code===200){
+          this.$router.push({
+            name:'startExam',
+            params:{id:response.data.id}
+          })
+        }
+      })
     }
   }
 }

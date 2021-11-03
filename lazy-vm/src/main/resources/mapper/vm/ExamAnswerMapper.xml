@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.ExamAnswerMapper">
+
+    <resultMap type="ExamAnswer" id="ExamAnswerResult">
+        <result property="id"    column="id"    />
+        <result property="quId"    column="qu_id"    />
+        <result property="type"    column="type"    />
+        <result property="level"    column="level"    />
+        <result property="content"    column="content"    />
+        <result property="chapterId"    column="chapter_id"    />
+        <result property="analysis"    column="analysis"    />
+        <result property="answerd"    column="answerd"    />
+        <result property="options"    column="options"    />
+        <result property="paperId"    column="paper_id"    />
+        <result property="sort"    column="sort"    />
+        <result property="mark"    column="mark"    />
+        <result property="score"    column="score"    />
+        <result property="isRight"    column="is_right"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectExamAnswerVo">
+        select id, qu_id, type, level, content, chapter_id, analysis, answerd, options, paper_id, sort, mark, score, is_right, group_id, create_time, update_time from edu_exam_answer
+    </sql>
+
+    <select id="selectExamAnswerList" parameterType="ExamAnswer" resultMap="ExamAnswerResult">
+        <include refid="selectExamAnswerVo"/>
+        <where>
+            <if test="quId != null  and quId != ''"> and qu_id = #{quId}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="chapterId != null  and chapterId != ''"> and chapter_id = #{chapterId}</if>
+            <if test="analysis != null  and analysis != ''"> and analysis = #{analysis}</if>
+            <if test="answerd != null "> and answerd = #{answerd}</if>
+            <if test="options != null  and options != ''"> and options = #{options}</if>
+            <if test="paperId != null  and paperId != ''"> and paper_id = #{paperId}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="mark != null "> and mark = #{mark}</if>
+            <if test="score != null "> and score = #{score}</if>
+            <if test="isRight != null "> and is_right = #{isRight}</if>
+            <if test="groupId != null  and groupId != ''"> and group_id = #{groupId}</if>
+        </where>
+    </select>
+
+    <select id="selectExamAnswerById" parameterType="String" resultMap="ExamAnswerResult">
+        <include refid="selectExamAnswerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertExamAnswer" parameterType="ExamAnswer">
+        insert into edu_exam_answer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="quId != null">qu_id,</if>
+            <if test="type != null">type,</if>
+            <if test="level != null">level,</if>
+            <if test="content != null">content,</if>
+            <if test="chapterId != null">chapter_id,</if>
+            <if test="analysis != null">analysis,</if>
+            <if test="answerd != null">answerd,</if>
+            <if test="options != null">options,</if>
+            <if test="paperId != null">paper_id,</if>
+            <if test="sort != null">sort,</if>
+            <if test="mark != null">mark,</if>
+            <if test="score != null">score,</if>
+            <if test="isRight != null">is_right,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="quId != null">#{quId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="level != null">#{level},</if>
+            <if test="content != null">#{content},</if>
+            <if test="chapterId != null">#{chapterId},</if>
+            <if test="analysis != null">#{analysis},</if>
+            <if test="answerd != null">#{answerd},</if>
+            <if test="options != null">#{options},</if>
+            <if test="paperId != null">#{paperId},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="mark != null">#{mark},</if>
+            <if test="score != null">#{score},</if>
+            <if test="isRight != null">#{isRight},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateExamAnswer" parameterType="ExamAnswer">
+        update edu_exam_answer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="quId != null">qu_id = #{quId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="chapterId != null">chapter_id = #{chapterId},</if>
+            <if test="analysis != null">analysis = #{analysis},</if>
+            <if test="answerd != null">answerd = #{answerd},</if>
+            <if test="options != null">options = #{options},</if>
+            <if test="paperId != null">paper_id = #{paperId},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="mark != null">mark = #{mark},</if>
+            <if test="score != null">score = #{score},</if>
+            <if test="isRight != null">is_right = #{isRight},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteExamAnswerById" parameterType="String">
+        delete from edu_exam_answer where id = #{id}
+    </delete>
+
+    <delete id="deleteExamAnswerByIds" parameterType="String">
+        delete from edu_exam_answer where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

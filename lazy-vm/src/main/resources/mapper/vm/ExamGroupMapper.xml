@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.ExamGroupMapper">
+
+    <resultMap type="ExamGroup" id="ExamGroupResult">
+        <result property="id"    column="id"    />
+        <result property="itemRand"    column="item_rand"    />
+        <result property="quRand"    column="qu_rand"    />
+        <result property="paperId"    column="paper_id"    />
+        <result property="perScore"    column="per_score"    />
+        <result property="quCount"    column="qu_count"    />
+        <result property="quType"    column="qu_type"    />
+        <result property="title"    column="title"    />
+        <result property="totalScore"    column="total_score"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectExamGroupVo">
+        select id, item_rand, qu_rand, paper_id, per_score, qu_count, qu_type, title, total_score, create_time, update_time from edu_exam_group
+    </sql>
+
+    <select id="selectExamGroupList" parameterType="ExamGroup" resultMap="ExamGroupResult">
+        <include refid="selectExamGroupVo"/>
+        <where>
+            <if test="itemRand != null "> and item_rand = #{itemRand}</if>
+            <if test="quRand != null "> and qu_rand = #{quRand}</if>
+            <if test="paperId != null  and paperId != ''"> and paper_id = #{paperId}</if>
+            <if test="perScore != null "> and per_score = #{perScore}</if>
+            <if test="quCount != null "> and qu_count = #{quCount}</if>
+            <if test="quType != null  and quType != ''"> and qu_type = #{quType}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="totalScore != null "> and total_score = #{totalScore}</if>
+        </where>
+    </select>
+
+    <select id="selectExamGroupById" parameterType="String" resultMap="ExamGroupResult">
+        <include refid="selectExamGroupVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertExamGroup" parameterType="ExamGroup">
+        insert into edu_exam_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="itemRand != null">item_rand,</if>
+            <if test="quRand != null">qu_rand,</if>
+            <if test="paperId != null">paper_id,</if>
+            <if test="perScore != null">per_score,</if>
+            <if test="quCount != null">qu_count,</if>
+            <if test="quType != null">qu_type,</if>
+            <if test="title != null">title,</if>
+            <if test="totalScore != null">total_score,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="itemRand != null">#{itemRand},</if>
+            <if test="quRand != null">#{quRand},</if>
+            <if test="paperId != null">#{paperId},</if>
+            <if test="perScore != null">#{perScore},</if>
+            <if test="quCount != null">#{quCount},</if>
+            <if test="quType != null">#{quType},</if>
+            <if test="title != null">#{title},</if>
+            <if test="totalScore != null">#{totalScore},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateExamGroup" parameterType="ExamGroup">
+        update edu_exam_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemRand != null">item_rand = #{itemRand},</if>
+            <if test="quRand != null">qu_rand = #{quRand},</if>
+            <if test="paperId != null">paper_id = #{paperId},</if>
+            <if test="perScore != null">per_score = #{perScore},</if>
+            <if test="quCount != null">qu_count = #{quCount},</if>
+            <if test="quType != null">qu_type = #{quType},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="totalScore != null">total_score = #{totalScore},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteExamGroupById" parameterType="String">
+        delete from edu_exam_group where id = #{id}
+    </delete>
+
+    <delete id="deleteExamGroupByIds" parameterType="String">
+        delete from edu_exam_group where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

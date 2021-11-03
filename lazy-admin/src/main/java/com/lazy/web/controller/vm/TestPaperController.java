@@ -1,8 +1,10 @@
 package com.lazy.web.controller.vm;
 
+import java.awt.print.Paper;
 import java.util.List;
 
 import com.lazy.vm.domain.vo.AnswerVo;
+import com.lazy.vm.domain.vo.PaperCreateVo;
 import com.lazy.vm.domain.vo.TestPaperVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,10 +117,6 @@ public class TestPaperController extends BaseController
     @PostMapping("/addTestPaper")
     public AjaxResult testScore(@RequestBody TestPaperVo testPaperVo){
         return toAjax(testPaperService.addTestPaper(testPaperVo));
-    };
-
-
-
-
+    }
 
 }

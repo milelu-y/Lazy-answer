@@ -127,12 +127,15 @@ export default {
     });
     const id = this.$route.params.id
     this.id = id;
+
     let chapters
     if (id != null) {
       //修改
       chapters = this.$route.params.chapters
+      this.taskId = this.$route.params.quId
     } else {
       chapters = this.$route.query.chapters
+      this.taskId = this.$route.query.quId
     }
     this.chapters = chapters
     if (id != null) {

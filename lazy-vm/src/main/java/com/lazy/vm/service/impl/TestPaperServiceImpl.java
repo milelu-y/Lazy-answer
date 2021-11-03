@@ -4,26 +4,21 @@ import java.util.*;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.lazy.common.core.domain.AjaxResult;
+import com.lazy.common.enums.ExamState;
+import com.lazy.common.exception.CustomException;
 import com.lazy.common.utils.DateUtils;
 import com.lazy.common.utils.SecurityUtils;
 import com.lazy.common.utils.uuid.SnowflakeIdWorker;
-import com.lazy.vm.domain.Answer;
-import com.lazy.vm.domain.Group;
-import com.lazy.vm.domain.GroupAnswer;
-import com.lazy.vm.domain.vo.AnswerOptionVo;
-import com.lazy.vm.domain.vo.AnswerVo;
-import com.lazy.vm.domain.vo.GroupVo;
-import com.lazy.vm.domain.vo.TestPaperVo;
-import com.lazy.vm.mapper.AnswerMapper;
-import com.lazy.vm.mapper.GroupAnswerMapper;
-import com.lazy.vm.mapper.GroupMapper;
+import com.lazy.vm.domain.*;
+import com.lazy.vm.domain.vo.*;
+import com.lazy.vm.mapper.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.lazy.vm.mapper.TestPaperMapper;
-import com.lazy.vm.domain.TestPaper;
 import com.lazy.vm.service.ITestPaperService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.xml.crypto.Data;
 
@@ -46,6 +41,11 @@ public class TestPaperServiceImpl implements ITestPaperService {
 
     @Autowired
     private AnswerMapper answerMapper;
+
+    //    @Autowired
+//    private ExamService  ExamServiceImpl;
+    @Autowired
+    private ExamMapper examMapper;
 
     /**
      * 查询试卷
@@ -211,5 +211,30 @@ public class TestPaperServiceImpl implements ITestPaperService {
             return 1;
         }
         return 0;
+    }
+
+    @Override
+    public AjaxResult createPaper(PaperCreateVo paperCreateVo) {
+        String examId = paperCreateVo.getExamId();
+        Exam exam = examMapper.selectExamById(examId);
+        if (exam == null) {
+            throw new CustomException("作业不存在！", 400);
+        }
+
+        if (!ExamState.ENABLE.equals(exam.getStatus())) {
+            throw new CustomException("作业状态不正确！", 400);
+        }
+
+        //判断密码是否正确
+        if (!paperCreateVo.getPassword().equals(exam.getPassword())){
+            throw new CustomException("密码不正确！",400);
+        }
+
+        //查找到试卷对应的题目
+        String paperId = exam.getPaperId();
+        TestPaper testPaper = testPaperMapper.selectTestPaperById(paperId);
+        //TODO：创建试卷、把新的试卷管理到分组
+
+        return null;
     }
 }
