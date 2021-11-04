@@ -16,7 +16,7 @@ public class FullAnswerVo {
     private Integer actualScore;
 
     /**
-     *
+     *题目（选项）
      */
     private List<AnswerOptionVo> answerList;
 
@@ -34,6 +34,7 @@ public class FullAnswerVo {
      * 分组
      */
     private String groupId;
+
 
     private String id;
 
@@ -56,4 +57,85 @@ public class FullAnswerVo {
      * 题目分数
      */
     private String score;
+
+
+    public Integer getActualScore() {
+        return actualScore;
+    }
+
+    public void setActualScore(Integer actualScore) {
+        this.actualScore = actualScore;
+    }
+
+    public List<AnswerOptionVo> getAnswerList() {
+        return answerList;
+    }
+
+    public void setAnswerList(List<AnswerOptionVo> answerList) {
+        this.answerList = answerList;
+    }
+
+    public Boolean getAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(Boolean answered) {
+        this.answered = answered;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(String paperId) {
+        this.paperId = paperId;
+    }
+
+    public String getQuId() {
+        return quId;
+    }
+
+    public void setQuId(String quId) {
+        this.quId = quId;
+    }
+
+    public String getQuType() {
+        return quType;
+    }
+
+    public void setQuType(String quType) {
+        this.quType = quType;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
 }
