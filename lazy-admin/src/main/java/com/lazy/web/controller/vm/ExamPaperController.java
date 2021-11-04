@@ -2,6 +2,7 @@ package com.lazy.web.controller.vm;
 
 import java.util.List;
 
+import com.lazy.vm.domain.vo.FullAnswerVo;
 import com.lazy.vm.domain.vo.PaperCreateVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,4 +115,30 @@ public class ExamPaperController extends BaseController
     public AjaxResult createPaper(@RequestBody PaperCreateVo paperCreateVo) {
         return examPaperService.createPaper(paperCreateVo);
     }
+
+    /**
+     *保存考生答题情况
+     * @param fullAnswerVo
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('vm:Answer:edit')")
+    @Log(title = "保存考生答题情况", businessType = BusinessType.UPDATE)
+    @PostMapping("/fullAnswer")
+    public AjaxResult fullAnswer(@RequestBody FullAnswerVo fullAnswerVo){
+        return AjaxResult.success(examPaperService.fullAnswer(fullAnswerVo));
+    };
+
+    /**
+     *学生考试分数
+     * @param id
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('vm:Answer:edit')")
+    @Log(title = "学生考试分数", businessType = BusinessType.UPDATE)
+    @PostMapping("/userFraction")
+    public AjaxResult userFraction(@RequestBody String id){
+        return AjaxResult.success(examPaperService.userFraction(id));
+    };
+
+
 }

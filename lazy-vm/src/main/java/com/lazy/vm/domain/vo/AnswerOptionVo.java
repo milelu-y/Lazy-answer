@@ -21,9 +21,18 @@ public class AnswerOptionVo {
      * 是否正确
      */
     private Boolean isRight;
+    private Boolean checked;
     private String paperId;
     private Integer pathScore;
     private String quId;
+
+    public Boolean getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Boolean checked) {
+        this.checked = checked;
+    }
 
     public String getAnalysis() {
         return analysis;

@@ -75,7 +75,7 @@ public class ExamAnswer
 
     /** 是否正确 */
     @Excel(name = "是否正确")
-    private Integer isRight;
+    private Boolean isRight;
 
     /** 分组id */
     @Excel(name = "分组id")
@@ -207,12 +207,12 @@ public class ExamAnswer
     {
         return score;
     }
-    public void setIsRight(Integer isRight)
+    public void setIsRight(Boolean isRight)
     {
         this.isRight = isRight;
     }
 
-    public Integer getIsRight()
+    public Boolean getIsRight()
     {
         return isRight;
     }

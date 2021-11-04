@@ -24,8 +24,8 @@ public class ExamPaper extends BaseEntity
     /** $column.columnComment */
     private String id;
 
-    /** 选择老师 */
-    @Excel(name = "选择老师")
+    /** 选择用户 */
+    @Excel(name = "选择用户")
     private String userId;
 
     /** 试卷标题 */
@@ -47,6 +47,11 @@ public class ExamPaper extends BaseEntity
     /** 试卷总题数 */
     @Excel(name = "试卷总题数")
     private Integer quCount;
+
+    /** 考试分数 */
+    @Excel(name = "考试分数")
+    private Integer userScore;
+
 
     /** 考试id */
     @Excel(name = "考试id")
@@ -207,6 +212,15 @@ public class ExamPaper extends BaseEntity
         this.updateTime = updateTime;
     }
 
+
+    public Integer getUserScore() {
+        return userScore;
+    }
+
+    public void setUserScore(Integer userScore) {
+        this.userScore = userScore;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -223,6 +237,7 @@ public class ExamPaper extends BaseEntity
             .append("reserveField3", getReserveField3())
             .append("reserveField4", getReserveField4())
             .append("reserveField5", getReserveField5())
+
             .toString();
     }
 }

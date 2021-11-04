@@ -2,6 +2,7 @@ package com.lazy.vm.service;
 
 import com.lazy.common.core.domain.AjaxResult;
 import com.lazy.vm.domain.ExamPaper;
+import com.lazy.vm.domain.vo.FullAnswerVo;
 import com.lazy.vm.domain.vo.PaperCreateVo;
 
 import java.util.List;
@@ -63,4 +64,8 @@ public interface IExamPaperService
     public int deleteExamPaperById(String id);
 
     AjaxResult createPaper(PaperCreateVo paperCreateVo);
+
+    String fullAnswer(FullAnswerVo fullAnswerVo);
+
+    AjaxResult userFraction(String id);
 }

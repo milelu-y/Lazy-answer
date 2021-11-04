@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lazy.common.core.domain.AjaxResult;
 import com.lazy.common.enums.ExamState;
 import com.lazy.common.exception.CustomException;
@@ -12,7 +13,9 @@ import com.lazy.common.utils.DateUtils;
 import com.lazy.common.utils.SecurityUtils;
 import com.lazy.common.utils.uuid.SnowflakeIdWorker;
 import com.lazy.vm.domain.*;
+import com.lazy.vm.domain.vo.AnswerOptionVo;
 import com.lazy.vm.domain.vo.AnswerVo;
+import com.lazy.vm.domain.vo.FullAnswerVo;
 import com.lazy.vm.domain.vo.PaperCreateVo;
 import com.lazy.vm.mapper.*;
 import com.lazy.vm.service.IExamPaperService;
@@ -194,5 +197,58 @@ public class ExamPaperServiceImpl implements IExamPaperService {
         Map<String, Object> data = new HashMap<>();
         data.put("id", examPaperResult.getId());
         return AjaxResult.success("操作成功", data);
+    }
+
+
+
+    @Override
+    public String fullAnswer(FullAnswerVo fullAnswerVo) {
+        if(fullAnswerVo != null){
+            List<AnswerOptionVo> answerList = fullAnswerVo.getAnswerList();
+            ExamAnswer examAnswer = new ExamAnswer();
+            BeanUtils.copyProperties(fullAnswerVo,examAnswer);
+            examAnswer.setOptions(JSONObject.toJSONString(answerList));
+            examAnswerMapper.updateExamAnswer(examAnswer);
+        }
+        return null;
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public AjaxResult userFraction(String id) {
+        if(!id.equals("")){
+            ExamAnswer examAnswer = new ExamAnswer();
+            examAnswer.setPaperId(id);
+            List<ExamAnswer> examAnswers = examAnswerMapper.selectExamAnswerList(examAnswer);
+            int unt = 0;
+            for (ExamAnswer ex : examAnswers){
+                List<AnswerOptionVo> answerOptions = (List<AnswerOptionVo>) JSONObject.parse(ex.getOptions());
+                for (AnswerOptionVo answerOption : answerOptions) {
+                    if (answerOption.getChecked()&& answerOption.getRight()){
+                         ex.setIsRight(true);
+                        Integer score = ex.getScore();
+                        unt = unt+score;
+                    }
+                }
+            }
+
+
+            Map<String, Object> data = new HashMap<>();
+            ExamPaper examPaper = examPaperMapper.selectExamPaperById(id);
+            examPaper.setUserScore(unt);
+            examPaperMapper.updateExamPaper(examPaper);
+
+            Exam exam = examMapper.selectExamById(examPaper.getExamId());
+
+            if(exam.getResultType() == 0){
+                data.put("resultType", exam.getThanks());
+            }else if (exam.getResultType() == 1){
+                data.put("resultType", exam.getThanks());
+                data.put("考试成绩", unt);
+            }
+          return  AjaxResult.success("操作成功",data);
+        }
+        return null;
     }
 }
