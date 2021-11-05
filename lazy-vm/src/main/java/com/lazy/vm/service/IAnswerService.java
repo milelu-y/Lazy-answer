@@ -18,7 +18,7 @@ public interface IAnswerService
      * @param id 作业题目ID
      * @return 作业题目
      */
-    public Answer selectAnswerById(String id);
+    public AnswerVo selectAnswerById(String id);
 
     /**
      * 查询作业题目列表

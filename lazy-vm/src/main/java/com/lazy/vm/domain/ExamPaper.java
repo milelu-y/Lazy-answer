@@ -59,7 +59,7 @@ public class ExamPaper extends BaseEntity
 
     /** 预留 */
     @Excel(name = "预留")
-    private String reserveField3;
+    private String status;
 
     /** 预留 */
     @Excel(name = "预留")
@@ -154,14 +154,14 @@ public class ExamPaper extends BaseEntity
     {
         return examId;
     }
-    public void setReserveField3(String reserveField3)
+    public void setStatus(String status)
     {
-        this.reserveField3 = reserveField3;
+        this.status = status;
     }
 
-    public String getReserveField3()
+    public String getStatus()
     {
-        return reserveField3;
+        return status;
     }
     public void setReserveField4(String reserveField4)
     {
@@ -234,7 +234,7 @@ public class ExamPaper extends BaseEntity
             .append("examId", getExamId())
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
-            .append("reserveField3", getReserveField3())
+            .append("status", getStatus())
             .append("reserveField4", getReserveField4())
             .append("reserveField5", getReserveField5())
 

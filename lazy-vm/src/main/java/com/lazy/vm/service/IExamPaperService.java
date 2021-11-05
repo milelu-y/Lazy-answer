@@ -2,10 +2,10 @@ package com.lazy.vm.service;
 
 import com.lazy.common.core.domain.AjaxResult;
 import com.lazy.vm.domain.ExamPaper;
-import com.lazy.vm.domain.vo.FullAnswerVo;
-import com.lazy.vm.domain.vo.PaperCreateVo;
+import com.lazy.vm.domain.vo.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 试卷Service接口
@@ -21,7 +21,7 @@ public interface IExamPaperService
      * @param id 试卷ID
      * @return 试卷
      */
-    public ExamPaper selectExamPaperById(String id);
+    public PaperAdaptedVo selectExamPaperById(String id);
 
     /**
      * 查询试卷列表
@@ -65,7 +65,9 @@ public interface IExamPaperService
 
     AjaxResult createPaper(PaperCreateVo paperCreateVo);
 
-    String fullAnswer(FullAnswerVo fullAnswerVo);
+    Map fullAnswer(ExamAnswerVo fullAnswerVo);
 
     AjaxResult userFraction(String id);
+
+    AjaxResult quDetail(PaperQuQueryDTO paperQuQueryDTO);
 }

@@ -2,7 +2,6 @@ package com.lazy.vm.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.lazy.common.annotation.CreateTime;
-import com.lazy.common.annotation.IDField;
 import com.lazy.common.annotation.UpdateTime;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -15,14 +14,13 @@ import java.util.Date;
  * 考试作业题目对象 edu_exam_answer
  *
  * @author lazy
- * @date 2021-11-03
+ * @date 2021-11-04
  */
 public class ExamAnswer
 {
     private static final long serialVersionUID = 1L;
 
     /** 作业id */
-    @IDField
     private String id;
 
     /** 题库id */
@@ -37,25 +35,9 @@ public class ExamAnswer
     @Excel(name = "题目难度")
     private Integer level;
 
-    /** 题目内容 */
-    @Excel(name = "题目内容")
-    private String content;
-
-    /** 章节ID */
-    @Excel(name = "章节ID")
-    private String chapterId;
-
-    /** 整题解析 */
-    @Excel(name = "整题解析")
-    private String analysis;
-
     /** 答案 */
     @Excel(name = "答案")
-    private Integer answerd;
-
-    /** 选项 */
-    @Excel(name = "选项")
-    private String options;
+    private Boolean answerd;
 
     /** 考试id */
     @Excel(name = "考试id")
@@ -67,7 +49,7 @@ public class ExamAnswer
 
     /** 是否标记 */
     @Excel(name = "是否标记")
-    private Integer mark;
+    private Boolean mark;
 
     /** 分数 */
     @Excel(name = "分数")
@@ -80,16 +62,16 @@ public class ExamAnswer
     /** 分组id */
     @Excel(name = "分组id")
     private String groupId;
-    /** 创建时间 */
+
     @CreateTime
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-
 
     /** 更新时间 */
     @UpdateTime
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
     public void setId(String id)
     {
         this.id = id;
@@ -126,51 +108,27 @@ public class ExamAnswer
     {
         return level;
     }
-    public void setContent(String content)
-    {
-        this.content = content;
+
+    public Boolean getAnswerd() {
+        return answerd;
     }
 
-    public String getContent()
-    {
-        return content;
-    }
-    public void setChapterId(String chapterId)
-    {
-        this.chapterId = chapterId;
-    }
-
-    public String getChapterId()
-    {
-        return chapterId;
-    }
-    public void setAnalysis(String analysis)
-    {
-        this.analysis = analysis;
-    }
-
-    public String getAnalysis()
-    {
-        return analysis;
-    }
-    public void setAnswerd(Integer answerd)
-    {
+    public void setAnswerd(Boolean answerd) {
         this.answerd = answerd;
     }
 
-    public Integer getAnswerd()
-    {
-        return answerd;
-    }
-    public void setOptions(String options)
-    {
-        this.options = options;
+    public void setMark(Boolean mark) {
+        this.mark = mark;
     }
 
-    public String getOptions()
-    {
-        return options;
+    public Boolean getIsRight() {
+        return isRight;
     }
+
+    public void setIsRight(Boolean right) {
+        isRight = right;
+    }
+
     public void setPaperId(String paperId)
     {
         this.paperId = paperId;
@@ -189,15 +147,6 @@ public class ExamAnswer
     {
         return sort;
     }
-    public void setMark(Integer mark)
-    {
-        this.mark = mark;
-    }
-
-    public Integer getMark()
-    {
-        return mark;
-    }
     public void setScore(Integer score)
     {
         this.score = score;
@@ -206,15 +155,6 @@ public class ExamAnswer
     public Integer getScore()
     {
         return score;
-    }
-    public void setIsRight(Boolean isRight)
-    {
-        this.isRight = isRight;
-    }
-
-    public Boolean getIsRight()
-    {
-        return isRight;
     }
     public void setGroupId(String groupId)
     {
@@ -225,6 +165,11 @@ public class ExamAnswer
     {
         return groupId;
     }
+
+    public Boolean getMark() {
+        return mark;
+    }
+
 
     public Date getCreateTime() {
         return createTime;
@@ -245,23 +190,19 @@ public class ExamAnswer
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("quId", getQuId())
-            .append("type", getType())
-            .append("level", getLevel())
-            .append("content", getContent())
-            .append("chapterId", getChapterId())
-            .append("analysis", getAnalysis())
-            .append("answerd", getAnswerd())
-            .append("options", getOptions())
-            .append("paperId", getPaperId())
-            .append("sort", getSort())
-            .append("mark", getMark())
-            .append("score", getScore())
-            .append("isRight", getIsRight())
-            .append("groupId", getGroupId())
-            .append("createTime", getCreateTime())
-            .append("updateTime", getUpdateTime())
-            .toString();
+                .append("id", getId())
+                .append("quId", getQuId())
+                .append("type", getType())
+                .append("level", getLevel())
+                .append("answerd", getAnswerd())
+                .append("paperId", getPaperId())
+                .append("sort", getSort())
+                .append("mark", getMark())
+                .append("score", getScore())
+                .append("isRight", getIsRight())
+                .append("groupId", getGroupId())
+                .append("createTime", getCreateTime())
+                .append("updateTime", getUpdateTime())
+                .toString();
     }
 }

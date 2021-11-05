@@ -32,6 +32,10 @@
         <include refid="selectGroupAnswerVo"/>
         where group_id = #{groupId}
     </select>
+    <select id="selectScoreByAnswerId" resultType="java.lang.Integer">
+        select score
+        from edu_group_answer where answer_id = #{id}
+    </select>
 
     <insert id="insertGroupAnswer" parameterType="GroupAnswer">
         insert into edu_group_answer

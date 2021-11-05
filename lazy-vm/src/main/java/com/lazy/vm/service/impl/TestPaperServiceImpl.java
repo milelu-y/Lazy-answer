@@ -47,6 +47,9 @@ public class TestPaperServiceImpl implements ITestPaperService {
     @Autowired
     private ExamMapper examMapper;
 
+    @Autowired
+    private AnswerOptionsMapper answerOptionsMapper;
+
     /**
      * 查询试卷
      *
@@ -71,8 +74,16 @@ public class TestPaperServiceImpl implements ITestPaperService {
                 AnswerVo answerVo = new AnswerVo();
                 answerVo.setScore(groupAnswer.getScore());
                 BeanUtils.copyProperties(answer, answerVo);
-                List<AnswerOptionVo> answerOptionVos = (List<AnswerOptionVo>) JSONObject.parse(answerVo.getOptions());
-                answerVo.setAnswerList(answerOptionVos);
+                List<AnswerOptions> answerOptionsList = answerOptionsMapper.selectAnswerOptionsByAnswerId(answer.getId());
+                List<AnswerOptionsVo> list = new ArrayList<>();
+                for (AnswerOptions answerOptions : answerOptionsList) {
+                    AnswerOptionsVo answerOptionsVo = new AnswerOptionsVo();
+                    BeanUtils.copyProperties(answerOptions, answerOptionsVo);
+                    list.add(answerOptionsVo);
+                }
+
+//                List<AnswerOptionVo> answerOptionVos = (List<AnswerOptionVo>) JSONObject.parse(answerVo.getOptions());
+                answerVo.setAnswerList(list);
                 answerVos.add(answerVo);
             }
             GroupVo groupVo = new GroupVo();
@@ -226,8 +237,8 @@ public class TestPaperServiceImpl implements ITestPaperService {
         }
 
         //判断密码是否正确
-        if (!paperCreateVo.getPassword().equals(exam.getPassword())){
-            throw new CustomException("密码不正确！",400);
+        if (!paperCreateVo.getPassword().equals(exam.getPassword())) {
+            throw new CustomException("密码不正确！", 400);
         }
 
         //查找到试卷对应的题目

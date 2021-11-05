@@ -9,11 +9,7 @@
         <result property="quId"    column="qu_id"    />
         <result property="type"    column="type"    />
         <result property="level"    column="level"    />
-        <result property="content"    column="content"    />
-        <result property="chapterId"    column="chapter_id"    />
-        <result property="analysis"    column="analysis"    />
         <result property="answerd"    column="answerd"    />
-        <result property="options"    column="options"    />
         <result property="paperId"    column="paper_id"    />
         <result property="sort"    column="sort"    />
         <result property="mark"    column="mark"    />
@@ -25,7 +21,7 @@
     </resultMap>
 
     <sql id="selectExamAnswerVo">
-        select id, qu_id, type, level, content, chapter_id, analysis, answerd, options, paper_id, sort, mark, score, is_right, group_id, create_time, update_time from edu_exam_answer
+        select id, qu_id, type, level, answerd, paper_id, sort, mark, score, is_right, group_id, create_time, update_time from edu_exam_answer
     </sql>
 
     <select id="selectExamAnswerList" parameterType="ExamAnswer" resultMap="ExamAnswerResult">
@@ -34,11 +30,7 @@
             <if test="quId != null  and quId != ''"> and qu_id = #{quId}</if>
             <if test="type != null "> and type = #{type}</if>
             <if test="level != null "> and level = #{level}</if>
-            <if test="content != null  and content != ''"> and content = #{content}</if>
-            <if test="chapterId != null  and chapterId != ''"> and chapter_id = #{chapterId}</if>
-            <if test="analysis != null  and analysis != ''"> and analysis = #{analysis}</if>
             <if test="answerd != null "> and answerd = #{answerd}</if>
-            <if test="options != null  and options != ''"> and options = #{options}</if>
             <if test="paperId != null  and paperId != ''"> and paper_id = #{paperId}</if>
             <if test="sort != null "> and sort = #{sort}</if>
             <if test="mark != null "> and mark = #{mark}</if>
@@ -52,6 +44,10 @@
         <include refid="selectExamAnswerVo"/>
         where id = #{id}
     </select>
+    <select id="selectExamAnswerByQuId" resultType="com.lazy.vm.domain.vo.ExamAnswerVo">
+        select id, qu_id quId, type, level, answerd, paper_id paperId, sort, mark, score, is_right isRight, group_id groupId from edu_exam_answer
+        where paper_id= #{paperId} and  qu_id = #{quId}
+    </select>
 
     <insert id="insertExamAnswer" parameterType="ExamAnswer">
         insert into edu_exam_answer
@@ -60,11 +56,7 @@
             <if test="quId != null">qu_id,</if>
             <if test="type != null">type,</if>
             <if test="level != null">level,</if>
-            <if test="content != null">content,</if>
-            <if test="chapterId != null">chapter_id,</if>
-            <if test="analysis != null">analysis,</if>
             <if test="answerd != null">answerd,</if>
-            <if test="options != null">options,</if>
             <if test="paperId != null">paper_id,</if>
             <if test="sort != null">sort,</if>
             <if test="mark != null">mark,</if>
@@ -79,11 +71,7 @@
             <if test="quId != null">#{quId},</if>
             <if test="type != null">#{type},</if>
             <if test="level != null">#{level},</if>
-            <if test="content != null">#{content},</if>
-            <if test="chapterId != null">#{chapterId},</if>
-            <if test="analysis != null">#{analysis},</if>
             <if test="answerd != null">#{answerd},</if>
-            <if test="options != null">#{options},</if>
             <if test="paperId != null">#{paperId},</if>
             <if test="sort != null">#{sort},</if>
             <if test="mark != null">#{mark},</if>
@@ -101,11 +89,7 @@
             <if test="quId != null">qu_id = #{quId},</if>
             <if test="type != null">type = #{type},</if>
             <if test="level != null">level = #{level},</if>
-            <if test="content != null">content = #{content},</if>
-            <if test="chapterId != null">chapter_id = #{chapterId},</if>
-            <if test="analysis != null">analysis = #{analysis},</if>
             <if test="answerd != null">answerd = #{answerd},</if>
-            <if test="options != null">options = #{options},</if>
             <if test="paperId != null">paper_id = #{paperId},</if>
             <if test="sort != null">sort = #{sort},</if>
             <if test="mark != null">mark = #{mark},</if>

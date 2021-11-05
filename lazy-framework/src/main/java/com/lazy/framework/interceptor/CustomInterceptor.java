@@ -38,8 +38,8 @@ public class CustomInterceptor implements Interceptor {
         Field[] declaredFields = parameter.getClass().getDeclaredFields();
         Date date = new Date();
         for (Field field : declaredFields) {
-            if (field.getAnnotation(IDField.class)!=null){
-                if (SqlCommandType.INSERT.equals(sqlCommandType)){
+            if (field.getAnnotation(IDField.class) != null) {
+                if (SqlCommandType.INSERT.equals(sqlCommandType)) {
                     field.setAccessible(true);
                     field.set(parameter, SnowflakeIdWorker.getId());
                 }
@@ -71,5 +71,21 @@ public class CustomInterceptor implements Interceptor {
 
     @Override
     public void setProperties(Properties properties) {
+    }
+
+    private Field[] merge(Field[] src, Field[] src2) {
+
+        int length = src.length + src.length;
+
+        Field[] fields = new Field[length];
+
+        for (int i = 0; i < src.length; i++) {
+            fields[i] = src[i];
+        }
+
+        for (int i = 0; i < src2.length; i++) {
+            fields[i] = src2[i];
+        }
+        return fields;
     }
 }

@@ -60,3 +60,28 @@ export function createPaper(data) {
     data: data
   })
 }
+
+// 新增试卷
+export function paperDetail(data) {
+  return request({
+    url: '/vm/examPaper/paperDetail/'+data,
+    method: 'get',
+  })
+}
+
+// 新增试卷
+export function quDetail(data) {
+  return request({
+    url: '/vm/examPaper/quDetail',
+    method: 'post',
+    data: data
+  })
+}
+
+export function fullAnswer(data) {
+  return request({
+    url: '/vm/examPaper/fullAnswer',
+    method: 'post',
+    data: data
+  })
+}

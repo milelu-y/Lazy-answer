@@ -65,7 +65,7 @@ public class AnswerVo {
      */
     private String testPaperId;
 
-    private List<AnswerOptionVo> answerList;
+    private List<AnswerOptionsVo> answerList;
 
     public String getTestPaperId() {
         return testPaperId;
@@ -155,11 +155,11 @@ public class AnswerVo {
         this.options = options;
     }
 
-    public List<AnswerOptionVo> getAnswerList() {
+    public List<AnswerOptionsVo> getAnswerList() {
         return answerList;
     }
 
-    public void setAnswerList(List<AnswerOptionVo> answerList) {
+    public void setAnswerList(List<AnswerOptionsVo> answerList) {
         this.answerList = answerList;
     }
 

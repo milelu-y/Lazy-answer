@@ -254,6 +254,7 @@ export default {
     },
     nextStep() {
       var _this = this;
+      this.postForm.totalScore = this.paperData.totalScore
       console.log(this.postForm)
       this.$refs.postForm.validate(function (valid) {
         if (!valid) {
@@ -271,7 +272,6 @@ export default {
     },
     submitForm() {
       var _this3 = this;
-      this.postForm.totalScore = this.paperData.totalScore
       addExam(this.postForm).then(response => {
         console.log(response)
       })

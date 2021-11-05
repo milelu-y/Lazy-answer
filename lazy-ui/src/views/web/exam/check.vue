@@ -65,7 +65,8 @@ export default {
       loading: true,
       checkData: {},
       postForm: {
-        examId: null
+        examId: null,
+        password:''
       },
     }
   },
@@ -89,7 +90,6 @@ export default {
       }
       //创建试卷
       createPaper(this.postForm).then(response=>{
-        console.log(response)
         if(response.code===200){
           this.$router.push({
             name:'startExam',

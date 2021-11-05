@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.lazy.common.core.domain.AjaxResult;
 import com.lazy.common.enums.ExamState;
@@ -13,16 +14,14 @@ import com.lazy.common.utils.DateUtils;
 import com.lazy.common.utils.SecurityUtils;
 import com.lazy.common.utils.uuid.SnowflakeIdWorker;
 import com.lazy.vm.domain.*;
-import com.lazy.vm.domain.vo.AnswerOptionVo;
-import com.lazy.vm.domain.vo.AnswerVo;
-import com.lazy.vm.domain.vo.FullAnswerVo;
-import com.lazy.vm.domain.vo.PaperCreateVo;
+import com.lazy.vm.domain.vo.*;
 import com.lazy.vm.mapper.*;
 import com.lazy.vm.service.IExamPaperService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * 试卷Service业务层处理
@@ -57,6 +56,12 @@ public class ExamPaperServiceImpl implements IExamPaperService {
     @Autowired
     private AnswerMapper answerMapper;
 
+    @Autowired
+    private AnswerOptionsMapper answerOptionsMapper;
+
+    @Autowired
+    private ExamAnswerOptionsMapper examAnswerOptionsMapper;
+
     /**
      * 查询试卷
      *
@@ -64,8 +69,45 @@ public class ExamPaperServiceImpl implements IExamPaperService {
      * @return 试卷
      */
     @Override
-    public ExamPaper selectExamPaperById(String id) {
-        return examPaperMapper.selectExamPaperById(id);
+    public PaperAdaptedVo selectExamPaperById(String id) {
+        //查询考试组装数据呢
+        if (!"".equals(id)) {
+            PaperAdaptedVo paper = examPaperMapper.selectExamAndPaper(id);
+            //查询组跟题目’
+            String paperId = paper.getId();
+            ExamGroup examGroup = new ExamGroup();
+            examGroup.setPaperId(paperId);
+            List<ExamGroup> examGroups = examGroupMapper.selectExamGroupList(examGroup);
+            List<ExamGroupVo> examGroupVos = new ArrayList<>();
+            for (ExamGroup group : examGroups) {
+
+                String groupId = group.getId();
+                ExamAnswer examAnswer = new ExamAnswer();
+                examAnswer.setGroupId(groupId);
+
+                List<ExamAnswer> examAnswers = examAnswerMapper.selectExamAnswerList(examAnswer);
+                List<ExamAnswerVo> examAnswerVos = new ArrayList<>();
+
+                ExamGroupVo groupVo = new ExamGroupVo();
+                BeanUtils.copyProperties(group, groupVo);
+
+                for (ExamAnswer answer : examAnswers) {
+                    ExamAnswerVo answerVo = new ExamAnswerVo();
+                    BeanUtils.copyProperties(answer, answerVo);
+                    answerVo.setOptions(null);
+                    System.out.println();
+                    examAnswerVos.add(answerVo);
+                }
+                groupVo.setQuList(examAnswerVos);
+                examGroupVos.add(groupVo);
+            }
+            System.out.println();
+            paper.setGroupList(examGroupVos);
+            return paper;
+        }
+
+
+        return null;
     }
 
     /**
@@ -139,8 +181,11 @@ public class ExamPaperServiceImpl implements IExamPaperService {
         }
 
         //判断密码是否正确
-        if (!paperCreateVo.getPassword().equals(exam.getPassword())) {
-            throw new CustomException("密码不正确！", 400);
+        if (exam.getOpenType() == 1) {
+
+            if (!paperCreateVo.getPassword().equals(exam.getPassword())) {
+                throw new CustomException("密码不正确！", 400);
+            }
         }
 
         //查找到试卷对应的题目
@@ -162,18 +207,21 @@ public class ExamPaperServiceImpl implements IExamPaperService {
             BeanUtils.copyProperties(group, examGroup);
             examGroup.setPaperId(examPaperId);
             examGroup.setId(groupId);
+            examGroup.setTotalScore(group.getTotalScore());
             examGroups.add(examGroup);
             for (GroupAnswer groupAnswer : groupAnswers) {
                 String answerId = groupAnswer.getAnswerId();
                 Answer answer = answerMapper.selectAnswerById(answerId);
                 ExamAnswer examAnswer = new ExamAnswer();
-                examAnswer.setQuId(answer.getTaskId());//设置题库ID
+                examAnswer.setQuId(answer.getId());//设置题库ID
                 examAnswer.setPaperId(examPaperId);//设置新的考试试卷ID
                 examAnswer.setGroupId(groupId);
                 if (examGroup.getPerScore() != null) {
                     examAnswer.setScore(examGroup.getPerScore().intValue());
                 }
+                examAnswer.setScore(Integer.valueOf(groupAnswer.getScore()));
                 BeanUtils.copyProperties(answer, examAnswer);
+
                 answerVos.add(examAnswer);
             }
         }
@@ -190,6 +238,21 @@ public class ExamPaperServiceImpl implements IExamPaperService {
             examGroupMapper.insertExamGroup(examGroup);
         }
         for (ExamAnswer answerVo : answerVos) {
+            answerVo.setId(SnowflakeIdWorker.getId());
+            List<AnswerOptions> answerOptionsList = answerOptionsMapper.selectAnswerOptionsByAnswerId(answerVo.getQuId());
+            for (AnswerOptions answerOptions : answerOptionsList) {
+                AnswerOptionsVo answerOptionsVo = new AnswerOptionsVo();
+                BeanUtils.copyProperties(answerOptions, answerOptionsVo);
+                ExamAnswerOptions examAnswerOptions = new ExamAnswerOptions();
+                examAnswerOptions.setAnswerId(answerOptions.getId());
+                examAnswerOptions.setPaperId(examPaperId);
+                examAnswerOptions.setChecked(false);
+                examAnswerOptions.setQuId(answerVo.getQuId());
+                examAnswerOptions.setContent(answerOptionsVo.getContent());
+                examAnswerOptionsMapper.insertExamAnswerOptions(examAnswerOptions);
+            }
+            answerVo.setIsRight(false);
+            answerVo.setMark(false);
             examAnswerMapper.insertExamAnswer(answerVo);
         }
         //保存考试题目
@@ -200,35 +263,44 @@ public class ExamPaperServiceImpl implements IExamPaperService {
     }
 
 
-
     @Override
-    public String fullAnswer(FullAnswerVo fullAnswerVo) {
-        if(fullAnswerVo != null){
-            List<AnswerOptionVo> answerList = fullAnswerVo.getAnswerList();
-            ExamAnswer examAnswer = new ExamAnswer();
-            BeanUtils.copyProperties(fullAnswerVo,examAnswer);
-            examAnswer.setOptions(JSONObject.toJSONString(answerList));
-            examAnswerMapper.updateExamAnswer(examAnswer);
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object> fullAnswer(ExamAnswerVo fullAnswerVo) {
+        List<ExamAnswerOptions> answerList = fullAnswerVo.getAnswerList();
+        boolean flag = false;
+        for (ExamAnswerOptions examAnswerOptions : answerList) {
+            if (examAnswerOptions.getChecked()) {
+                flag = true;
+            }
+            examAnswerOptionsMapper.updateExamAnswerOptions(examAnswerOptions);
         }
-        return null;
+
+        ExamAnswer examAnswer = new ExamAnswer();
+
+        BeanUtils.copyProperties(fullAnswerVo, examAnswer);
+
+        examAnswerMapper.updateExamAnswer(examAnswer);
+        Map<String, Object> map = new HashMap<>();
+        map.put("fill", flag);
+        return map;
     }
 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public AjaxResult userFraction(String id) {
-        if(!id.equals("")){
+        if (!id.equals("")) {
             ExamAnswer examAnswer = new ExamAnswer();
             examAnswer.setPaperId(id);
             List<ExamAnswer> examAnswers = examAnswerMapper.selectExamAnswerList(examAnswer);
             int unt = 0;
-            for (ExamAnswer ex : examAnswers){
-                List<AnswerOptionVo> answerOptions = (List<AnswerOptionVo>) JSONObject.parse(ex.getOptions());
+            for (ExamAnswer ex : examAnswers) {
+                List<AnswerOptionVo> answerOptions = (List<AnswerOptionVo>) JSONObject.parse("ex.getOptions()");
                 for (AnswerOptionVo answerOption : answerOptions) {
-                    if (answerOption.getChecked()&& answerOption.getRight()){
-                         ex.setIsRight(true);
+                    if (answerOption.getChecked() && answerOption.getRight()) {
+                        ex.setIsRight(true);
                         Integer score = ex.getScore();
-                        unt = unt+score;
+                        unt = unt + score;
                     }
                 }
             }
@@ -241,14 +313,34 @@ public class ExamPaperServiceImpl implements IExamPaperService {
 
             Exam exam = examMapper.selectExamById(examPaper.getExamId());
 
-            if(exam.getResultType() == 0){
+            if (exam.getResultType() == 0) {
                 data.put("resultType", exam.getThanks());
-            }else if (exam.getResultType() == 1){
+            } else if (exam.getResultType() == 1) {
                 data.put("resultType", exam.getThanks());
                 data.put("考试成绩", unt);
             }
-          return  AjaxResult.success("操作成功",data);
+            return AjaxResult.success("操作成功", data);
         }
         return null;
+    }
+
+    @Override
+    public AjaxResult quDetail(@RequestBody PaperQuQueryDTO paperQu) {
+        String paperId = paperQu.getPaperId();
+
+        String quId = paperQu.getQuId();
+
+        Answer answer = answerMapper.selectAnswerById(quId);
+
+
+        ExamAnswerVo examAnswerVo = examAnswerMapper.selectExamAnswerByQuId(paperId, quId);
+        String answerVoId = examAnswerVo.getId();
+        BeanUtils.copyProperties(answer, examAnswerVo);
+        examAnswerVo.setId(answerVoId);
+        examAnswerVo.setQuId(quId);
+        examAnswerVo.setPaperId(paperId);
+        List<ExamAnswerOptions> examAnswerOptions = examAnswerOptionsMapper.selectExamAnswerOptionsByQuId(paperId, quId);
+        examAnswerVo.setAnswerList(examAnswerOptions);
+        return AjaxResult.success(examAnswerVo);
     }
 }

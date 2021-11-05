@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.AnswerOptionsMapper">
+
+    <resultMap type="AnswerOptions" id="AnswerOptionsResult">
+        <result property="id"    column="id"    />
+        <result property="quId"    column="qu_id"    />
+        <result property="isRight"    column="is_right"    />
+        <result property="content"    column="content"    />
+        <result property="analysis"    column="analysis"    />
+    </resultMap>
+
+    <sql id="selectAnswerOptionsVo">
+        select id, qu_id, is_right, content, analysis from edu_answer_options
+    </sql>
+
+    <select id="selectAnswerOptionsList" parameterType="AnswerOptions" resultMap="AnswerOptionsResult">
+        <include refid="selectAnswerOptionsVo"/>
+        <where>
+            <if test="quId != null  and quId != ''"> and qu_id = #{quId}</if>
+            <if test="isRight != null "> and is_right = #{isRight}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="analysis != null  and analysis != ''"> and analysis = #{analysis}</if>
+        </where>
+    </select>
+
+    <select id="selectAnswerOptionsById" parameterType="String" resultMap="AnswerOptionsResult">
+        <include refid="selectAnswerOptionsVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectAnswerOptionsByAnswerId" resultType="com.lazy.vm.domain.AnswerOptions">
+        select id, qu_id quId, is_right isRight, content, analysis from edu_answer_options
+        where qu_id = #{answerId}
+    </select>
+
+    <insert id="insertAnswerOptions" parameterType="AnswerOptions">
+        insert into edu_answer_options
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="quId != null">qu_id,</if>
+            <if test="isRight != null">is_right,</if>
+            <if test="content != null">content,</if>
+            <if test="analysis != null">analysis,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="quId != null">#{quId},</if>
+            <if test="isRight != null">#{isRight},</if>
+            <if test="content != null">#{content},</if>
+            <if test="analysis != null">#{analysis},</if>
+        </trim>
+    </insert>
+
+    <update id="updateAnswerOptions" parameterType="AnswerOptions">
+        update edu_answer_options
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="quId != null">qu_id = #{quId},</if>
+            <if test="isRight != null">is_right = #{isRight},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="analysis != null">analysis = #{analysis},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAnswerOptionsById" parameterType="String">
+        delete from edu_answer_options where id = #{id}
+    </delete>
+
+    <delete id="deleteAnswerOptionsByIds" parameterType="String">
+        delete from edu_answer_options where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

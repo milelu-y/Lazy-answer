@@ -61,4 +61,6 @@ public interface GroupAnswerMapper
     public int deleteGroupAnswerByIds(String[] groupIds);
 
     List<GroupAnswer> selectGroupAnswerByGroupId(String id);
+
+    Integer selectScoreByAnswerId(String quId);
 }

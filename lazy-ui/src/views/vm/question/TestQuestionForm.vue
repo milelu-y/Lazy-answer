@@ -144,7 +144,7 @@ export default {
         this.postForm = response.data
         this.postForm.level = response.data.level + ""
         this.postForm.type = response.data.type + ""
-        this.postForm.answerList = JSON.parse(response.data.options)
+        // this.postForm.answerList = JSON.parse(response.data.options)
       })
     }
   },

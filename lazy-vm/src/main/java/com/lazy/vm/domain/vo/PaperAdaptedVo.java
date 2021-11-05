@@ -1,0 +1,170 @@
+package com.lazy.vm.domain.vo;
+
+import java.util.List;
+
+/**
+ * @author Lazy
+ * @date 2021/11/3 19:10
+ */
+public class PaperAdaptedVo {
+
+    private String id;
+
+    private String userId;
+
+    /**
+     * 试卷标题
+     */
+    private String title;
+
+    /**
+     * 分数
+     */
+    private Long totalScore;
+
+
+    /**
+     * 试卷总题数
+     */
+    private Integer quCount;
+
+    /**
+     * 考试分数
+     */
+    private Integer userScore;
+
+    /**
+     * 考试id
+     */
+    private String examId;
+
+    /**
+     * 及格分数
+     */
+    private Long qualifyScore;
+
+    /**
+     * 考试时长
+     */
+    private Long totalTime;
+
+    /**
+     * 限考次数
+     */
+    private String limitCount;
+
+    /**
+     * 是否限制考试时间
+     */
+    private Boolean limitTime;
+
+
+    private Integer status;
+
+
+    private List<ExamGroupVo> groupList;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Long getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Long totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public Integer getQuCount() {
+        return quCount;
+    }
+
+    public void setQuCount(Integer quCount) {
+        this.quCount = quCount;
+    }
+
+    public Integer getUserScore() {
+        return userScore;
+    }
+
+    public void setUserScore(Integer userScore) {
+        this.userScore = userScore;
+    }
+
+    public String getExamId() {
+        return examId;
+    }
+
+    public void setExamId(String examId) {
+        this.examId = examId;
+    }
+
+    public Long getQualifyScore() {
+        return qualifyScore;
+    }
+
+    public void setQualifyScore(Long qualifyScore) {
+        this.qualifyScore = qualifyScore;
+    }
+
+    public Long getTotalTime() {
+        return totalTime;
+    }
+
+    public void setTotalTime(Long totalTime) {
+        this.totalTime = totalTime;
+    }
+
+    public String getLimitCount() {
+        return limitCount;
+    }
+
+    public void setLimitCount(String limitCount) {
+        this.limitCount = limitCount;
+    }
+
+    public Boolean getLimitTime() {
+        return limitTime;
+    }
+
+    public void setLimitTime(Boolean limitTime) {
+        this.limitTime = limitTime;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public List<ExamGroupVo> getGroupList() {
+        return groupList;
+    }
+
+    public void setGroupList(List<ExamGroupVo> groupList) {
+        this.groupList = groupList;
+    }
+}

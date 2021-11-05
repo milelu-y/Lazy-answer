@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.ExamAnswerOptionsMapper">
+
+    <resultMap type="ExamAnswerOptions" id="ExamAnswerOptionsResult">
+        <result property="id" column="id"/>
+        <result property="paperId" column="paper_id"/>
+        <result property="groupId" column="group_id"/>
+        <result property="content" column="content"/>
+        <result property="pathScore" column="path_score"/>
+        <result property="checked" column="checked"/>
+        <result property="answerId" column="answer_id"/>
+        <result property="abc" column="abc"/>
+        <result property="answer" column="answer"/>
+        <result property="quId" column="qu_id"/>
+    </resultMap>
+
+    <sql id="selectExamAnswerOptionsVo">
+        select id,
+               paper_id,
+               group_id,
+               content,
+               path_score,
+               checked,
+               answer_id,
+               abc,
+               answer,
+               qu_id
+        from edu_exam_answer_options
+    </sql>
+
+    <select id="selectExamAnswerOptionsList" parameterType="ExamAnswerOptions" resultMap="ExamAnswerOptionsResult">
+        <include refid="selectExamAnswerOptionsVo"/>
+        <where>
+            <if test="paperId != null  and paperId != ''">and paper_id = #{paperId}</if>
+            <if test="groupId != null  and groupId != ''">and group_id = #{groupId}</if>
+            <if test="content != null  and content != ''">and content = #{content}</if>
+            <if test="pathScore != null ">and path_score = #{pathScore}</if>
+            <if test="checked != null  and checked != ''">and checked = #{checked}</if>
+            <if test="answerId != null  and answerId != ''">and answer_id = #{answerId}</if>
+            <if test="abc != null  and abc != ''">and abc = #{abc}</if>
+            <if test="answer != null  and answer != ''">and answer = #{answer}</if>
+            <if test="quId != null  and quId != ''">and qu_id = #{quId}</if>
+        </where>
+    </select>
+
+    <select id="selectExamAnswerOptionsById" parameterType="String" resultMap="ExamAnswerOptionsResult">
+        <include refid="selectExamAnswerOptionsVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectExamAnswerOptionsByQuId" resultType="com.lazy.vm.domain.ExamAnswerOptions">
+        select id,
+               paper_id   paperId,
+               group_id   groupId,
+               content,
+               path_score pathScore,
+               checked,
+               answer_id answerId,
+               abc,
+               answer,
+               qu_id quId
+        from edu_exam_answer_options
+        where paper_id = #{paperId} and qu_id = #{quId}
+    </select>
+
+    <insert id="insertExamAnswerOptions" parameterType="ExamAnswerOptions">
+        insert into edu_exam_answer_options
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="paperId != null">paper_id,</if>
+            <if test="groupId != null">group_id,</if>
+            <if test="content != null">content,</if>
+            <if test="pathScore != null">path_score,</if>
+            <if test="checked != null">checked,</if>
+            <if test="answerId != null">answer_id,</if>
+            <if test="abc != null and abc != ''">abc,</if>
+            <if test="answer != null">answer,</if>
+            <if test="quId != null">qu_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="paperId != null">#{paperId},</if>
+            <if test="groupId != null">#{groupId},</if>
+            <if test="content != null">#{content},</if>
+            <if test="pathScore != null">#{pathScore},</if>
+            <if test="checked != null">#{checked},</if>
+            <if test="answerId != null">#{answerId},</if>
+            <if test="abc != null and abc != ''">#{abc},</if>
+            <if test="answer != null">#{answer},</if>
+            <if test="quId != null">#{quId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateExamAnswerOptions" parameterType="ExamAnswerOptions">
+        update edu_exam_answer_options
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="paperId != null">paper_id = #{paperId},</if>
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="pathScore != null">path_score = #{pathScore},</if>
+            <if test="checked != null">checked = #{checked},</if>
+            <if test="answerId != null">answer_id = #{answerId},</if>
+            <if test="abc != null and abc != ''">abc = #{abc},</if>
+            <if test="answer != null">answer = #{answer},</if>
+            <if test="quId != null">qu_id = #{quId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteExamAnswerOptionsById" parameterType="String">
+        delete
+        from edu_exam_answer_options
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteExamAnswerOptionsByIds" parameterType="String">
+        delete from edu_exam_answer_options where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -2,8 +2,10 @@ package com.lazy.web.controller.vm;
 
 import java.util.List;
 
+import com.lazy.vm.domain.vo.ExamAnswerVo;
 import com.lazy.vm.domain.vo.FullAnswerVo;
 import com.lazy.vm.domain.vo.PaperCreateVo;
+import com.lazy.vm.domain.vo.PaperQuQueryDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,7 +67,7 @@ public class ExamPaperController extends BaseController
      * 获取试卷详细信息
      */
     @PreAuthorize("@ss.hasPermi('vm:examPaper:query')")
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/paperDetail/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
         return AjaxResult.success(examPaperService.selectExamPaperById(id));
@@ -124,9 +126,9 @@ public class ExamPaperController extends BaseController
     @PreAuthorize("@ss.hasPermi('vm:Answer:edit')")
     @Log(title = "保存考生答题情况", businessType = BusinessType.UPDATE)
     @PostMapping("/fullAnswer")
-    public AjaxResult fullAnswer(@RequestBody FullAnswerVo fullAnswerVo){
+    public AjaxResult fullAnswer(@RequestBody ExamAnswerVo fullAnswerVo){
         return AjaxResult.success(examPaperService.fullAnswer(fullAnswerVo));
-    };
+    }
 
     /**
      *学生考试分数
@@ -138,7 +140,16 @@ public class ExamPaperController extends BaseController
     @PostMapping("/userFraction")
     public AjaxResult userFraction(@RequestBody String id){
         return AjaxResult.success(examPaperService.userFraction(id));
-    };
+    }
 
-
+    /**
+     * 获取题目详情
+     *
+     * @param paperQuQueryDTO
+     * @return
+     */
+    @PostMapping("/quDetail")
+    public AjaxResult createPaper(@RequestBody PaperQuQueryDTO paperQuQueryDTO) {
+        return examPaperService.quDetail(paperQuQueryDTO);
+    }
 }

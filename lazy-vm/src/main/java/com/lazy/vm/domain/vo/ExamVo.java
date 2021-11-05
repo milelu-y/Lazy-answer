@@ -9,43 +9,69 @@ import java.util.List;
  * @date 2021/11/2 9:53
  */
 public class ExamVo {
-    /** 考试id */
+    /**
+     * 考试id
+     */
     private String id;
 
-    /** 试卷ID */
+    /**
+     * 试卷ID
+     */
     private String paperId;
 
-    /** 考试名称 */
+    /**
+     * 考试名称
+     */
     private String title;
 
-    /** 及格分数 */
+    /**
+     * 及格分数
+     */
     private Long qualifyScore;
 
-    /** 考试时长 */
+    /**
+     * 考试时长
+     */
     private Long totalTime;
 
-    /** 限考次数 */
+    /**
+     * 限考次数
+     */
     private String limitCount;
 
-    /** 是否限制考试时间*/
+    /**
+     * 是否限制考试时间
+     */
     private Boolean limitTime;
 
-    /** 返回结果类型 */
+    /**
+     * 返回结果类型
+     */
     private Integer resultType;
 
-    /** 注意事项 */
+    /**
+     * 注意事项
+     */
     private String content;
 
-    /** 考后感谢语 */
+    /**
+     * 考后感谢语
+     */
     private String thanks;
 
-    /** 开放权限 */
+    /**
+     * 开放权限
+     */
     private Integer openType;
 
-    /** 密码 */
+    /**
+     * 密码
+     */
     private String password;
 
     private String status;
+
+    private Integer totalScore;
 
     private List<SysUser> personList;
 
@@ -169,5 +195,13 @@ public class ExamVo {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Integer totalScore) {
+        this.totalScore = totalScore;
     }
 }

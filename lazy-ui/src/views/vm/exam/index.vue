@@ -63,7 +63,7 @@
       <el-table-column label="状态" align="center" prop="status"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <router-link style="color: #00afff">
+          <router-link to="/" style="color: #00afff">
             <i class="el-icon-pie-chart"></i> 统计分析
           </router-link>
         </template>

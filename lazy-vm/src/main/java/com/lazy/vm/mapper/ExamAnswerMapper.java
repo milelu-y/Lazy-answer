@@ -2,6 +2,8 @@ package com.lazy.vm.mapper;
 
 import java.util.List;
 import com.lazy.vm.domain.ExamAnswer;
+import com.lazy.vm.domain.vo.ExamAnswerVo;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 考试作业题目Mapper接口
@@ -58,4 +60,6 @@ public interface ExamAnswerMapper
      * @return 结果
      */
     public int deleteExamAnswerByIds(String[] ids);
+
+    ExamAnswerVo selectExamAnswerByQuId(@Param("paperId") String paperId ,@Param("quId") String quId);
 }

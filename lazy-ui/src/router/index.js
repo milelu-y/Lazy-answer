@@ -225,7 +225,7 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/web/exam/start:id?',
+    path: '/web/exam/start/:id',
     name:'startExam',
     component: (resolve) => require(['@/views/web/exam/start'], resolve),
     hidden: true

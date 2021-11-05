@@ -5,44 +5,74 @@
 <mapper namespace="com.lazy.vm.mapper.ExamPaperMapper">
 
     <resultMap type="ExamPaper" id="ExamPaperResult">
-        <result property="id"    column="id"    />
-        <result property="userId"    column="user_id"    />
-        <result property="title"    column="title"    />
-        <result property="totalScore"    column="total_score"    />
-        <result property="type"    column="type"    />
-        <result property="category"    column="category"    />
-        <result property="quCount"    column="qu_count"    />
-        <result property="examId"    column="exam_id"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateTime"    column="update_time"    />
-        <result property="userSroce"    column="user_sroce"    />
-        <result property="reserveField4"    column="reserve_field4"    />
-        <result property="reserveField5"    column="reserve_field5"    />
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="title" column="title"/>
+        <result property="totalScore" column="total_score"/>
+        <result property="type" column="type"/>
+        <result property="category" column="category"/>
+        <result property="quCount" column="qu_count"/>
+        <result property="examId" column="exam_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="userScore" column="user_score"/>
+        <result property="status" column="status"/>
+        <result property="reserveField5" column="reserve_field5"/>
     </resultMap>
 
     <sql id="selectExamPaperVo">
-        select id, user_id, title, total_score, type, category, qu_count, exam_id, create_time, update_time, user_sroce, reserve_field4, reserve_field5 from edu_exam_paper
+        select id,
+               user_id,
+               title,
+               total_score,
+               type,
+               category,
+               qu_count,
+               exam_id,
+               create_time,
+               update_time,
+               user_score,
+               status,
+               reserve_field5
+        from edu_exam_paper
     </sql>
 
     <select id="selectExamPaperList" parameterType="ExamPaper" resultMap="ExamPaperResult">
         <include refid="selectExamPaperVo"/>
         <where>
-            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
-            <if test="totalScore != null "> and total_score = #{totalScore}</if>
-            <if test="type != null "> and type = #{type}</if>
-            <if test="category != null  and category != ''"> and category = #{category}</if>
-            <if test="quCount != null "> and qu_count = #{quCount}</if>
-            <if test="examId != null  and examId != ''"> and exam_id = #{examId}</if>
-            <if test="userSroce != null "> and user_sroce = #{userSroce}</if>
-            <if test="reserveField4 != null  and reserveField4 != ''"> and reserve_field4 = #{reserveField4}</if>
-            <if test="reserveField5 != null  and reserveField5 != ''"> and reserve_field5 = #{reserveField5}</if>
+            <if test="userId != null  and userId != ''">and user_id = #{userId}</if>
+            <if test="title != null  and title != ''">and title = #{title}</if>
+            <if test="totalScore != null ">and total_score = #{totalScore}</if>
+            <if test="type != null ">and type = #{type}</if>
+            <if test="category != null  and category != ''">and category = #{category}</if>
+            <if test="quCount != null ">and qu_count = #{quCount}</if>
+            <if test="examId != null  and examId != ''">and exam_id = #{examId}</if>
+            <if test="userScore != null ">and user_score = #{userScore}</if>
+            <if test="status != null  and status != ''">and status = #{status}</if>
+            <if test="reserveField5 != null  and reserveField5 != ''">and reserve_field5 = #{reserveField5}</if>
         </where>
     </select>
 
     <select id="selectExamPaperById" parameterType="String" resultMap="ExamPaperResult">
         <include refid="selectExamPaperVo"/>
         where id = #{id}
+    </select>
+    <select id="selectExamAndPaper" resultType="com.lazy.vm.domain.vo.PaperAdaptedVo">
+        SELECT paper.id          id,
+               user_id           userId,
+               paper.title,
+               paper.total_score totalScore,
+               qu_count          quCount,
+               exam.id           examId,
+               user_score        userScore,
+               qualify_score     qualifyScore,
+               total_time        totalTime,
+               limit_count       limitCount,
+               limit_time        limitTime,
+               paper.status      status
+        FROM edu_exam_paper paper
+                 LEFT JOIN edu_exam exam ON exam.id = paper.exam_id
+        WHERE paper.id = #{id}
     </select>
 
     <insert id="insertExamPaper" parameterType="ExamPaper">
@@ -58,8 +88,8 @@
             <if test="examId != null">exam_id,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
-            <if test="userSroce != null">user_sroce,</if>
-            <if test="reserveField4 != null">reserve_field4,</if>
+            <if test="userScore != null">user_score,</if>
+            <if test="status != null">status,</if>
             <if test="reserveField5 != null">reserve_field5,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -73,8 +103,8 @@
             <if test="examId != null">#{examId},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
-            <if test="userSroce != null">#{userSroce},</if>
-            <if test="reserveField4 != null">#{reserveField4},</if>
+            <if test="userScore != null">#{userScore},</if>
+            <if test="status != null">#{status},</if>
             <if test="reserveField5 != null">#{reserveField5},</if>
         </trim>
     </insert>
@@ -91,15 +121,17 @@
             <if test="examId != null">exam_id = #{examId},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
-            <if test="userSroce != null">user_sroce = #{userSroce},</if>
-            <if test="reserveField4 != null">reserve_field4 = #{reserveField4},</if>
+            <if test="userScore != null">user_score = #{userScore},</if>
+            <if test="status != null">status = #{status},</if>
             <if test="reserveField5 != null">reserve_field5 = #{reserveField5},</if>
         </trim>
         where id = #{id}
     </update>
 
     <delete id="deleteExamPaperById" parameterType="String">
-        delete from edu_exam_paper where id = #{id}
+        delete
+        from edu_exam_paper
+        where id = #{id}
     </delete>
 
     <delete id="deleteExamPaperByIds" parameterType="String">

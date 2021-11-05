@@ -1,6 +1,7 @@
 package com.lazy.vm.mapper;
 
 import com.lazy.vm.domain.ExamPaper;
+import com.lazy.vm.domain.vo.PaperAdaptedVo;
 
 import java.util.List;
 
@@ -59,4 +60,6 @@ public interface ExamPaperMapper
      * @return 结果
      */
     public int deleteExamPaperByIds(String[] ids);
+
+    PaperAdaptedVo selectExamAndPaper(String id);
 }

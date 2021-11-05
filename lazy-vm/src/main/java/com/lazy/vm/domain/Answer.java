@@ -21,7 +21,7 @@ public class Answer extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 作业id */
-    @IDField
+//    @IDField
     private String id;
 
     /** 题目类型：1（single: 单选题）、2（multiple: 多选题）、3 （fill: 填空题）、4（aq: 问答题）、5（judgment: 判断题） */
