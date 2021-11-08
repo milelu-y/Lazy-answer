@@ -1,5 +1,7 @@
 package com.lazy.web.controller.vm;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -149,20 +151,20 @@ public class ExperimentController extends BaseController
 
     /**
      * 地心地固转大地坐标
-     * @param xYZ  地心地固坐标
+     * @param  //xYZ  地心地固坐标
      * @return
      */
     @PostMapping("/XYZToBLH")
-    public AjaxResult XYZToBLH(PointXYZ xYZ)
+    public AjaxResult XYZToBLH()
     {
         PointXYZ xYZl = new PointXYZ();
         xYZl.setX(-2195922.235);
         xYZl.setY(-5177499.073);
         xYZl.setZ(-299883.118);
         Ellipsoid ellipsoid = new Ellipsoid();
-        double X = xYZ.X;
-        double Y = xYZ.Y;
-        double Z = xYZ.Z;
+        double X = xYZl.X;
+        double Y = xYZl.Y;
+        double Z = xYZl.Z;
         PointBLH bLH = new PointBLH();
         bLH.L = Math.atan(Y / X);
         if (X < 0)
@@ -229,7 +231,18 @@ public class ExperimentController extends BaseController
      * @param
      */
     @PostMapping("/XYZ2ENU")
-    public AjaxResult XYZ2ENU(PointXYZ ref_xyz, PointXYZ xyz){
+    public AjaxResult XYZ2ENU(){
+
+        PointXYZ ref_xyz = new PointXYZ();
+        ref_xyz.setX(-2195922.235);
+        ref_xyz.setY(5177499.073);
+        ref_xyz.setZ(299883.118);
+
+        PointXYZ xyz = new PointXYZ();
+        xyz.setX(-225922.235);
+        xyz.setY(5773299.073);
+        xyz.setZ(293483.118);
+
         PointBLH pointBLH = XYZToBLHClass(ref_xyz);
         double b =    pointBLH.getB();
         double l =    pointBLH.getL();
@@ -248,10 +261,11 @@ public class ExperimentController extends BaseController
         /*System.out.println("e "+ e);
         System.out.println("n "+ n);
         System.out.println("u "+ u);*/
-       /* Map<String, Object> data = new HashMap<>();
-        data.put("Put", examPaperResult.getId());
-        data.put("outPut", eun);*/
-        return  AjaxResult.success(eun);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("Put", ref_xyz);
+        data.put("outPut", eun);
+        return  AjaxResult.success(data);
     }
 
 
@@ -279,15 +293,35 @@ public class ExperimentController extends BaseController
 
 
 
+    public Double dateToM(String dates){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = format.parse(dates );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        double t = date.getTime()/1000;
+        return t;
+    }
+
+
+
     //根据历书计算卫星位置实验
     /**
      * 1
      * 取自中轨MEO值，72页，表4.4
      * @param    //toa 97200
-     * @param t  单位 秒
+     * @param // t  单位 秒
      */
     @PostMapping("/exp5_BDCS_LS")
-    public AjaxResult exp5_BDCS_LS(double t){
+    public AjaxResult exp5_BDCS_LS(){
+
+
+       String date = "2020-12-31 22:0:0";
+
+        double t = dateToM(date);
         ExperimentResult  experimentResult = new ExperimentResult();
 
         double toa = 97200;
@@ -374,16 +408,26 @@ public class ExperimentController extends BaseController
         double Zk = yk*Math.sin(ii);
         experimentResult.setResult12(Double.valueOf(Xk+","+Yk+","+Zk));
 
-        return  AjaxResult.success(experimentResult);
+        Map<String, Object> data = new HashMap<>();
+        data.put("input", t);
+        data.put("output", experimentResult);
+
+        return  AjaxResult.success(data);
     }
 
 
     /** 根据北斗三号,MEO
      * t 单位 秒
-     * @param t
+     * @param //t
      */
     @PostMapping("/exp6_BDCS_XL")
-    public AjaxResult exp6_BDCS_XL(double t){
+    public AjaxResult exp6_BDCS_XL(){
+
+
+        String date = "2020-12-31 22:0:0";
+
+        double t = dateToM(date);
+
         ExperimentResult  experimentResult = new ExperimentResult();
 
         double toe = 1.728*Math.pow(10,5);
@@ -503,8 +547,14 @@ public class ExperimentController extends BaseController
         double Xk = xk*Math.cos(Big_onigak)-yk*Math.cos(ik)*Math.sin(Big_onigak);
         double Yk = xk*Math.sin(Big_onigak)+yk*Math.cos(ik)*Math.cos(Big_onigak);
         double Zk = yk*Math.sin(ik);
+
         experimentResult.setResult19(Double.valueOf(Xk+","+Yk+","+Zk));
-        return  null;
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("input", t);
+        data.put("output", experimentResult);
+
+        return  AjaxResult.success(data);
     }
 
 
