@@ -57,7 +57,7 @@
 
 <script>
 
-import {fullAnswer, paperDetail, quDetail} from "@/api/vm/testPaper";
+import {fullAnswer, paperDetail, quDetail, saveExam} from "@/api/vm/testPaper";
 import QuItem from "@/views/web/exam/components/QuItem";
 import ExamTimer from "@/views/web/exam/components/ExamTimer";
 
@@ -158,9 +158,10 @@ export default {
       this.fetchQuData(item);
     },
     handleFill(quData) {
-      console.log("quData", quData)
       fullAnswer(quData).then(response => {
         console.log(response)
+        this.cardItem.answered = response.data.fill;
+        this.cardItem.mark = quData.mark;
       })
     },
     countNotAnswered() {
@@ -175,12 +176,36 @@ export default {
       return na;
     },
     handHandExam() {
+      let that = this;
       var na = this.countNotAnswered();
       console.log(na)
+      var msg = '确认要交卷吗？';
+      if (na > 0) {
+        msg = '您还有' + na + '题未作答，确认要交卷吗？';
+      }
+      this.$confirm(msg, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function () {
+        that.doHandler(0);
+      });
     },
     //超时 交卷
-    doHandler() {
-      console.log("超时 交卷")
+    doHandler(flag) {
+      var that = this;
+      this.loading = true;
+      saveExam({id: this.paperId}).then(response => {
+        //显示结果
+        this.loading = false
+        //跳转
+        that.$router.push({
+          name: 'showExam',
+          params: {
+            id: that.paperId
+          }
+        });
+      })
     }
   }
 }

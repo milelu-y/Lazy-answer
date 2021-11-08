@@ -85,3 +85,18 @@ export function fullAnswer(data) {
     data: data
   })
 }
+
+export function saveExam(data) {
+  return request({
+    url: '/vm/examPaper/saveExam',
+    method: 'post',
+    data: data
+  })
+}
+
+export function paperResult(data) {
+  return request({
+    url: '/vm/examPaper/paperResult/'+data,
+    method: 'get',
+  })
+}

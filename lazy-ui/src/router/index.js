@@ -271,7 +271,21 @@ export const constantRoutes = [
       }
     ]
   },
+  //结果
 
+  {
+    path: '/web/vm/result',
+    component: webLayout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/web/exam/result'], resolve),
+        name: 'showExam',
+        meta: {title: '实验'}
+      }
+    ]
+  },
 
   {
     path: '/web/vm/liShuToSatellitePosition',

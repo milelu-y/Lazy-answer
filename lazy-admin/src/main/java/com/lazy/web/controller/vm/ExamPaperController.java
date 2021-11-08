@@ -1,6 +1,7 @@
 package com.lazy.web.controller.vm;
 
 import java.util.List;
+import java.util.Map;
 
 import com.lazy.vm.domain.vo.ExamAnswerVo;
 import com.lazy.vm.domain.vo.FullAnswerVo;
@@ -137,9 +138,9 @@ public class ExamPaperController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('vm:Answer:edit')")
     @Log(title = "学生考试分数", businessType = BusinessType.UPDATE)
-    @PostMapping("/userFraction")
-    public AjaxResult userFraction(@RequestBody String id){
-        return AjaxResult.success(examPaperService.userFraction(id));
+    @PostMapping("/saveExam")
+    public AjaxResult saveExam(@RequestBody Map<String,String> map){
+        return AjaxResult.success(examPaperService.saveExam(map.get("id")));
     }
 
     /**

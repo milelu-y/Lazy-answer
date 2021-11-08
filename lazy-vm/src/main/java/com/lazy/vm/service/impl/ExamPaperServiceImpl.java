@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.lazy.common.core.domain.AjaxResult;
 import com.lazy.common.enums.ExamState;
 import com.lazy.common.exception.CustomException;
@@ -288,21 +286,37 @@ public class ExamPaperServiceImpl implements IExamPaperService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public AjaxResult userFraction(String id) {
+    public AjaxResult saveExam(String id) {
         if (!id.equals("")) {
             ExamAnswer examAnswer = new ExamAnswer();
             examAnswer.setPaperId(id);
             List<ExamAnswer> examAnswers = examAnswerMapper.selectExamAnswerList(examAnswer);
             int unt = 0;
             for (ExamAnswer ex : examAnswers) {
-                List<AnswerOptionVo> answerOptions = (List<AnswerOptionVo>) JSONObject.parse("ex.getOptions()");
-                for (AnswerOptionVo answerOption : answerOptions) {
-                    if (answerOption.getChecked() && answerOption.getRight()) {
-                        ex.setIsRight(true);
-                        Integer score = ex.getScore();
-                        unt = unt + score;
+
+                ExamAnswerVo examAnswerVo = new ExamAnswerVo();
+
+                BeanUtils.copyProperties(ex, examAnswerVo);
+
+                List<AnswerOptions> answerOptionsList = answerOptionsMapper.selectAnswerOptionsByAnswerId(ex.getQuId());
+
+                List<ExamAnswerOptions> answerOptions =
+                        examAnswerOptionsMapper.selectExamAnswerOptionsByQuId(examAnswerVo.getPaperId(), examAnswerVo.getQuId());
+
+                for (ExamAnswerOptions answerOption : answerOptions) {
+
+                    for (AnswerOptions option : answerOptionsList) {
+                        if (answerOption.getAnswerId().equals(option.getId())) {
+                            if (answerOption.getChecked() && option.getIsRight()) {
+                                ex.setIsRight(true);
+                                Integer score = ex.getScore();
+                                unt = unt + score;
+                                break;
+                            }
+                        }
                     }
                 }
+                examAnswerMapper.updateExamAnswer(ex);
             }
 
 
@@ -317,11 +331,11 @@ public class ExamPaperServiceImpl implements IExamPaperService {
                 data.put("resultType", exam.getThanks());
             } else if (exam.getResultType() == 1) {
                 data.put("resultType", exam.getThanks());
-                data.put("考试成绩", unt);
+                data.put("result", unt);
             }
             return AjaxResult.success("操作成功", data);
         }
-        return null;
+        return AjaxResult.error();
     }
 
     @Override

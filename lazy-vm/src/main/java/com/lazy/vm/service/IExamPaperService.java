@@ -67,7 +67,7 @@ public interface IExamPaperService
 
     Map fullAnswer(ExamAnswerVo fullAnswerVo);
 
-    AjaxResult userFraction(String id);
+    AjaxResult saveExam(String id);
 
     AjaxResult quDetail(PaperQuQueryDTO paperQuQueryDTO);
 }
