@@ -1,7 +1,9 @@
 package com.lazy.web.controller.vm;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.lazy.common.vm.Ellipsoid;
 import com.lazy.vm.domain.vo.ExperimentResult;
@@ -108,6 +110,10 @@ public class ExperimentController extends BaseController
     }
 
 
+
+
+
+
     /**
      * 大地坐标转地心地固
      * @param //bLH 大地坐标
@@ -117,7 +123,7 @@ public class ExperimentController extends BaseController
     //public AjaxResult BLHToXYZ(@RequestBody PointBLH bLH)
     public AjaxResult BLHToXYZ()
     {
-         PointBLH bLH = new PointBLH();
+        PointBLH bLH = new PointBLH();
         bLH.setB(1223.1);
         bLH.setB(132423);
         bLH.setB(142434);
@@ -133,7 +139,10 @@ public class ExperimentController extends BaseController
         xYZ.X = (N + H) * Math.cos(B) * Math.cos(L);
         xYZ.Y = (N + H) * Math.cos(B) * Math.sin(L);
         xYZ.Z = (N * (1 - ellipsoid.ec) + H) * Math.sin(B);
-        return AjaxResult.success(xYZ);
+        Map<String, Object> data = new HashMap<>();
+        data.put("input", bLH);
+        data.put("output", xYZ);
+        return AjaxResult.success(data);
     }
 
 
@@ -146,6 +155,10 @@ public class ExperimentController extends BaseController
     @PostMapping("/XYZToBLH")
     public AjaxResult XYZToBLH(PointXYZ xYZ)
     {
+        PointXYZ xYZl = new PointXYZ();
+        xYZl.setX(-2195922.235);
+        xYZl.setY(-5177499.073);
+        xYZl.setZ(-299883.118);
         Ellipsoid ellipsoid = new Ellipsoid();
         double X = xYZ.X;
         double Y = xYZ.Y;
@@ -170,7 +183,10 @@ public class ExperimentController extends BaseController
         double W = Math.sqrt(1 - ellipsoid.ec * (Math.sin(B2) * Math.sin(B2)));
         double N = ellipsoid.a / W;
         bLH.H = r / Math.cos(B2) - N;
-        return AjaxResult.success(bLH);
+        Map<String, Object> data = new HashMap<>();
+        data.put("input", xYZl);
+        data.put("output", bLH);
+        return AjaxResult.success(data);
     }
 
 
@@ -232,6 +248,9 @@ public class ExperimentController extends BaseController
         /*System.out.println("e "+ e);
         System.out.println("n "+ n);
         System.out.println("u "+ u);*/
+       /* Map<String, Object> data = new HashMap<>();
+        data.put("Put", examPaperResult.getId());
+        data.put("outPut", eun);*/
         return  AjaxResult.success(eun);
     }
 
