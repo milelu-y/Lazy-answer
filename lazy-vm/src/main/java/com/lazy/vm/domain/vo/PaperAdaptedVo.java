@@ -61,8 +61,17 @@ public class PaperAdaptedVo {
 
     private Integer status;
 
+    private String thanks;
 
     private List<ExamGroupVo> groupList;
+
+    public String getThanks() {
+        return thanks;
+    }
+
+    public void setThanks(String thanks) {
+        this.thanks = thanks;
+    }
 
     public String getId() {
         return id;

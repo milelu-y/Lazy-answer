@@ -69,7 +69,8 @@
                total_time        totalTime,
                limit_count       limitCount,
                limit_time        limitTime,
-               paper.status      status
+               paper.status      status,
+               exam.thanks thanks
         FROM edu_exam_paper paper
                  LEFT JOIN edu_exam exam ON exam.id = paper.exam_id
         WHERE paper.id = #{id}

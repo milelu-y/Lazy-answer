@@ -357,4 +357,13 @@ public class ExamPaperServiceImpl implements IExamPaperService {
         examAnswerVo.setAnswerList(examAnswerOptions);
         return AjaxResult.success(examAnswerVo);
     }
+
+    @Override
+    public AjaxResult paperResult(String id) {
+        PaperAdaptedVo paper = examPaperMapper.selectExamAndPaper(id);
+        if (paper!=null){
+            return AjaxResult.success(paper);
+        }
+        return AjaxResult.error();
+    }
 }

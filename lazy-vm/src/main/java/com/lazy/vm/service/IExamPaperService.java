@@ -70,4 +70,6 @@ public interface IExamPaperService
     AjaxResult saveExam(String id);
 
     AjaxResult quDetail(PaperQuQueryDTO paperQuQueryDTO);
+
+    AjaxResult paperResult(String id);
 }

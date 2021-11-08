@@ -133,7 +133,7 @@ public class ExamPaperController extends BaseController
 
     /**
      *学生考试分数
-     * @param id
+     * @param map
      * @return
      */
     @PreAuthorize("@ss.hasPermi('vm:Answer:edit')")
@@ -152,5 +152,10 @@ public class ExamPaperController extends BaseController
     @PostMapping("/quDetail")
     public AjaxResult createPaper(@RequestBody PaperQuQueryDTO paperQuQueryDTO) {
         return examPaperService.quDetail(paperQuQueryDTO);
+    }
+
+    @GetMapping("/paperResult/{id}")
+    public AjaxResult paperResult(@PathVariable("id") String id) {
+        return examPaperService.paperResult(id);
     }
 }
