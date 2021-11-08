@@ -128,7 +128,7 @@ public class ExperimentController extends BaseController
         PointBLH bLH = new PointBLH();
         bLH.setB(1223.1);
         bLH.setB(132423);
-        bLH.setB(142434);
+        bLH.setL(142434);
         Ellipsoid ellipsoid = new Ellipsoid();
 
         double B = bLH.B;
@@ -263,8 +263,9 @@ public class ExperimentController extends BaseController
         System.out.println("u "+ u);*/
 
         Map<String, Object> data = new HashMap<>();
-        data.put("Put", ref_xyz);
-        data.put("outPut", eun);
+        data.put("input", ref_xyz);
+        data.put("input2", pointBLH);
+        data.put("output", eun);
         return  AjaxResult.success(data);
     }
 
@@ -273,7 +274,7 @@ public class ExperimentController extends BaseController
         PointBLH pointBLH = XYZToBLHClass(ref_xyz);
         double b =    pointBLH.getB();
         double l =    pointBLH.getL();
-        // double h =    pointBLH.getH();
+        // double h =    pointBLH.getH();s
         double diff_x = ref_xyz.getX() - xyz.getX();
         double diff_y = ref_xyz.getY() - xyz.getY();
         double diff_z = ref_xyz.getZ() - xyz.getZ();
