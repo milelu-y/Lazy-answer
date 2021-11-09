@@ -274,6 +274,9 @@ export default {
       var _this3 = this;
       addExam(this.postForm).then(response => {
         console.log(response)
+        if (response.code === 200) {
+          this.$router.go(-1)
+        }
       })
     }
   }
