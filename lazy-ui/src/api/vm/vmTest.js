@@ -27,3 +27,16 @@ export function exp10_shuangpinDianLiCeng() {
   })
 }
 
+export function exp9_bds_dianLiCeng() {
+  return request({
+    url: '/vm/Experiment/exp9_bds_dianLiCeng',
+    method: 'post',
+  })
+}
+export function exp8_gps_dianLiCeng() {
+  return request({
+    url: '/vm/Experiment/exp8_gps_dianLiCeng',
+    method: 'post',
+  })
+}
+
