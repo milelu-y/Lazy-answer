@@ -3,13 +3,13 @@
     <div><h2>BDS电离层延迟改正实验</h2></div>
     <el-divider/>
     <el-card>
-      <span >卫星位置：{{-13364075.20873,22879822.5064,790480.10088}}</span>
+      <span >卫星位置：{{data.input.X}},{{data.input.Y}},{{data.input.Z}}</span>
     </el-card>
     <el-card style="margin-top: 10px">
-      <span >用户位置:{{-2148744.3969,4426641.2099,4044655.8564}}</span>
+      <span >用户位置:{{data.input2.X}},{{data.input2.Y}},{{data.input2.Z}}</span>
     </el-card>
     <el-card style="margin-top: 10px">
-      <span >频点参数 B1:{{1561.098+'Hz'}}</span>
+      <span >频点参数 B1:{{data.output.result1}}</span>
     </el-card>
     <el-card class="card" style="margin-top: 10px">
       <div style="text-align: center">
@@ -117,13 +117,22 @@
 </template>
 
 <script>
+import {exp9_gps_dianLiCeng} from "@/api/vm/vmTest";
+
 export default {
-  name: "GPS",
+  name: "BDS",
   data(){
     return{
-      isType:true
+      isType:true,
+      data: {}
     }
-  }
+  },
+  created() {
+    exp9_gps_dianLiCeng().then(response => {
+      this.data = response.data
+      console.log(response)
+    })
+  },
 }
 </script>
 
