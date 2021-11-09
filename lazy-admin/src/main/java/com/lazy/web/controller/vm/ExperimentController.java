@@ -303,7 +303,7 @@ public class ExperimentController extends BaseController
             e.printStackTrace();
         }
 
-        double t = date.getTime()/1000;
+        double t = date.getTime();
         return t;
     }
 
@@ -559,12 +559,28 @@ public class ExperimentController extends BaseController
     }
 
 
+    public Date newDate() throws ParseException {
+        String beginDate = "2000-01-01";
+        String endDate = "2021-10-31";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date start = format.parse(beginDate);
+        Date end = format.parse(endDate);
+        long rtn = start.getTime() + (long)(Math.random() * (end.getTime() - start.getTime()));
+       // Date date = new Date(rtn);
+        /*System.out.println(date.getTime());
+        String time = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(date);*/
+        return  new Date(rtn);
+    }
+
     /**
-     * @param date_ref :参考日期时间
-     * @param date_now ：当前日期时间
+     * @param //date_ref :参考日期时间
+     * @param //date_now ：当前日期时间
      */
     @PostMapping("/exp7_dianwen")
-    public AjaxResult exp7_dianwen(Date date_ref, Date date_now) {
+    public AjaxResult exp7_dianwen( ) throws ParseException {
+
+        Date  date_now =  newDate();
+        Date  date_ref = new Date();
         ExperimentResult  experimentResult = new ExperimentResult();
 
         double tk = (date_now.getTime()-date_ref.getTime())/1000.;
@@ -611,20 +627,51 @@ public class ExperimentController extends BaseController
         double ga2 = 4.00558305466653*Math.pow(10,-25);
         double gpst_tsv = ga0 + ga1*tk+ga2*tk*tk +delta_tr;
         experimentResult.setResult2(gpst_tsv);
-        return  AjaxResult.success(experimentResult);
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("input",date_ref);
+        data.put("input2", date_now);
+        data.put("output", experimentResult);
+
+        return  AjaxResult.success(data);
     }
 
     /**
-     * @param ref_xyz 参考点
-     * @param wx_xyz  卫星坐标
-     * @param user_xyz 用户坐标
-     * @param date_now 当前时间
-     * @param B1I_f B1I 载波频率
-     * @param B2I_f B2I 载波频率
-     * @param B3I_f B3I 载波频率
+     * @param //ref_xyz 参考点
+     * @param //wx_xyz  卫星坐标
+     * @param //user_xyz 用户坐标
+     * @param //date_now 当前时间
+     * @param  //B1I_f B1I 载波频率  1561.098
+     * @param  //B2I_f B2I 载波频率  1207.14
+     * @param  //B3I_f B3I 载波频率  1268.52
      */
     @PostMapping("/exp8_gps_dianLiCeng")
-    public AjaxResult exp8_gps_dianLiCeng(PointXYZ ref_xyz, PointXYZ wx_xyz, PointXYZ user_xyz, Date date_now, double B1I_f, double B2I_f, double B3I_f ) {
+    public AjaxResult exp8_gps_dianLiCeng() {
+
+        PointXYZ ref_xyz = new PointXYZ();
+        ref_xyz.setX(-63541258.65235);
+        ref_xyz.setY(56214563.85123);
+        ref_xyz.setZ(459563.41562);
+
+        PointXYZ wx_xyz = new PointXYZ();
+        wx_xyz.setX(-13364075.20873);
+        wx_xyz.setY(22879822.95064);
+        wx_xyz.setZ(790480.10088);
+
+        PointXYZ user_xyz = new PointXYZ();
+        user_xyz.setX(-2148744.3969);
+        user_xyz.setY(4426641.2099);
+        user_xyz.setZ(4044655.8564);
+
+
+
+        double B1I_f = 1561.098*Math.pow(10,6);
+        double B2I_f =  1207.14*Math.pow(10,6);
+        double B3I_f = 1268.52*Math.pow(10,6);
+
+        Date  date_now = new Date();
+
 
         ExperimentResult  experimentResult = new ExperimentResult();
 
@@ -699,6 +746,12 @@ public class ExperimentController extends BaseController
         double IB2I  = IB1I*k12;
         double IB3I  = IB1I*k13;
         experimentResult.setResult7(Double.valueOf(IB2I+","+IB3I));
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("input", wx_xyz);
+        data.put("input2",user_xyz);
+        data.put("output", experimentResult);
+
         return  AjaxResult.success(experimentResult);
     }
 
@@ -777,18 +830,40 @@ public class ExperimentController extends BaseController
 
 
     /**
-     * @param ref_xyz 参考点
-     * @param wx_xyz  卫星坐标
-     * @param user_xyz 用户坐标
-     * @param date_now 当前时间
-     * @param B1I_f B1I 载波频率
-     * @param B2I_f B2I 载波频率
-     * @param B3I_f B3I 载波频率
+     * @param //ref_xyz 参考点
+     * @param //wx_xyz  卫星坐标
+     * @param //user_xyz 用户坐标
+     * @param //date_now 当前时间
+     * @param //B1I_f B1I 载波频率
+     * @param //B2I_f B2I 载波频率
+     * @param //B3I_f B3I 载波频率
      * @param //alpha : 这个是由接收机发送过来的9个参数；
      */
     @PostMapping("/exp9_bds_dianLiCeng")
-    public AjaxResult exp9_bds_dianLiCeng(PointXYZ ref_xyz, PointXYZ wx_xyz, PointXYZ user_xyz, Date date_now, double
-            B1I_f, double B2I_f, double B3I_f, double[] alpha_arr) {
+    public AjaxResult exp9_bds_dianLiCeng( double[] alpha_arr) {
+
+        PointXYZ ref_xyz = new PointXYZ();
+        ref_xyz.setX(-63541258.65235);
+        ref_xyz.setY(56214563.85123);
+        ref_xyz.setZ(459563.41562);
+
+        PointXYZ wx_xyz = new PointXYZ();
+        wx_xyz.setX(-13364075.20873);
+        wx_xyz.setY(22879822.95064);
+        wx_xyz.setZ(790480.10088);
+
+        PointXYZ user_xyz = new PointXYZ();
+        user_xyz.setX(-2148744.3969);
+        user_xyz.setY(4426641.2099);
+        user_xyz.setZ(4044655.8564);
+
+
+
+        double B1I_f = 1561.098*Math.pow(10,6);
+        double B2I_f =  1207.14*Math.pow(10,6);
+        double B3I_f = 1268.52*Math.pow(10,6);
+
+        Date  date_now = new Date();
 
         ExperimentResult  experimentResult = new ExperimentResult();
 
@@ -954,19 +1029,32 @@ public class ExperimentController extends BaseController
         double Tion_IB3I  = Tion*k13;
         experimentResult.setResult9(Double.valueOf(Tion_IB2I+","+Tion_IB3I));
 
-        return  AjaxResult.success(experimentResult);
+        Map<String, Object> data = new HashMap<>();
+        data.put("input", wx_xyz);
+        data.put("input2",user_xyz);
+        data.put("output", experimentResult);
+
+        return  AjaxResult.success(data);
     }
 
     /**
      * 接收机接受参数
-     * @param B1I_f :
-     * @param B3I_f ：
-     * @param P1 : 伪距观测值
-     * @param P3： 伪距观测值；
-     * @param Tgd
+     * @param  //B1I_f : 载波频率
+     * @param //B3I_f ：载波频率
+     * @param //P1 : 伪距观测值
+     * @param //P3： 伪距观测值；
+     * @param // Tgd
      */
     @PostMapping("/exp10_shuangpinDianLiCeng")
-    public AjaxResult exp10_shuangpinDianLiCeng(double B1I_f, double B3I_f, double P1, double P3, double Tgd) {
+    public AjaxResult exp10_shuangpinDianLiCeng() {
+
+        double B1I_f =  1561.098*Math.pow(10,6);
+        double B3I_f = 1268.52*Math.pow(10,6);
+        double P1 =27037228.362;
+        double P3 = 27037237.967;
+        double Tgd = -1.97*Math.pow(10,-8);
+
+
         ExperimentResult  experimentResult = new ExperimentResult();
         double c = 3.*Math.pow(10,8);
 
@@ -983,8 +1071,13 @@ public class ExperimentController extends BaseController
         double I1 = df3/(df3-df1)*(P1-P3);
         double I3 = df1/(df3-df1)*(P1-P3);
         experimentResult.setResult2(Double.valueOf(I1+","+I3));
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("input", B1I_f+","+B3I_f);
+        data.put("input2",Tgd);
+        data.put("output", experimentResult);
+
         return  AjaxResult.success(experimentResult);
     }
-
 
 }
