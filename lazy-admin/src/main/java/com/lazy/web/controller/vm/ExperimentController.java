@@ -758,7 +758,7 @@ public class ExperimentController extends BaseController
         data.put("input2",user_xyz);
         data.put("output", experimentResult);
 
-        return  AjaxResult.success(experimentResult);
+        return  AjaxResult.success(data);
     }
 
 
@@ -1084,8 +1084,9 @@ public class ExperimentController extends BaseController
         experimentResult.setResult2(I1);
         experimentResult.setResult3(I3);
         Map<String, Object> data = new HashMap<>();
-        data.put("input", B1I_f+","+B3I_f);
-        data.put("input2",Tgd);
+        data.put("input", B1I_f);
+        data.put("input2", B3I_f);
+        data.put("input3",Tgd);
         data.put("output", experimentResult);
 
         return  AjaxResult.success(data);
