@@ -8,7 +8,7 @@
           <el-row :gutter="24">
             <el-col :span="12">
               <el-form-item  label="接收机接收参数" prop="time" label-width="500px"  style="width: 1000px">
-                <el-input disabled v-model="form.julian"
+                <el-input disabled v-model="data.input"
                           placeholder="563624175"
                           clearable/>
               </el-form-item>
@@ -25,7 +25,7 @@
 
               <el-form-item v-if="isTime13" label="参考时刻的长半轴" prop="tTime13"  label-width="500px"  style="width: 1000px">
                 <el-input v-model="form.tTime13" @input="isTime13Input" :style="{width: '100%'}"
-                          :disabled="isTime12"
+                          :disabled="isTime2"
                           placeholder="请输入参考时刻的长半轴"
                           clearable/>
               </el-form-item>
@@ -43,9 +43,9 @@
               </el-form-item>
 
 
-              <el-form-item v-if="isTime3" label="参考时刻平均运动角速度" prop="wxTime" label-width="500px"  style="width: 1000px">
+              <el-form-item v-if="isTime3" label="参考时刻平均运动角速率" prop="wxTime" label-width="500px"  style="width: 1000px">
                 <el-input v-model="form.wxTime"  @input="isTime3Input"  :style="{width: '100%'}"
-                          :disabled="isTime4"
+                          :disabled="isTime14"
                           placeholder="请输入参考时刻的平均运动角速度"
                           clearable/>
               </el-form-item>
@@ -54,7 +54,7 @@
 
               <el-form-item v-if="isTime14" label="平均运动角速率的偏差" prop="time14" label-width="500px"  style="width: 1000px">
                 <el-input v-model="form.time14"  @input="isTime14Input"  :style="{width: '100%'}"
-                          :disabled="isTime4"
+                          :disabled="isTime15"
                           placeholder="请输入平均运动角速率的偏差"
                           clearable/>
               </el-form-item>
@@ -112,18 +112,18 @@
               </el-form-item>
               <el-form-item v-if="isTime10" label="计算改正后的升交点经度" prop="sjdTime" label-width="500px"  style="width: 1000px">
                 <el-input v-model="form.sjdTime"   @input="isTime10Input" :style="{width: '100%'}"
-                          :disabled="isTime11"
+                          :disabled="isTime12"
                           placeholder="请输入计算改正后的升交点经度"
                           clearable/>
               </el-form-item>
-              <el-form-item v-if="isTime11" label="计算参考时刻的轨道倾角" prop="gdqjTime" label-width="500px"  style="width: 1000px">
+<!--              <el-form-item v-if="isTime11" label="计算参考时刻的轨道倾角" prop="gdqjTime" label-width="500px"  style="width: 1000px">
                 <el-input v-model="form.gdqjTime"  @input="isTime11Input" :style="{width: '100%'}"
                           :disabled="isTime12"
                           placeholder="请输入参考时刻的轨道倾角"
                           clearable/>
-              </el-form-item>
+              </el-form-item>-->
               <el-form-item v-if="isTime12" label="计算卫星在CGS2000坐标系中的坐标" prop="CGSTime" label-width="500px"  style="width: 1000px">
-                <el-input v-model="form.CGSTime"   @input="isTime12Input" :style="{width: '100%'}"
+                <el-input v-model="form.CGSTime"   @input="isTime11Input" :style="{width: '100%'}"
                           placeholder="请输入卫星在CGS2000坐标系中的坐标"
                           clearable/>
               </el-form-item>
@@ -136,6 +136,8 @@
 </template>
 
 <script>
+import {exp6_BDCS_XL} from "@/api/vm/vmTest";
+
 export default {
   name: "xingliTOweixing",
   data() {
@@ -143,6 +145,7 @@ export default {
       form: {},
       answer: 0,
       active: 0,
+      data : {},
       isTime1: true,
       isTime2: false,
       isTime3: false,
@@ -158,96 +161,131 @@ export default {
       isTime13: false
     }
   },
+  created() {
+    exp6_BDCS_XL().then(response => {
+      console.log(response)
+      this.data = response.data
+    })
+  },
   methods:{
     isTime1Input(val){
-      let v= parseInt(val)
-      if (v===1){
+      let v= val;
+      if ((v*1) === this.data.output.result1){
+        this.isTime13=true
+      }else {
+        this.isTime13=false
+      }
+    },
+    isTime13Input(val){
+      let v= val;
+      if ((v*1) === this.data.output.result2){
         this.isTime2=true
       }else {
         this.isTime2=false
       }
     },
     isTime2Input(val){
-      let v= parseInt(val)
-      if (v===1){
+      let v= val;
+      if ((v*1) === this.data.output.result3){
         this.isTime3=true
       }else {
         this.isTime3=false
       }
     },
     isTime3Input(val){
-      let v= parseInt(val)
-      if (v===1){
+      let v= val;
+      if ((v*1) === this.data.output.result4){
+        this.isTime14=true
+      }else {
+        this.isTime14=false
+      }
+    },
+    isTime14Input(val){
+      let v= val;
+      if ((v*1) === this.data.output.result5){
+        this.isTime15=true
+      }else {
+        this.isTime15=false
+      }
+    },
+
+    isTime15Input(val){
+      let v= val;
+      if ((v*1) === this.data.output.result6){
         this.isTime4=true
       }else {
         this.isTime4=false
       }
     },
+
+
     isTime4Input(val){
-      let v= parseInt(val)
-      if (v===1){
+      let v= val;
+      if ((v*1) === this.data.output.result7){
         this.isTime5=true
       }else {
         this.isTime5=false
       }
     },
     isTime5Input(val){
-      let v= parseInt(val)
-      if (v===1){
+      let v= val;
+      if ((v*1) === this.data.output.result8){
         this.isTime6=true
       }else {
         this.isTime6=false
       }
     },
     isTime6Input(val){
-      let v= parseInt(val)
-      if (v===1){
+      let v= val;
+      if ((v*1) === this.data.output.result9){
         this.isTime7=true
       }else {
         this.isTime7=false
       }
     },
     isTime7Input(val){
-      let v= parseInt(val)
-      if (v===1){
+      let v= val;
+      if ((v*1) === this.data.output.result10){
         this.isTime8=true
       }else {
         this.isTime8=false
       }
     },
     isTime8Input(val){
-      let v= parseInt(val)
-      if (v===1){
+     // var d = this.data.output.result11 + "," + this.data.output.result12 + "," + this.data.output.result13
+      let v= val;
+      if ((v*1) === this.data.output.result15){
         this.isTime9=true
       }else {
         this.isTime9=false
       }
     },
     isTime9Input(val){
-      let v= parseInt(val)
-      if (v===1){
+      var d = this.data.output.result16 + "," + this.data.output.result17
+      let v= val;
+      if (v===d){
         this.isTime10=true
       }else {
         this.isTime10=false
       }
     },
     isTime10Input(val){
-      let v= parseInt(val)
-      if (v===1){
-        this.isTime11=true
-      }else {
-        this.isTime11=false
-      }
-    },
-    isTime11Input(val){
-      let v= parseInt(val)
-      if (v===1){
+      let v= val;
+      if ((v*1)=== this.data.output.result18){
         this.isTime12=true
       }else {
         this.isTime12=false
       }
     },
-
+    isTime11Input(val){
+      var d = this.data.output.result19 + "," + this.data.output.result20 + "," + this.data.output.result22
+      let v= val;
+      if (v===d){
+        this.isTime12=true
+      }else {
+        this.isTime12=false
+      }
+    },
   }
 }
 </script>
