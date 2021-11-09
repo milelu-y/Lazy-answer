@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSONObject;
 import com.lazy.common.vm.Ellipsoid;
 import com.lazy.vm.domain.vo.ExperimentResult;
 import com.lazy.vm.domain.vo.PointBLH;
 import com.lazy.vm.domain.vo.PointXYZ;
+import com.lazy.vm.domain.vo.SatelliteDataVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -580,6 +582,17 @@ public class ExperimentController extends BaseController
         return  new Date(rtn);
     }
 
+
+    /*public static void main(String[] args) {
+        SatelliteDataVo satelliteDataVo = new SatelliteDataVo();
+
+
+    }*/
+
+
+
+
+
     /**
      * @param //date_ref :参考日期时间
      * @param //date_now ：当前日期时间
@@ -587,11 +600,11 @@ public class ExperimentController extends BaseController
     @PostMapping("/exp7_dianwen")
     public AjaxResult exp7_dianwen( ) throws ParseException {
 
-        Date  date_now =  newDate();
-        Date  date_ref = new Date();
+        Date  date_ref =  newDate();
+        Date  date_now = new Date();
         ExperimentResult  experimentResult = new ExperimentResult();
 
-        double tk = (date_now.getTime()-date_ref.getTime())/1000.;
+        double tk = (date_now.getTime()-date_ref.getTime())/1000;
 
         double root_A = 5.282622985840*1000;
         // 长半轴
@@ -796,7 +809,9 @@ public class ExperimentController extends BaseController
      * @author : cwl
      */
     public static int recursion_1(int num){
-        if(num == 1){
+        if(num==0){
+            return 1;
+        }else if(num == 1){
             return 1;
         }else if(num == 2){
             return 2;
@@ -825,15 +840,16 @@ public class ExperimentController extends BaseController
     }
 
     public double calN(int n, int m){
-        double jc1 = recursion_1(n-m);
-        double jc2 = recursion_1(n+m);
+        //System.out.println();
+
         double delta0M=0;
         if(m==0){
             delta0M = 1;
         }else if(m>0){
             delta0M = 0;
         }
-
+        double jc1 = recursion_1(n-m);
+        double jc2 = recursion_1(n+m);
         double Nnm = Math.sqrt(jc1*(2*n+1)*(2-delta0M)/jc2);
 
         return Nnm;
@@ -852,7 +868,9 @@ public class ExperimentController extends BaseController
      * @param //alpha : 这个是由接收机发送过来的9个参数；
      */
     @PostMapping("/exp9_bds_dianLiCeng")
-    public AjaxResult exp9_bds_dianLiCeng( double[] alpha_arr) {
+    public AjaxResult exp9_bds_dianLiCeng( ) {
+
+        double[] alpha_arr = {0,0,0,0,0,0,0,0,0};
 
         PointXYZ ref_xyz = new PointXYZ();
         ref_xyz.setX(-63541258.65235);
@@ -996,8 +1014,8 @@ public class ExperimentController extends BaseController
 
         double[] Bj = new double[17];
         for(int idx=0; idx<17; idx++){
-            int ni=n_arr[idx];
-            int mi=m_arr[idx];
+            int ni=n_arr0[idx];
+            int mi=m_arr0[idx];
             if(mi<0){
                 int ni_abs = Math.abs(ni);
                 int mi_abs = Math.abs(mi);
