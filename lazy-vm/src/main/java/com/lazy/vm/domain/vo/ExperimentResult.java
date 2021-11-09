@@ -25,6 +25,16 @@ public class ExperimentResult {
     public double result20;
     public double[]  result21;
 
+    public double result22;
+
+    public double getResult22() {
+        return result22;
+    }
+
+    public void setResult22(double result22) {
+        this.result22 = result22;
+    }
+
     public double getResult1() {
         return result1;
     }
