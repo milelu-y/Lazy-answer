@@ -408,8 +408,9 @@ public class ExperimentController extends BaseController
         double Xk = xk*Math.cos(Big_onigak)-yk*Math.cos(ii)*Math.sin(Big_onigak);
         double Yk = xk*Math.sin(Big_onigak)+yk*Math.cos(ii)*Math.cos(Big_onigak);
         double Zk = yk*Math.sin(ii);
-        experimentResult.setResult13(Double.valueOf(Xk+","+Yk+","+Zk));
-        experimentResult.setResult14(Double.valueOf(Xk+","+Yk+","+Zk));
+        experimentResult.setResult13(Xk);
+        experimentResult.setResult14(Yk);
+        experimentResult.setResult15(Zk);
 
         Map<String, Object> data = new HashMap<>();
         data.put("input", t);
@@ -519,15 +520,17 @@ public class ExperimentController extends BaseController
         double sige_uk = C_us*Math.sin(2*O_k)+C_uc*Math.cos(2*O_k);
         double sige_rk = C_rs*Math.sin(2*O_k)+C_rc*Math.cos(2*O_k);
         double sige_ik = C_is*Math.sin(2*O_k)+C_ic*Math.cos(2*O_k);
-        experimentResult.setResult11(Double.valueOf(sige_uk+","+sige_rk+","+sige_ik));
+        experimentResult.setResult11(sige_uk);
+        experimentResult.setResult12(sige_rk);
+        experimentResult.setResult13(sige_ik);
 
 //
 //        改正后参数
         double uk = O_k + sige_uk;
-        experimentResult.setResult13(uk);
+        experimentResult.setResult14(uk);
 //        径向距离
         double rk = A*(1-e*Math.cos(Ek)) + sige_rk;
-        experimentResult.setResult16(rk);
+        experimentResult.setResult15(rk);
 
 //        轨道倾斜角,北斗二号
         double i0 = 0.9567195685131;
@@ -536,7 +539,8 @@ public class ExperimentController extends BaseController
 //        轨道平面内的坐标
         double xk = rk*Math.cos(uk);
         double yk = rk*Math.sin(uk);
-        experimentResult.setResult17(Double.valueOf(xk+","+yk));
+        experimentResult.setResult16(xk);
+        experimentResult.setResult17(yk);
 
 
 //        升交点经度
@@ -551,7 +555,9 @@ public class ExperimentController extends BaseController
         double Yk = xk*Math.sin(Big_onigak)+yk*Math.cos(ik)*Math.cos(Big_onigak);
         double Zk = yk*Math.sin(ik);
 
-        experimentResult.setResult19(Double.valueOf(Xk+","+Yk+","+Zk));
+        experimentResult.setResult19(Xk);
+        experimentResult.setResult20(Yk);
+        experimentResult.setResult22(Zk);
 
         Map<String, Object> data = new HashMap<>();
         data.put("input", t);
