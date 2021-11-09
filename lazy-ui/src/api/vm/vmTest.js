@@ -39,4 +39,15 @@ export function exp8_gps_dianLiCeng() {
     method: 'post',
   })
 }
+export function exp7_dianwen() {
+  return request({
+    url: '/vm/Experiment/exp7_dianwen',
+    method: 'post',
+  })
+}export function exp5_BDCS_LS() {
+  return request({
+    url: '/vm/Experiment/exp5_BDCS_LS',
+    method: 'post',
+  })
+}
 
