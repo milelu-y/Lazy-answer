@@ -684,7 +684,8 @@ public class ExperimentController extends BaseController
         double sita = Math.asin(delta_u/Math.sqrt(delta_e*delta_e+delta_n*delta_n+delta_u*delta_u));
 //        方位角
         double alpha=Math.atan(delta_e/delta_n);
-        experimentResult.setResult1(Double.valueOf(sita+","+alpha));
+        experimentResult.setResult1(sita);
+        experimentResult.setResult2(alpha);
 
         PointBLH pointBLH = this.XYZToBLHClass(user_xyz);
         double user_l = pointBLH.getL(); // 经度
@@ -697,7 +698,8 @@ public class ExperimentController extends BaseController
 //        穿刺经度（l）、纬度（b)
         double chuanCi_b = Math.asin(Math.sin(user_b)*Math.cos(baga)+Math.cos(user_b)*Math.sin(baga)*Math.cos(alpha));
         double chuanCi_l = user_l + Math.asin(Math.sin(baga)*Math.sin(alpha)/Math.cos(chuanCi_b));
-        experimentResult.setResult2(Double.valueOf(chuanCi_l+","+chuanCi_b));
+        experimentResult.setResult3(chuanCi_l);
+        experimentResult.setResult4(chuanCi_b);
 
         double a0 = 0.2235*Math.pow(10,-7);
         double a1 = 0.1490*Math.pow(10,-7);
@@ -713,7 +715,7 @@ public class ExperimentController extends BaseController
         if(A2<0){
             A2 = 0;
         }
-        experimentResult.setResult3(A2);
+        experimentResult.setResult5(A2);
 
         double A4 = b0 + b1*A2_base + b2*A2_base*A2_base + b3*A2_base*A2_base*A2_base;
         if(A4>172800){
@@ -721,7 +723,7 @@ public class ExperimentController extends BaseController
         }else if(A4<72000){
             A4 = 72000;
         }
-        experimentResult.setResult4(A4);
+        experimentResult.setResult6(A4);
 
         // 垂直电离层修改参数
         long te_long = (long)(date_now.getTime()/1000.+chuanCi_l*43200/Math.PI);
@@ -732,20 +734,22 @@ public class ExperimentController extends BaseController
         }else{
             It = 5*Math.pow(10,-9);
         }
-        experimentResult.setResult5(It);
+        experimentResult.setResult7(It);
 
         double IB1I = It/Math.sqrt(1-Math.pow(R/(R+h)*Math.cos(E), 2));
-        experimentResult.setResult6(IB1I);
+        experimentResult.setResult8(IB1I);
 
 
         double k12 = B1I_f*B1I_f/(B2I_f*B2I_f);
         double k13 = B1I_f*B1I_f/(B3I_f*B3I_f);
-        experimentResult.setResult6(Double.valueOf(k12+","+k13));
+        experimentResult.setResult9(k12);
+        experimentResult.setResult10(k12);
 
 
         double IB2I  = IB1I*k12;
         double IB3I  = IB1I*k13;
-        experimentResult.setResult7(Double.valueOf(IB2I+","+IB3I));
+        experimentResult.setResult11(IB2I);
+        experimentResult.setResult12(IB3I);
 
         Map<String, Object> data = new HashMap<>();
         data.put("input", wx_xyz);
@@ -876,7 +880,8 @@ public class ExperimentController extends BaseController
         double sita = Math.asin(delta_u/Math.sqrt(delta_e*delta_e+delta_n*delta_n+delta_u*delta_u));
 //        方位角
         double alpha=Math.atan(delta_e/delta_n);
-        experimentResult.setResult1(Double.valueOf(sita+","+alpha));
+        experimentResult.setResult1(sita);
+        experimentResult.setResult2(alpha);
 
         PointBLH pointBLH = XYZToBLHClass(user_xyz);
         double user_l = pointBLH.getL(); // 经度
@@ -886,14 +891,15 @@ public class ExperimentController extends BaseController
         double h = 400;
         // 地心张角
         double baga = Math.PI/2.0-E-Math.asin(R/(R+h)*Math.cos(E));
-        experimentResult.setResult2(baga);
+        experimentResult.setResult3(baga);
 
 //        穿刺点的地理经度（l）、纬度（b)
         double chuanCi_b = Math.asin(Math.sin(user_b)*Math.cos(baga)+Math.cos(user_b)*Math.sin(baga)*Math.cos(alpha));
         double chuanCi_l = user_l + Math.asin(Math.sin(baga)*Math.sin(alpha)/Math.cos(chuanCi_b));
         double faig = chuanCi_b;
         double simag = chuanCi_l;
-        experimentResult.setResult3(Double.valueOf(simag+","+faig));
+        experimentResult.setResult4(simag);
+        experimentResult.setResult5(faig);
 
 //      提示用户计算穿刺点的地心地固直角坐标系磁经纬度
         double faiM = 80.27/180*Math.PI;
@@ -910,7 +916,8 @@ public class ExperimentController extends BaseController
         double fai_pei = fai_m;
         double sima_pei = sima_m - Math.atan(Math.sin(Slon)/(Math.sin(fai_m)*Math.cos(Slon)));
         double sin_fai_pei = Math.sin(fai_pei);
-        experimentResult.setResult4(Double.valueOf(fai_pei+","+sima_pei));
+        experimentResult.setResult6(fai_pei);
+        experimentResult.setResult7(sima_pei);
 
 //        A1~A9
         int[] n_arr = {0,1,1,1,2,2,2,2,2};
@@ -1002,14 +1009,14 @@ public class ExperimentController extends BaseController
         for(int idx=0; idx<17; idx++){
             A0 += beta[idx]*Bj[idx];
         }
-        experimentResult.setResult5(A0);
+        experimentResult.setResult8(A0);
 
         // 穿刺点VTEC
         double VTEC = A0;
         for(int idx=0; idx<9; idx++){
             VTEC += alpha_arr[idx]*Ai[idx];
         }
-        experimentResult.setResult6(VTEC);
+        experimentResult.setResult9(VTEC);
 
         // 电离层投影函数Mf
         double MF = 1/Math.sqrt(1-Math.pow(R/(R+h)*Math.cos(E), 2) );
@@ -1017,17 +1024,19 @@ public class ExperimentController extends BaseController
 
 //      提示用户计算斜路径上电离层延迟改正值
         double Tion = (MF*40.28*Math.pow(10,16)/(Math.pow(B1I_f,2)) )*VTEC;
-        experimentResult.setResult8(Tion);
+        experimentResult.setResult10(Tion);
 
 //        转换因子
         double k12 = B1I_f*B1I_f/(B2I_f*B2I_f);
         double k13 = B1I_f*B1I_f/(B3I_f*B3I_f);
-        experimentResult.setResult9(Double.valueOf(k12+","+k13));
+        experimentResult.setResult11(k12);
+        experimentResult.setResult12(k13);
 
 //        得到BDS的电离层改正值
         double Tion_IB2I  = Tion*k12;
         double Tion_IB3I  = Tion*k13;
-        experimentResult.setResult9(Double.valueOf(Tion_IB2I+","+Tion_IB3I));
+        experimentResult.setResult13(Tion_IB2I);
+        experimentResult.setResult14(Tion_IB3I);
 
         Map<String, Object> data = new HashMap<>();
         data.put("input", wx_xyz);
@@ -1070,8 +1079,8 @@ public class ExperimentController extends BaseController
 //        电离层延迟值
         double I1 = df3/(df3-df1)*(P1-P3);
         double I3 = df1/(df3-df1)*(P1-P3);
-        experimentResult.setResult2(Double.valueOf(I1+","+I3));
-
+        experimentResult.setResult2(I1);
+        experimentResult.setResult3(I3);
         Map<String, Object> data = new HashMap<>();
         data.put("input", B1I_f+","+B3I_f);
         data.put("input2",Tgd);
