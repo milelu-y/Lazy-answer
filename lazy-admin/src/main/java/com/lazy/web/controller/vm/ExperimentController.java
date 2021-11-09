@@ -388,26 +388,28 @@ public class ExperimentController extends BaseController
 //        轨道平面内的坐标
         double xk = rk*Math.cos(sita0);
         double yk = rk*Math.sin(sita0);
-        experimentResult.setResult9(Double.valueOf(xk+","+yk));
+        experimentResult.setResult9(xk);
+        experimentResult.setResult10(yk);
 
 //        升交点经度
         double Big_oniga = -1.039539674394;
         double Big_onigaP = -7.055651039044*Math.pow(10,-9);
         double Big_onigaPE = 7.2921150*Math.pow(10,-5);
         double Big_onigak = Big_oniga + (Big_onigaP-Big_onigaPE)*tk - Big_onigaPE*toa;
-        experimentResult.setResult10(Big_onigak);
+        experimentResult.setResult11(Big_onigak);
 
 //        轨道倾斜角
         double i0 = 0.3*Math.PI;
         double sigta = 4.178745490094*Math.pow(10,-11);
         double ii = i0 + sigta;
-        experimentResult.setResult11(ii);
+        experimentResult.setResult12(ii);
 
 //        CGS2000坐标
         double Xk = xk*Math.cos(Big_onigak)-yk*Math.cos(ii)*Math.sin(Big_onigak);
         double Yk = xk*Math.sin(Big_onigak)+yk*Math.cos(ii)*Math.cos(Big_onigak);
         double Zk = yk*Math.sin(ii);
-        experimentResult.setResult12(Double.valueOf(Xk+","+Yk+","+Zk));
+        experimentResult.setResult13(Double.valueOf(Xk+","+Yk+","+Zk));
+        experimentResult.setResult14(Double.valueOf(Xk+","+Yk+","+Zk));
 
         Map<String, Object> data = new HashMap<>();
         data.put("input", t);
@@ -1086,7 +1088,7 @@ public class ExperimentController extends BaseController
         data.put("input2",Tgd);
         data.put("output", experimentResult);
 
-        return  AjaxResult.success(experimentResult);
+        return  AjaxResult.success(data);
     }
 
 }
