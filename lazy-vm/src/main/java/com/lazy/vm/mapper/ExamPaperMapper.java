@@ -30,6 +30,13 @@ public interface ExamPaperMapper
     public List<ExamPaper> selectExamPaperList(ExamPaper examPaper);
 
     /**
+     * 查询用户所有试卷列表
+     * @param userid
+     * @return
+     */
+    public List<ExamPaper> selectUserExamPaperByUserId(String userid);
+
+    /**
      * 新增试卷
      *
      * @param examPaper 试卷
@@ -62,4 +69,7 @@ public interface ExamPaperMapper
     public int deleteExamPaperByIds(String[] ids);
 
     PaperAdaptedVo selectExamAndPaper(String id);
+
+
+
 }

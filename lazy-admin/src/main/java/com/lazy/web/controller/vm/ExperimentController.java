@@ -1046,7 +1046,7 @@ public class ExperimentController extends BaseController
 
         // 电离层投影函数Mf
         double MF = 1/Math.sqrt(1-Math.pow(R/(R+h)*Math.cos(E), 2) );
-        experimentResult.setResult7(MF);
+        experimentResult.setResult15(MF);
 
 //      提示用户计算斜路径上电离层延迟改正值
         double Tion = (MF*40.28*Math.pow(10,16)/(Math.pow(B1I_f,2)) )*VTEC;

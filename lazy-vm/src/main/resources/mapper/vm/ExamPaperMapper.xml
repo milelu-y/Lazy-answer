@@ -57,6 +57,7 @@
         <include refid="selectExamPaperVo"/>
         where id = #{id}
     </select>
+
     <select id="selectExamAndPaper" resultType="com.lazy.vm.domain.vo.PaperAdaptedVo">
         SELECT paper.id          id,
                user_id           userId,
@@ -141,4 +142,23 @@
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectUserExamPaperByUserId" parameterType="String" resultMap="ExamPaperResult">
+        select id,
+               user_id,
+               title,
+               total_score,
+               type,
+               category,
+               qu_count,
+               exam_id,
+               create_time,
+               update_time,
+               user_score,
+               status,
+               reserve_field5
+        from edu_exam_paper  where user_id = #{userid}
+
+    </select>
+
 </mapper>
