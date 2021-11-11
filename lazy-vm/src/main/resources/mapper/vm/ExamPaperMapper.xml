@@ -53,6 +53,14 @@
         </where>
     </select>
 
+    <select id="getExamPaperList" parameterType="ExamPaper" resultMap="ExamPaperResult">
+        <include refid="selectExamPaperVo"/>
+        <where>
+            <if test="userId != null  and userId != ''">and user_id = #{userId}</if>
+            <if test="examId != null  and examId != ''">and exam_id = #{examId}</if>
+        </where>
+    </select>
+
     <select id="selectExamPaperById" parameterType="String" resultMap="ExamPaperResult">
         <include refid="selectExamPaperVo"/>
         where id = #{id}

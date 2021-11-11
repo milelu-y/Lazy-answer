@@ -32,7 +32,7 @@ public class ReportFormServiceImpl implements ReportFormService {
 
     @Override
     public ExamPaper userAchievement(ExamPaper examPaper) {
-        List<ExamPaper> examPapers = examPaperMapper.selectExamPaperList(examPaper);
+        List<ExamPaper> examPapers = examPaperMapper.getExamPaperList(examPaper);
         if (examPapers.size()>0){
             return  examPapers.get(0);
         }

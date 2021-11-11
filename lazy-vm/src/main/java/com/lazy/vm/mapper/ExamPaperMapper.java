@@ -29,6 +29,11 @@ public interface ExamPaperMapper
      */
     public List<ExamPaper> selectExamPaperList(ExamPaper examPaper);
 
+
+    public List<ExamPaper> getExamPaperList(ExamPaper examPaper);
+
+
+
     /**
      * 查询用户所有试卷列表
      * @param userid
