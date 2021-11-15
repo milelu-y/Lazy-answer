@@ -1,6 +1,19 @@
 <template>
   <div class="app-container">
     <h3 style="font-weight: 50">根据历书计算卫星位置实验</h3>
+
+    <div style="height:300px;overflow:auto;background:#EEEEEE;">
+          <el-card>
+            <div slot="header" class="clearfix">
+              <span>实验步骤</span>
+            </div>
+            <div v-if="!showBj" style="font-size:20px;font-weight: 700">
+              接收机硬件模块接收卫星信号；
+            </div>
+            <img v-if="!showBj" src="../../../assets/images/firnula/LiShuToSatellitePosition.png" />
+          </el-card>
+        </div>
+
     <el-card>
       <div>
         <!--          <p>ps:{{ isTime ? '请将格里高利时转换为儒略日后进行输入' : '请将儒略日转换为格里高利时后进行输入' }}</p>-->
