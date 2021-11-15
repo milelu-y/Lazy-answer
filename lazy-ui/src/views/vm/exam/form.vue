@@ -58,10 +58,10 @@
       <el-form ref="postForm" :model="postForm" :rules="rules" label-position="left" label-width="100px">
         <el-row>
           <el-col :span="18">
-            <h3>考试设置</h3>
+            <h3>作业设置</h3>
             <el-card shadow="always" style="padding-left: 10px; padding-right: 10px;">
               <el-col :span="12">
-                <el-form-item label="考试内容" prop="title">
+                <el-form-item label="作业内容" prop="title">
                   <el-input v-model="postForm.title" size="medium" style="width: 200px;"/>
                 </el-form-item>
               </el-col>
@@ -72,7 +72,7 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item label="时长" prop="totalTime">
-                  <el-input-number placeholder="考试时长" size="medium" v-model="postForm.totalTime"
+                  <el-input-number placeholder="作业时长" size="medium" v-model="postForm.totalTime"
                                    style="width: 200px;"/>
                 </el-form-item>
               </el-col>
@@ -113,6 +113,9 @@
                     <el-radio :label="0">完全开发</el-radio>
                     <el-radio :label="1">需要密码</el-radio>
                   </el-radio-group>
+                  <div v-if="postForm.openType===1">
+                    <el-input v-model="postForm.password" placeholder="输入权限密码" style="width: 200px"></el-input>
+                  </div>
                 </div>
               </el-col>
             </el-card>
@@ -157,11 +160,11 @@ export default {
       postForm: {
         // 试卷ID
         paperId: null,
-        // 考试部门列表
+        // 作业部门列表
         departIds: [],
-        // 限制考试次数
+        // 限制作业次数
         chance: 1,
-        //考试时长
+        //作业时长
         totalTime: 30,
         //限考次数
         limitCount: 0,
@@ -179,11 +182,11 @@ export default {
       rules: {
         title: [{
           required: true,
-          message: '考试名称不能为空！'
+          message: '作业名称不能为空！'
         }],
         open: [{
           required: true,
-          message: '考试权限不能为空！'
+          message: '作业权限不能为空！'
         }],
         qualifyScore: [{
           required: true,
@@ -191,19 +194,19 @@ export default {
         }],
         totalTime: [{
           required: true,
-          message: '考试时间不能为空！'
+          message: '作业时间不能为空！'
         }],
         password: [{
           required: true,
-          message: '考试口令不能为空！'
+          message: '作业口令不能为空！'
         }],
         limitCount: [{
           required: true,
-          message: '考试次数不能为空，0为不限制！'
+          message: '作业次数不能为空，0为不限制！'
         }],
         examType: [{
           required: true,
-          message: '考试类型必须选择'
+          message: '作业类型必须选择'
         }]
       }
     }

@@ -9,6 +9,15 @@ export function listExam(query) {
   })
 }
 
+// 查询试卷添加列表关联课程
+export function listExamJoinPaper(query) {
+  return request({
+    url: '/vm/exam/listExamJoinPaper',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询试卷添加详细
 export function getExam(id) {
   return request({

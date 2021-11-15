@@ -4,7 +4,7 @@
       <h3 class="title">虚拟实验管理系统</h3>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" auto-complete="off" placeholder="账号">
-          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
+          <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon"/>
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
@@ -15,7 +15,7 @@
           placeholder="密码"
           @keyup.enter.native="handleLogin"
         >
-          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
+          <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon"/>
         </el-input>
       </el-form-item>
       <el-form-item prop="code" v-if="captchaOnOff">
@@ -26,7 +26,7 @@
           style="width: 63%"
           @keyup.enter.native="handleLogin"
         >
-          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
+          <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon"/>
         </el-input>
         <div class="login-code">
           <img :src="codeUrl" @click="getCode" class="login-code-img"/>
@@ -54,9 +54,10 @@
 </template>
 
 <script>
-import { getCodeImg } from "@/api/login";
+import {getCodeImg} from "@/api/login";
 import Cookies from "js-cookie";
-import { encrypt, decrypt } from '@/utils/jsencrypt'
+import {encrypt, decrypt} from '@/utils/jsencrypt'
+import {getUserProfile} from "@/api/system/user";
 
 export default {
   name: "Login",
@@ -65,20 +66,20 @@ export default {
       codeUrl: "",
       cookiePassword: "",
       loginForm: {
-        username: "admin",
-        password: "admin123",
+        username: "",
+        password: "",
         rememberMe: false,
         code: "",
         uuid: ""
       },
       loginRules: {
         username: [
-          { required: true, trigger: "blur", message: "用户名不能为空" }
+          {required: true, trigger: "blur", message: "用户名不能为空"}
         ],
         password: [
-          { required: true, trigger: "blur", message: "密码不能为空" }
+          {required: true, trigger: "blur", message: "密码不能为空"}
         ],
-        code: [{ required: true, trigger: "change", message: "验证码不能为空" }]
+        code: [{required: true, trigger: "change", message: "验证码不能为空"}]
       },
       loading: false,
       captchaOnOff: true,
@@ -87,7 +88,9 @@ export default {
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
+        console.log("route.query",route.query)
+        console.log("route.query.redirect",route.query.redirect)
         this.redirect = route.query && route.query.redirect;
       },
       immediate: true
@@ -122,16 +125,22 @@ export default {
         if (valid) {
           this.loading = true;
           if (this.loginForm.rememberMe) {
-            Cookies.set("username", this.loginForm.username, { expires: 30 });
-            Cookies.set("password", encrypt(this.loginForm.password), { expires: 30 });
-            Cookies.set('rememberMe', this.loginForm.rememberMe, { expires: 30 });
+            Cookies.set("username", this.loginForm.username, {expires: 30});
+            Cookies.set("password", encrypt(this.loginForm.password), {expires: 30});
+            Cookies.set('rememberMe', this.loginForm.rememberMe, {expires: 30});
           } else {
             Cookies.remove("username");
             Cookies.remove("password");
             Cookies.remove('rememberMe');
           }
           this.$store.dispatch("Login", this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || "/" }).catch(()=>{});
+            getUserProfile().then(response => {
+              if (response.data.roles[0].roleName === '学生') {
+                this.$router.push({path: "/web/index"}).catch(() => {})
+              } else {
+                this.$router.push({path: this.redirect || "/"}).catch(() => {});
+              }
+            });
           }).catch(() => {
             this.loading = false;
             if (this.captchaOnOff) {
@@ -154,6 +163,7 @@ export default {
   background-image: url("../assets/images/login-background.jpg");
   background-size: cover;
 }
+
 .title {
   margin: 0px auto 30px auto;
   text-align: center;
@@ -165,32 +175,39 @@ export default {
   background: #ffffff;
   width: 400px;
   padding: 25px 25px 5px 25px;
+
   .el-input {
     height: 38px;
+
     input {
       height: 38px;
     }
   }
+
   .input-icon {
     height: 39px;
     width: 14px;
     margin-left: 2px;
   }
 }
+
 .login-tip {
   font-size: 13px;
   text-align: center;
   color: #bfbfbf;
 }
+
 .login-code {
   width: 33%;
   height: 38px;
   float: right;
+
   img {
     cursor: pointer;
     vertical-align: middle;
   }
 }
+
 .el-login-footer {
   height: 40px;
   line-height: 40px;
@@ -203,6 +220,7 @@ export default {
   font-size: 12px;
   letter-spacing: 1px;
 }
+
 .login-code-img {
   height: 38px;
 }

@@ -4,7 +4,7 @@
       <el-form-item prop="title">
         <el-input
           v-model="queryParams.title"
-          placeholder="考试名称"
+          placeholder="作业名称"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -54,11 +54,11 @@
 
     <el-table border v-loading="loading" :data="examList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="考试名称" align="center" prop="title">
+      <el-table-column label="作业名称" align="center" prop="title">
       </el-table-column>
       <el-table-column label="开放权限" align="center" prop="openType"/>
-      <el-table-column label="考试时间" align="center" prop="totalTime"/>
-      <el-table-column label="考试总分" align="center" prop="totalScore"/>
+      <el-table-column label="作业时间" align="center" prop="totalTime"/>
+      <el-table-column label="作业总分" align="center" prop="totalScore"/>
       <el-table-column label="及格线" align="center" prop="qualifyScore"/>
       <el-table-column label="状态" align="center" prop="status"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">

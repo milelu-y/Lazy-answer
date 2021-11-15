@@ -2,6 +2,7 @@ package com.lazy.vm.mapper;
 
 import com.lazy.vm.domain.ExamPaper;
 import com.lazy.vm.domain.vo.PaperAdaptedVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -75,6 +76,11 @@ public interface ExamPaperMapper
 
     PaperAdaptedVo selectExamAndPaper(String id);
 
-
-
+    /**
+     * 查询用户答题次数
+     * @param examId
+     * @param userId
+     * @return
+     */
+    int selectExamCount(@Param("examId") String examId, @Param("userId") String userId);
 }

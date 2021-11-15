@@ -6,6 +6,21 @@
         <el-step v-for="item in steps" :key="item.title" :title="item.title"/>
       </el-steps>
     </div>
+    <div>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>实验步骤</span>
+        </div>
+        <div v-if="!showBj" style="font-size:20px;font-weight: 700">
+          系统随机生北斗时，用户根据转换公式，计算出UTC，填入提示的框中，由系统判断对错；
+        </div>
+        <img v-if="!showBj" src="../../../assets/images/firnula/BeidouToUtc.png" />
+        <div v-if="showBj" style="font-size:20px;font-weight: 700">
+          请将上一步计算的UTC，根据转换公式，计算出北京时间，填入提示的框中，由系统判断对错；
+        </div>
+        <img v-if="showBj" src="../../../assets/images/firnula/UTCTOLOCAL.png" />
+      </el-card>
+    </div>
     <div class="card" style="margin-top: 10px">
       <p>ps:请先将北斗时转换成UTC进行输入</p>
       <div>北斗时：{{ form.bd }}</div>

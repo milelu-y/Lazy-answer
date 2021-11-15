@@ -1,59 +1,91 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lazy.vm.mapper.ExamMapper">
 
     <resultMap type="Exam" id="ExamResult">
-        <result property="id"    column="id"    />
-        <result property="paperId"    column="paper_id"    />
-        <result property="title"    column="title"    />
-        <result property="qualifyScore"    column="qualify_score"    />
-        <result property="totalTime"    column="total_time"    />
-        <result property="totalScore"    column="total_score"    />
-        <result property="limitCount"    column="limit_count"    />
-        <result property="limitTime"    column="limit_time"    />
-        <result property="resultType"    column="result_type"    />
-        <result property="content"    column="content"    />
-        <result property="thanks"    column="thanks"    />
-        <result property="openType"    column="open_type"    />
-        <result property="password"    column="password"    />
-        <result property="status"    column="status"    />
-        <result property="startTime"    column="start_time"    />
-        <result property="endTime"    column="end_time"    />
-        <result property="createBy"    column="create_by"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateTime"    column="update_time"    />
+        <result property="id" column="id"/>
+        <result property="paperId" column="paper_id"/>
+        <result property="title" column="title"/>
+        <result property="qualifyScore" column="qualify_score"/>
+        <result property="totalTime" column="total_time"/>
+        <result property="totalScore" column="total_score"/>
+        <result property="limitCount" column="limit_count"/>
+        <result property="limitTime" column="limit_time"/>
+        <result property="resultType" column="result_type"/>
+        <result property="content" column="content"/>
+        <result property="thanks" column="thanks"/>
+        <result property="openType" column="open_type"/>
+        <result property="password" column="password"/>
+        <result property="status" column="status"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
     <sql id="selectExamVo">
-        select id, paper_id, title, qualify_score, total_time,total_score, limit_count, limit_time, result_type, content, thanks, open_type, password, status, start_time,end_time, create_by, create_time, update_time from edu_exam
+        select id,
+               paper_id,
+               title,
+               qualify_score,
+               total_time,
+               total_score,
+               limit_count,
+               limit_time,
+               result_type,
+               content,
+               thanks,
+               open_type,
+               password,
+               status,
+               start_time,
+               end_time,
+               create_by,
+               create_time,
+               update_time
+        from edu_exam
     </sql>
 
     <select id="selectExamList" parameterType="Exam" resultMap="ExamResult">
         <include refid="selectExamVo"/>
         <where>
-            <if test="paperId != null  and paperId != ''"> and paper_id = #{paperId}</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
-            <if test="qualifyScore != null "> and qualify_score = #{qualifyScore}</if>
-            <if test="totalTime != null "> and total_time = #{totalTime}</if>
-            <if test="totalScore != null "> and total_score = #{totalScore}</if>
-            <if test="limitCount != null  and limitCount != ''"> and limit_count = #{limitCount}</if>
-            <if test="limitTime != null "> and limit_time = #{limitTime}</if>
-            <if test="resultType != null "> and result_type = #{resultType}</if>
-            <if test="content != null  and content != ''"> and content = #{content}</if>
-            <if test="thanks != null  and thanks != ''"> and thanks = #{thanks}</if>
-            <if test="openType != null "> and open_type = #{openType}</if>
-            <if test="password != null "> and password = #{password}</if>
-            <if test="status != null "> and status = #{status}</if>
-            <if test="startTime != null "> and start_time = #{startTime}</if>
-            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="paperId != null  and paperId != ''">and paper_id = #{paperId}</if>
+            <if test="title != null  and title != ''">and title like concat('%',#{title},'%')</if>
+            <if test="qualifyScore != null ">and qualify_score = #{qualifyScore}</if>
+            <if test="totalTime != null ">and total_time = #{totalTime}</if>
+            <if test="totalScore != null ">and total_score = #{totalScore}</if>
+            <if test="limitCount != null  and limitCount != ''">and limit_count = #{limitCount}</if>
+            <if test="limitTime != null ">and limit_time = #{limitTime}</if>
+            <if test="resultType != null ">and result_type = #{resultType}</if>
+            <if test="content != null  and content != ''">and content = #{content}</if>
+            <if test="thanks != null  and thanks != ''">and thanks = #{thanks}</if>
+            <if test="openType != null ">and open_type = #{openType}</if>
+            <if test="password != null ">and password = #{password}</if>
+            <if test="status != null ">and status = #{status}</if>
+            <if test="startTime != null ">and start_time = #{startTime}</if>
+            <if test="endTime != null ">and end_time = #{endTime}</if>
         </where>
     </select>
 
     <select id="selectExamById" parameterType="String" resultMap="ExamResult">
         <include refid="selectExamVo"/>
         where id = #{id}
+    </select>
+    <select id="selectExamJoinPaperList" resultType="com.lazy.vm.domain.Exam">
+        select a.id, a.paper_id paperId, a.title, a.qualify_score qualifyScore, a.total_time totalTime,a.total_score
+        totalScore, a.limit_count limitCount, a.limit_time limitTime,content, status FROM
+        edu_exam a inner JOIN edu_test_paper b on a.paper_id =b.id
+        <where>
+            <if test="courseId!=null and courseId!=''">
+                and b.category = #{courseId}
+            </if>
+            <if test="title!=null and title!=''">
+                and a.title like concat('%',#{title},'%')
+            </if>
+        </where>
     </select>
 
     <insert id="insertExam" parameterType="Exam">
@@ -78,7 +110,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="paperId != null">#{paperId},</if>
@@ -99,7 +131,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateExam" parameterType="Exam">
@@ -128,7 +160,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteExamById" parameterType="String">
-        delete from edu_exam where id = #{id}
+        delete
+        from edu_exam
+        where id = #{id}
     </delete>
 
     <delete id="deleteExamByIds" parameterType="String">

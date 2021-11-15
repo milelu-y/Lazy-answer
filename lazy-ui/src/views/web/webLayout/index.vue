@@ -6,7 +6,7 @@
           <el-col :span="20">
             <el-row>
               <el-col :span="6" class="col-logo">
-                <a href="/">
+                <a href="/web/index">
                   <div style="display: flex; flex-direction: row; align-items: center;">
                     <div>
                       <img src="../../../assets/images/weblogo.png"
@@ -18,19 +18,17 @@
               <el-col :span="18">
                 <el-row>
                   <el-col :span="18" style="line-height: 60px">
-                    <el-button class="nav active">
-                      <router-link to="/web/index"> 在线答题</router-link>
-                    </el-button>
-                    <el-button class="nav">
-                      <router-link to="/web/vm/vmIndex"> 虚拟实验</router-link>
+                    <el-button @click="activeHandel(index)" class="nav" :class="{'active':active===item.index}"
+                               v-for="(item,index) in Navbar">
+                      <router-link :to="item.url"> {{ item.name }}</router-link>
                     </el-button>
                   </el-col>
                   <el-col :span="6" class="right-user">
                     <el-image class="top-avatar"
-                              src="https://yfhl-files.oss-cn-beijing.aliyuncs.com/2021/5/18/1621303093527-daa18765.png"
+                              :src="user.avatar"
                     ></el-image>
-                    <a>学生A</a>
-                    <a>退出</a>
+                    <a>{{user.name}}</a>
+                    <a @click="logout">退出</a>
                   </el-col>
                 </el-row>
               </el-col>
@@ -57,8 +55,50 @@ export default {
   name: "WebLayout",
   components: {AppMain},
   data() {
-    return {}
+    return {
+      active: 0,
+      Navbar: [
+        {
+          index: 0,
+          url: '/web/index',
+          name: '在线答题'
+        },
+        {
+          index: 1,
+          url: '/web/vm/vmIndex',
+          name: '虚拟实验'
+        },
+        {
+          index: 2,
+          url: '',
+          name: '用户中心'
+        },
+      ]
+    }
   },
+  computed: {
+    user() {
+      console.log(this.$store.state.user)
+      return this.$store.state.user
+    }
+  },
+  methods: {
+    activeHandel(index) {
+      this.active = index
+    },
+    async logout() {
+      this.$confirm('确定注销并退出系统吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$store.dispatch('LogOut').then(() => {
+          location.href = '/web/index';
+        })
+      }).catch(() => {
+      });
+    }
+  }
 }
 </script>
 

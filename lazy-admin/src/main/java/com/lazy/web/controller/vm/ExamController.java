@@ -2,6 +2,7 @@ package com.lazy.web.controller.vm;
 
 import java.util.List;
 
+import com.lazy.vm.domain.vo.ExamCourseDto;
 import com.lazy.vm.domain.vo.ExamVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,17 @@ public class ExamController extends BaseController
     {
         startPage();
         List<Exam> list = examService.selectExamList(exam);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询试卷添加列表
+     */
+    @GetMapping("/listExamJoinPaper")
+    public TableDataInfo listExamJoinPaper(ExamCourseDto examCourseDto)
+    {
+        startPage();
+        List<Exam> list = examService.selectExamJoinPaperList(examCourseDto);
         return getDataTable(list);
     }
 

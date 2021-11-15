@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  *  2021/11/10
  */
 @RestController
-@RequestMapping("/vm/ReportForm")
+@RequestMapping("/vm/reportForm")
 public class ReportFormController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class ReportFormController {
      * @param examPaper
      * @return
      */
-    @GetMapping("/userAchievement")
+    @PostMapping("/userAchievement")
     public AjaxResult userAchievement(@RequestBody  ExamPaper examPaper){
         return AjaxResult.success(reportFormService.userAchievement(examPaper));
     }

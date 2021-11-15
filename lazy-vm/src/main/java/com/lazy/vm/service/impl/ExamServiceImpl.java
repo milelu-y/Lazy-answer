@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.lazy.common.utils.DateUtils;
 import com.lazy.common.utils.SecurityUtils;
+import com.lazy.vm.domain.vo.ExamCourseDto;
 import com.lazy.vm.domain.vo.ExamVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,5 +95,10 @@ public class ExamServiceImpl implements IExamService {
     @Override
     public int deleteExamById(String id) {
         return examMapper.deleteExamById(id);
+    }
+
+    @Override
+    public List<Exam> selectExamJoinPaperList(ExamCourseDto examCourseDto) {
+        return examMapper.selectExamJoinPaperList(examCourseDto);
     }
 }

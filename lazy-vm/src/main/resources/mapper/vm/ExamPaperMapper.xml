@@ -79,10 +79,16 @@
                limit_count       limitCount,
                limit_time        limitTime,
                paper.status      status,
-               exam.thanks thanks
+               exam.thanks       thanks
         FROM edu_exam_paper paper
                  LEFT JOIN edu_exam exam ON exam.id = paper.exam_id
         WHERE paper.id = #{id}
+    </select>
+    <select id="selectExamCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM edu_exam_paper
+        WHERE exam_id = #{examId}
+          and user_id = #{userId}
     </select>
 
     <insert id="insertExamPaper" parameterType="ExamPaper">

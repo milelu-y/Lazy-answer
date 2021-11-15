@@ -2,6 +2,7 @@ package com.lazy.vm.service;
 
 import java.util.List;
 import com.lazy.vm.domain.Exam;
+import com.lazy.vm.domain.vo.ExamCourseDto;
 import com.lazy.vm.domain.vo.ExamVo;
 
 /**
@@ -59,4 +60,7 @@ public interface IExamService
      * @return 结果
      */
     public int deleteExamById(String id);
+
+
+    public List<Exam> selectExamJoinPaperList(ExamCourseDto examCourseDto);
 }

@@ -4,7 +4,10 @@
       <el-row>
         <el-col :span="24"
                 style="background: rgb(238, 238, 238); line-height: 25px; padding: 10px; margin-bottom: 20px;">
-          单选题 （本题分值：{{ quData.score }}分）
+          <span v-if="quData.type===0">单选题</span>
+          <span v-if="quData.type===1">多选题</span>
+          <span v-if="quData.type===2">判断题</span>
+          （本题分值：{{ quData.score }}分）
         </el-col>
         <el-col :span="23">
           <div style="display: flex">

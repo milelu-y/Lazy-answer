@@ -44,10 +44,16 @@ export function exp7_dianwen() {
     url: '/vm/Experiment/exp7_dianwen',
     method: 'post',
   })
-}export function exp5_BDCS_LS() {
+}
+export function exp5_BDCS_LS() {
   return request({
     url: '/vm/Experiment/exp5_BDCS_LS',
     method: 'post',
   })
 }
-
+export function exp6_BDCS_XL() {
+  return request({
+    url: '/vm/Experiment/exp6_BDCS_XL',
+    method: 'post',
+  })
+}

@@ -110,7 +110,7 @@ export default {
         })
 
         if (!that.allItem || that.allItem.length == 0) {
-          that.$confirm('试卷内容出现问题，无法继续考试！', '提示', {
+          that.$confirm('试卷内容出现问题，无法继续作业！', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'error'

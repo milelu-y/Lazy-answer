@@ -6,13 +6,13 @@
           <el-row style="width: 100%">
             <el-col :span="24">
               <div class="title">
-                考试名称：
+                作业名称：
               </div>
               {{ checkData.title }}
             </el-col>
             <el-col :span="12">
               <div class="title">
-                考试总分：
+                作业总分：
               </div>
               {{ checkData.totalScore }} 分
             </el-col>

@@ -9,6 +9,22 @@
       </el-steps>
     </div>
     <el-divider/>
+    <div>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>实验步骤</span>
+          <span @click="isCaonima" style="color:red"> 点击展示下一步>>> </span>
+        </div>
+        <div style="font-size:20px;font-weight: 700">
+          1）系统随机生成格里高利时，用户根据转换公式，计算出儒略日后，填入提示的框中，由系统判断对错；
+        </div>
+        <img src="../../../assets/images/firnula/rulueri.png" />
+        <div style="font-size:20px;font-weight: 700">
+          2）系统随机生成儒略日，用户根据转换公式，计算出格里高利时后，填入提示的框中，由系统判断对错；
+        </div>
+        <img v-if="shabi" src="../../../assets/images/firnula/gaolishi.png">
+      </el-card>
+    </div>
     <div class="card" style="margin-top: 10px">
       <p>ps:{{ isTime ? '请将格里高利时转换为儒略日后进行输入' : '请将儒略日转换为格里高利时后进行输入' }}</p>
       <div style="text-align: center">
@@ -85,13 +101,17 @@ export default {
           {required: true, message: '请输入儒略日', trigger: 'blur'},
         ],
       },
-      isTime: true
+      isTime: true,
+      shabi:false
     }
   },
   created() {
     this.randomDate();
   },
   methods: {
+    isCaonima(){
+      this.shabi=!this.shabi
+    },
     submitHandle() {
       this.$refs['form'].validate((valid) => {
         if (valid) {

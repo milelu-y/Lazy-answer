@@ -186,6 +186,17 @@ public class ExamPaperServiceImpl implements IExamPaperService {
             }
         }
 
+        //判断次数
+        String userId = SecurityUtils.getLoginUser().getUser().getUserId().toString();
+        //查询该用户答题次数
+        if (!"0".equals(exam.getLimitCount())) {
+            int examCount = examPaperMapper.selectExamCount(examId, userId);
+            if (examCount >= Integer.valueOf(exam.getLimitCount())) {
+                throw new CustomException("做题次数已达上限！", 400);
+            }
+        }
+
+
         //查找到试卷对应的题目
         String paperId = exam.getPaperId();
         TestPaper testPaper = testPaperMapper.selectTestPaperById(paperId);
@@ -323,6 +334,7 @@ public class ExamPaperServiceImpl implements IExamPaperService {
             Map<String, Object> data = new HashMap<>();
             ExamPaper examPaper = examPaperMapper.selectExamPaperById(id);
             examPaper.setUserScore(unt);
+            examPaper.setStatus("1");
             examPaperMapper.updateExamPaper(examPaper);
 
             Exam exam = examMapper.selectExamById(examPaper.getExamId());
@@ -361,7 +373,7 @@ public class ExamPaperServiceImpl implements IExamPaperService {
     @Override
     public AjaxResult paperResult(String id) {
         PaperAdaptedVo paper = examPaperMapper.selectExamAndPaper(id);
-        if (paper!=null){
+        if (paper != null) {
             return AjaxResult.success(paper);
         }
         return AjaxResult.error();

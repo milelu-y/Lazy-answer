@@ -67,7 +67,6 @@ public class ExamPaperController extends BaseController
     /**
      * 获取试卷详细信息
      */
-    @PreAuthorize("@ss.hasPermi('vm:examPaper:query')")
     @GetMapping(value = "/paperDetail/{id}")
     public AjaxResult getInfo(@PathVariable("id") String id)
     {
@@ -124,7 +123,6 @@ public class ExamPaperController extends BaseController
      * @param fullAnswerVo
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('vm:Answer:edit')")
     @Log(title = "保存考生答题情况", businessType = BusinessType.UPDATE)
     @PostMapping("/fullAnswer")
     public AjaxResult fullAnswer(@RequestBody ExamAnswerVo fullAnswerVo){
@@ -136,7 +134,6 @@ public class ExamPaperController extends BaseController
      * @param map
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('vm:Answer:edit')")
     @Log(title = "学生考试分数", businessType = BusinessType.UPDATE)
     @PostMapping("/saveExam")
     public AjaxResult saveExam(@RequestBody Map<String,String> map){

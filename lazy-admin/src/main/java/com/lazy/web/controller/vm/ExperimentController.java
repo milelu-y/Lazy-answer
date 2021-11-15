@@ -12,7 +12,6 @@ import com.lazy.common.vm.Ellipsoid;
 import com.lazy.vm.domain.vo.ExperimentResult;
 import com.lazy.vm.domain.vo.PointBLH;
 import com.lazy.vm.domain.vo.PointXYZ;
-import com.lazy.vm.domain.vo.SatelliteDataVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
