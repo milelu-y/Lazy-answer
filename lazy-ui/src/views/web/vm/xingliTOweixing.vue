@@ -1,6 +1,15 @@
 <template>
-  <div class="app-container">
+  <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
     <h3 style="font-weight: 50">根据星历计算卫星位置实验</h3>
+    <el-divider/>
+    <div style="height:300px;overflow:auto;background:#EEEEEE;">
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>实验步骤</span>
+        </div>
+        <img src="../../../assets/images/firnula/xing.jpg" />
+      </el-card>
+    </div>
     <el-card>
       <div >
         <!--          <p>ps:{{ isTime ? '请将格里高利时转换为儒略日后进行输入' : '请将儒略日转换为格里高利时后进行输入' }}</p>-->

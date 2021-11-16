@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-container" style="max-width: 1200px;margin: 0 auto;padding: 16px;">
     <h3 style="font-weight: 50">根据历书计算卫星位置实验</h3>
 
     <div style="height:300px;overflow:auto;background:#EEEEEE;">

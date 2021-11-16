@@ -2,6 +2,15 @@
   <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
     <div><h2>地心地固直角坐标系与东北天坐标系的转换实验</h2></div>
     <el-divider/>
+    <div>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>实验步骤</span>
+        </div>
+        <img v-if="isType" src="../../../assets/images/firnula/dxdgddjwd.png" />
+        <img v-if="!isType" src="../../../assets/images/firnula/dongbei.png" />
+      </el-card>
+    </div>
     <el-card>
       <span v-if="isType">地心地固直角坐标系:{{ XYZ2ENUDATA.input.X }},{{ XYZ2ENUDATA.input.Y }},{{ XYZ2ENUDATA.input.Z }}</span>
       <span v-else>大地坐标系:{{ XYZ2ENUDATA.input2.B }},{{ XYZ2ENUDATA.input2.H }},{{ XYZ2ENUDATA.input2.L }}</span>

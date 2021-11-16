@@ -2,6 +2,14 @@
   <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
     <div><h2>双频电离层改正实验</h2></div>
     <el-divider/>
+    <div>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>实验步骤</span>
+        </div>
+        <img src="../../../assets/images/firnula/suan.png" />
+      </el-card>
+    </div>
     <el-card>
       <span >伪距:{{ data.input }}、TGD:{{data.input2}}</span>
     </el-card>

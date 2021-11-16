@@ -2,6 +2,14 @@
   <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
     <div><h2>导航电文计算卫星钟差实验</h2></div>
     <el-divider/>
+    <div>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>实验步骤</span>
+        </div>
+        <img v-if="isType" src="../../../assets/images/firnula/BDTTOGPST.png" />
+      </el-card>
+    </div>
     <el-card>
       <span>BDT： {{ data.input }}、GPST： {{ data.input2 }}</span>
     </el-card>

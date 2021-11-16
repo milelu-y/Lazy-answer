@@ -2,6 +2,14 @@
   <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
     <div><h2>GPS电离层延迟改正实验</h2></div>
     <el-divider/>
+    <div>
+      <el-card>
+        <div slot="header" class="clearfix">
+          <span>实验步骤</span>
+        </div>
+        <img v-if="isType" src="../../../assets/images/firnula/BDTTOGPST.png" />
+      </el-card>
+    </div>
     <el-card>
       <span>卫星位置：{{ data.input.X }},{{ data.input.Y }},{{ data.input.Z }}</span>
     </el-card>
