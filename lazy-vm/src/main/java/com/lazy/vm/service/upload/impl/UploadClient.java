@@ -23,7 +23,7 @@ import java.util.UUID;
 public abstract class UploadClient {
 
     @Autowired
-    ISysResourceService resourceService;
+    protected ISysResourceService resourceService;
 
 
     /**
@@ -69,7 +69,7 @@ public abstract class UploadClient {
         SysResource resource = new SysResource();
         String path = params.get("path");
         String group = params.get("group");
-        String url = params.get("rul");
+        String url = params.get("url");
         resource.setFileName(file.getOriginalFilename());
         resource.setFilePath(path);
         resource.setFileFullPath(params.get("fileFullPath"));
@@ -103,4 +103,6 @@ public abstract class UploadClient {
         String contextPath = request.getServletContext().getContextPath();
         return url.delete(url.length() - request.getRequestURI().length(), url.length()).append(contextPath).toString();
     }
+
+    public abstract AjaxResult deleteFile(String id);
 }

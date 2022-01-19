@@ -70,6 +70,30 @@
         </where>
     </select>
 
+    <select id="selectUserExamList" resultType="com.lazy.vm.domain.Exam">
+        <include refid="selectExamVo"/>
+        a left join edu_exam_dept b on a.id = b.exam_id
+        <where>
+            <if test="paperId != null  and paperId != ''">and paper_id = #{paperId}</if>
+            <if test="title != null  and title != ''">and title like concat('%',#{title},'%')</if>
+            <if test="qualifyScore != null ">and qualify_score = #{qualifyScore}</if>
+            <if test="totalTime != null ">and total_time = #{totalTime}</if>
+            <if test="totalScore != null ">and total_score = #{totalScore}</if>
+            <if test="limitCount != null  and limitCount != ''">and limit_count = #{limitCount}</if>
+            <if test="limitTime != null ">and limit_time = #{limitTime}</if>
+            <if test="resultType != null ">and result_type = #{resultType}</if>
+            <if test="content != null  and content != ''">and content = #{content}</if>
+            <if test="thanks != null  and thanks != ''">and thanks = #{thanks}</if>
+            <if test="openType != null ">and open_type = #{openType}</if>
+            <if test="password != null ">and password = #{password}</if>
+            <if test="status != null ">and status = #{status}</if>
+            <if test="startTime != null ">and start_time = #{startTime}</if>
+            <if test="endTime != null ">and end_time = #{endTime}</if>
+            and b.dept_id = #{deptId}
+        </where>
+
+    </select>
+
     <select id="selectExamById" parameterType="String" resultMap="ExamResult">
         <include refid="selectExamVo"/>
         where id = #{id}
@@ -77,13 +101,16 @@
     <select id="selectExamJoinPaperList" resultType="com.lazy.vm.domain.Exam">
         select a.id, a.paper_id paperId, a.title, a.qualify_score qualifyScore, a.total_time totalTime,a.total_score
         totalScore, a.limit_count limitCount, a.limit_time limitTime,content, status FROM
-        edu_exam a inner JOIN edu_test_paper b on a.paper_id =b.id
+        edu_exam a inner JOIN edu_test_paper b on a.paper_id =b.id left join edu_exam_dept c on a.id = c.exam_id
         <where>
             <if test="courseId!=null and courseId!=''">
                 and b.category = #{courseId}
             </if>
             <if test="title!=null and title!=''">
                 and a.title like concat('%',#{title},'%')
+            </if>
+            <if test="deptId!=null and deptId!=''">
+                and c.dept_id=#{deptId}
             </if>
         </where>
     </select>

@@ -49,6 +49,18 @@ public class ExamController extends BaseController
     }
 
     /**
+     * 用户查询试卷添加列表
+     */
+    @PreAuthorize("@ss.hasPermi('vm:exam:list')")
+    @GetMapping("/userExamList")
+    public TableDataInfo userExamList(Exam exam)
+    {
+        startPage();
+        List<Exam> list = examService.selectUserExamList(exam);
+        return getDataTable(list);
+    }
+
+    /**
      * 查询试卷添加列表
      */
     @GetMapping("/listExamJoinPaper")
@@ -99,7 +111,7 @@ public class ExamController extends BaseController
     @PreAuthorize("@ss.hasPermi('vm:exam:edit')")
     @Log(title = "试卷添加", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody Exam exam)
+    public AjaxResult edit(@RequestBody ExamVo exam)
     {
         return toAjax(examService.updateExam(exam));
     }

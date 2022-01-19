@@ -1,6 +1,9 @@
 package com.lazy.vm.service.impl;
 
 import java.util.List;
+
+import com.lazy.common.core.domain.entity.SysResource;
+import com.lazy.vm.service.ISysResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.lazy.vm.mapper.ExperimentMapper;
@@ -14,10 +17,12 @@ import com.lazy.vm.service.IExperimentService;
  * @date 2021-10-27
  */
 @Service
-public class ExperimentServiceImpl implements IExperimentService
-{
+public class ExperimentServiceImpl implements IExperimentService {
     @Autowired
     private ExperimentMapper experimentMapper;
+
+    @Autowired
+    private ISysResourceService resourceService;
 
     /**
      * 查询实验模块
@@ -26,9 +31,11 @@ public class ExperimentServiceImpl implements IExperimentService
      * @return 实验模块
      */
     @Override
-    public Experiment selectExperimentById(String id)
-    {
-        return experimentMapper.selectExperimentById(id);
+    public Experiment selectExperimentById(String id) {
+        Experiment experiment = experimentMapper.selectExperimentById(id);
+        SysResource sysResource = resourceService.selectSysResourceById(experiment.getOutline());
+        experiment.setResource(sysResource);
+        return experiment;
     }
 
     /**
@@ -38,8 +45,7 @@ public class ExperimentServiceImpl implements IExperimentService
      * @return 实验模块
      */
     @Override
-    public List<Experiment> selectExperimentList(Experiment experiment)
-    {
+    public List<Experiment> selectExperimentList(Experiment experiment) {
         return experimentMapper.selectExperimentList(experiment);
     }
 
@@ -50,8 +56,7 @@ public class ExperimentServiceImpl implements IExperimentService
      * @return 结果
      */
     @Override
-    public int insertExperiment(Experiment experiment)
-    {
+    public int insertExperiment(Experiment experiment) {
         return experimentMapper.insertExperiment(experiment);
     }
 
@@ -62,8 +67,7 @@ public class ExperimentServiceImpl implements IExperimentService
      * @return 结果
      */
     @Override
-    public int updateExperiment(Experiment experiment)
-    {
+    public int updateExperiment(Experiment experiment) {
         return experimentMapper.updateExperiment(experiment);
     }
 
@@ -74,8 +78,7 @@ public class ExperimentServiceImpl implements IExperimentService
      * @return 结果
      */
     @Override
-    public int deleteExperimentByIds(String[] ids)
-    {
+    public int deleteExperimentByIds(String[] ids) {
         return experimentMapper.deleteExperimentByIds(ids);
     }
 
@@ -86,8 +89,7 @@ public class ExperimentServiceImpl implements IExperimentService
      * @return 结果
      */
     @Override
-    public int deleteExperimentById(String id)
-    {
+    public int deleteExperimentById(String id) {
         return experimentMapper.deleteExperimentById(id);
     }
 }

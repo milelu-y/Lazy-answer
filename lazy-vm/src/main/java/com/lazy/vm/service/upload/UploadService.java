@@ -17,4 +17,5 @@ public interface UploadService {
      */
     AjaxResult uploadFile(MultipartFile file);
 
+    AjaxResult deleteFile(String id);
 }

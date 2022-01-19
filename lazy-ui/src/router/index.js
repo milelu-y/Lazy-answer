@@ -194,7 +194,20 @@ export const constantRoutes = [
         path: ':id?',
         component: (resolve) => require(['@/views/vm/exam/form'], resolve),
         name: 'examAdd',
-        meta: {title: '添加考试', activeMenu: '/vm/exam'}
+        meta: {title: '添加作业', activeMenu: '/vm/exam'}
+      }
+    ]
+  },
+  {
+    path: '/vm/exam/form/update',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/vm/exam/form'], resolve),
+        name: 'examUpdate',
+        meta: {title: '修改作业', activeMenu: '/vm/exam'}
       }
     ]
   },
@@ -293,6 +306,7 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    name:'timeTransition',
     path: '/web/vm/TimeTransition',
     component: (resolve) => require(['@/views/web/vm/TimeTransition'], resolve),
     hidden: true

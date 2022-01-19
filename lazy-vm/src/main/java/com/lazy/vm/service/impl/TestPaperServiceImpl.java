@@ -96,6 +96,14 @@ public class TestPaperServiceImpl implements ITestPaperService {
         return testPaperVo;
     }
 
+    @Override
+    public TestPaperVo selectSimpleTestPaperById(String id) {
+        TestPaperVo testPaperVo = new TestPaperVo();
+        TestPaper testPaper = testPaperMapper.selectTestPaperById(id);
+        BeanUtils.copyProperties(testPaper, testPaperVo);
+        return testPaperVo;
+    }
+
     /**
      * 查询试卷列表
      *
@@ -190,7 +198,17 @@ public class TestPaperServiceImpl implements ITestPaperService {
      * @return 结果
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteTestPaperByIds(String[] ids) {
+        for (String paperId : ids) {
+            //遍历获取到试卷
+            List<Group> groups = groupMapper.selectGroupByPaperId(paperId);
+            //根据试卷id删除分组
+            for (Group group : groups) {
+                groupAnswerMapper.deleteGroupAnswerById(group.getId());
+            }
+            groupMapper.deleteGroupByPaperId(paperId);
+        }
         return testPaperMapper.deleteTestPaperByIds(ids);
     }
 

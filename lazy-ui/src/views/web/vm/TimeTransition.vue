@@ -1,32 +1,38 @@
 <template>
-  <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
+  <div style="max-width: 1500px;margin: 0 auto;padding: 16px;float: right;width: 60%">
     <div><h2>时间表示方式的转换</h2></div>
-    <div style="margin-top: 10px">
-      <el-steps :active="active" simple process-status="finish">
-        <el-step title="输入"></el-step>
-        <el-step title="提交"></el-step>
-        <el-step title="结果"></el-step>
-      </el-steps>
-    </div>
+<!--    <div style="margin-top: 10px">-->
+<!--      <el-steps :active="active" simple process-status="finish">-->
+<!--        <el-step title="输入"></el-step>-->
+<!--        <el-step title="提交"></el-step>-->
+<!--        <el-step title="结果"></el-step>-->
+<!--      </el-steps>-->
+<!--    </div>-->
     <el-divider/>
     <div>
-      <el-card>
+      <el-card style="position: absolute;left: 5px; top: 50px; width: 40%;height:700px;overflow:auto;">
         <div slot="header" class="clearfix">
-          <span>实验步骤</span>
-          <span @click="isCaonima" style="color:red"> 点击展示下一步>>> </span>
+          <span>实验流程</span>
+          <!--          <span @click="isCaonima" style="color:red"> 展开>>> </span>-->
+          <span style="float: right;color: #498c5f"> <a
+            :href="data.resource.url" :download="data.resource.name" target="_blank">点击此处下载实验大纲</a></span>
         </div>
-        <div style="font-size:20px;font-weight: 700">
-          1）系统随机生成格里高利时，用户根据转换公式，计算出儒略日后，填入提示的框中，由系统判断对错；
-        </div>
-        <img src="../../../assets/images/firnula/rulueri.png" />
-        <div style="font-size:20px;font-weight: 700">
-          2）系统随机生成儒略日，用户根据转换公式，计算出格里高利时后，填入提示的框中，由系统判断对错；
-        </div>
-        <img v-if="shabi" src="../../../assets/images/firnula/gaolishi.png">
+        <div v-html="data.process"></div>
+        <!--        <div style="font-size:20px;font-weight: 700">-->
+        <!--          1）系统随机生成格里高利时，用户根据转换公式，计算出儒略日后，填入提示的框中，由系统判断对错；-->
+        <!--        </div>-->
+        <!--        <img src="../../../assets/images/firnula/rulueri.png"/>-->
+        <!--        <div style="font-size:20px;font-weight: 700">-->
+        <!--          2）系统随机生成儒略日，用户根据转换公式，计算出格里高利时后，填入提示的框中，由系统判断对错；-->
+        <!--        </div>-->
+        <!--        <img v-if="shabi" src="../../../assets/images/firnula/gaolishi.png">-->
       </el-card>
     </div>
-    <div class="card" style="margin-top: 10px">
-      <p>ps:{{ isTime ? '请将格里高利时转换为儒略日后进行输入' : '请将儒略日转换为格里高利时后进行输入' }}</p>
+    <div class="card" style="margin-top: 10px;">
+<!--      <p>ps:{{ isTime ? '请将格里高利时转换为儒略日后进行输入' : '请将儒略日转换为格里高利时后进行输入' }}</p>-->
+      <div>
+        <el-button @click="generateData">随机生成输入值</el-button>
+      </div>
       <div style="text-align: center">
         <a @click="switchTime">切换转换关系</a>
         <!--        <a>儒略日转格里高利时></a>-->
@@ -41,12 +47,11 @@
                     type="datetime"
                     placeholder="选择日期时间"
                     clearable
-                    disabled
                   >
                   </el-date-picker>
                 </el-form-item>
                 <el-form-item v-if="!isTime" label="儒略日" prop="julian">
-                  <el-input disabled v-model="form.julian" :style="{width: '100%'}"
+                  <el-input  v-model="form.julian" :style="{width: '100%'}"
                             placeholder="请输入儒略日"
                             clearable/>
                 </el-form-item>
@@ -85,12 +90,14 @@
 
 <script>
 import moment from 'moment'
+import {getExperiment} from "@/api/vm/ex";
 
 export default {
   name: "TimeTransition",
   data() {
     return {
-      form: {},
+      data: {},
+      form: {julian: ''},
       answer: 0,
       active: 0,
       rules: {
@@ -102,15 +109,19 @@ export default {
         ],
       },
       isTime: true,
-      shabi:false
+      shabi: false
     }
   },
   created() {
+    const query = this.$route.query
+    getExperiment(query.id).then(response => {
+      this.data = response.data
+    })
     this.randomDate();
   },
   methods: {
-    isCaonima(){
-      this.shabi=!this.shabi
+    isCaonima() {
+      this.shabi = !this.shabi
     },
     submitHandle() {
       this.$refs['form'].validate((valid) => {
@@ -124,26 +135,32 @@ export default {
               this.rest();
             } else {
               this.active = 2
-              this.notifyError("转换错误，请重试")
+              this.$confirm('转换错误，正确答案为：' +this.julianTime(this.form.time) , '提示', {
+                confirmButtonText: '重试',
+                type: 'warning'
+              }).then(() => {
+
+              })
               this.rest();
             }
           } else {
-            console.log(this.julianToTime(this.form.julian))
-            let t1 = moment(this.julianToTime(this.form.julian))
-            console.log(t1)
+            let system = moment(this.julianToTime(this.form.julian)).format("YYYY-MM-DD HH:mm:ss")
             var date = new Date(this.form.time);
-            let t2 = moment([date.getUTCFullYear(),date.getUTCMonth()+1,date.getUTCDate()+1]);
-            console.log(t2)
-            var t3 = t2.diff(t1, 'days');
-            console.log(t3)
-            if (t3 === 0) {
+            let user = moment(date).format("YYYY-MM-DD HH:mm:ss");
+            console.log(system,user)
+            if (user === system) {
               this.active = 2
               this.notifySuccess("正确", "转换正确")
               this.rest();
               this.$set(this.form.julian, 'julian', this.randomJulianDate())
             } else {
               this.active = 2
-              this.notifyError("转换错误，请重试")
+              this.$confirm('转换错误，正确答案为：' +system , '提示', {
+                confirmButtonText: '重试',
+                type: 'warning'
+              }).then(() => {
+
+              })
               this.rest();
             }
           }
@@ -199,7 +216,6 @@ export default {
       let tem = Math.floor(275.0 * m / 9.0);
       let res = 1721013.5 + 367 * y - temp + d + h / 24 + min / 1440 + s / 86400 + tem;
       return res;*/
-
 
 
       var now = new Date(str);
@@ -326,7 +342,7 @@ export default {
       if (day === 0) {
         day += 1;
       }
-     return [year,month,day]
+      return [year, month, day]
     },
     getRandom(min, max) {
       min = Math.ceil(min);
@@ -358,7 +374,14 @@ export default {
       }
     },
 
-
+    generateData() {
+      if (this.isTime) {
+        this.randomDate()
+      } else {
+        this.$set(this.form, 'julian', '')
+        this.form.julian = this.randomJulianDate();
+      }
+    },
     randomJulianDate() {
       var maxDateRandom = new Date().getTime();
       // 由于当前环境为北京GMT+8时区，所以与GMT有8个小时的差值
@@ -371,7 +394,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+@import "../../../../public/tinymce/skins/content/default/content.min.css";
 
 .card {
   min-height: 250px;

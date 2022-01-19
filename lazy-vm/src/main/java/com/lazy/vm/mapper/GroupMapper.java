@@ -66,4 +66,10 @@ public interface GroupMapper
      * @return 结果
      */
     List<Group> selectGroupByPaperId(String paperId);
+
+    /**
+     * 根据试卷id删除
+     * @param paperId
+     */
+    void deleteGroupByPaperId(String paperId);
 }

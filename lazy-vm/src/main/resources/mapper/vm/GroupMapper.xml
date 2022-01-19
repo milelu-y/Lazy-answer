@@ -101,4 +101,9 @@
             #{id}
         </foreach>
     </delete>
+    <delete id="deleteGroupByPaperId">
+        delete
+        from edu_group
+        where id = #{paperId}
+    </delete>
 </mapper>

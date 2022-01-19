@@ -3,8 +3,10 @@ package com.lazy.vm.service.upload.client;
 import com.lazy.common.annotation.DefaultUploadClient;
 import com.lazy.common.config.LazyConfig;
 import com.lazy.common.core.domain.AjaxResult;
+import com.lazy.common.core.domain.entity.SysResource;
 import com.lazy.common.utils.CommonUtils;
 import com.lazy.common.utils.file.FileUploadUtils;
+import com.lazy.common.utils.file.FileUtils;
 import com.lazy.vm.service.upload.impl.UploadClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,7 +43,7 @@ public class LocalClient extends UploadClient {
             String upload = FileUploadUtils.upload(file);
             uploadRes.put("fileName", file.getOriginalFilename());
             uploadRes.put("filePath",upload);
-            uploadRes.put("fileFullPath",LazyConfig.getUploadPath()+ File.separator+upload.replace("/profile/",""));
+            uploadRes.put("fileFullPath",LazyConfig.getProfile()+ File.separator+upload.replace("/profile/",""));
             uploadRes.put("url", getUrl() + upload);
             uploadRes.put("group", file.getOriginalFilename().split("\\.")[1]);
             uploadRes.put("path", upload);
@@ -60,6 +62,21 @@ public class LocalClient extends UploadClient {
     @Override
     public AjaxResult uploadSuccess(AjaxResult result, MultipartFile file) {
         return saveFileToDb(result,file);
+    }
+
+    @Override
+    public AjaxResult deleteFile(String id) {
+        SysResource sysResource = resourceService.selectSysResourceById(id);
+        if (CommonUtils.BeNotNull(sysResource)) {
+            String fileFullPath = sysResource.getFileFullPath();
+            boolean deleteFile = FileUtils.deleteFile(fileFullPath);
+            if (deleteFile && resourceService.deleteSysResourceById(id) > 0) {
+                return AjaxResult.success();
+            }
+            return AjaxResult.error();
+        } else {
+            return AjaxResult.error("参数不合法");
+        }
     }
 
 

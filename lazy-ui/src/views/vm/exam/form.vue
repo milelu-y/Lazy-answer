@@ -37,7 +37,7 @@
                   <el-table-column label="创建时间" align="center" prop="gmtCreate"></el-table-column>
                   <el-table-column label="操作" align="center">
                     <template slot-scope="scope">
-                      <el-button type="primary" @click="handleBack(scope.row)">选定</el-button>
+                      <el-button type="primary" @click="handleBack(scope.row.id)">选定</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -112,9 +112,28 @@
                   <el-radio-group v-model="postForm.openType">
                     <el-radio :label="0">完全开发</el-radio>
                     <el-radio :label="1">需要密码</el-radio>
+                    <el-radio :label="2">指定班级</el-radio>
                   </el-radio-group>
+                  <div v-if="postForm.openType===0">
+                    <el-tag>完全公开，任何人都可以参与</el-tag>
+                  </div>
                   <div v-if="postForm.openType===1">
                     <el-input v-model="postForm.password" placeholder="输入权限密码" style="width: 200px"></el-input>
+                  </div>
+                  <div v-if="postForm.openType===2">
+                    <p>选择班级:</p>
+                    <el-input
+                      placeholder="输入关键字进行过滤"
+                      v-model="filterText">
+                    </el-input>
+                    <el-tree
+                      class="filter-tree"
+                      ref="dept"
+                      :data="deptList"
+                      node-key="deptId"
+                      default-expand-all
+                      :check-strictly="true" :props="defaultProps"
+                      show-checkbox :filter-node-method="filterNode" @check-change="deptCheckChange"></el-tree>
                   </div>
                 </div>
               </el-col>
@@ -137,9 +156,10 @@
 </template>
 
 <script>
-import {listTestPaper} from "@/api/vm/testPaper";
+import {getSimpleTestPaper, getTestPaper, listTestPaper} from "@/api/vm/testPaper";
 import {listCourse} from "@/api/vm/course";
-import {addExam} from "@/api/vm/exam";
+import {addExam, getExam, updateExam} from "@/api/vm/exam";
+import {listDept} from "@/api/system/dept";
 
 export default {
   name: "form",
@@ -153,6 +173,7 @@ export default {
       paperList: [],
       courseList: [],
       packages: [],
+      deptList: [],
       // 总条数
       total: 0,
       // 遮罩层
@@ -208,17 +229,63 @@ export default {
           required: true,
           message: '作业类型必须选择'
         }]
-      }
+      },
+      defaultProps: {
+        children: 'children',
+        label: 'deptName'
+      },
+      filterText: ''
+    }
+  },
+  watch: {
+    filterText(val) {
+      this.$refs.tree.filter(val);
     }
   },
   created() {
+
+
     this.getPaperList();
     this.getCourseList();
+    this.getList();
     this.getDicts("vm_exam_package").then(response => {
       this.packages = response.data;
     });
+
+    var id = this.$route.params.id;
+    if (id) {
+      //查询明细
+      this.fetchData(id);
+    }
   },
   methods: {
+    fetchData(id) {
+      getExam(id).then(response => {
+        this.postForm = response.data;
+        this.handleBack(this.postForm.paperId)
+      })
+    },
+    deptCheckChange(data) {
+    },
+    // 所有部门节点数据
+    getDeptAllCheckedKeys() {
+      // 目前被选中的部门节点
+      let checkedKeys = this.$refs.dept.getCheckedKeys();
+      // 半选中的部门节点
+      let halfCheckedKeys = this.$refs.dept.getHalfCheckedKeys();
+      checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
+      return checkedKeys;
+    },
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.deptName.indexOf(value) !== -1;
+    },
+    getList() {
+      listDept().then(response => {
+        this.deptList = this.handleTree(response.data, "deptId");
+        console.log(this.deptList)
+      });
+    },
     handleQuery() {
       this.getPaperList();
     },
@@ -249,11 +316,18 @@ export default {
     /**
      * 选定暗流操作
      */
-    handleBack(data) {
+    handleBack(id) {
+      var _this4 = this;
       this.step = 3;
-      this.postForm.paperId = data.id;
-      this.paperData = data;
-      console.log(this.paperData)
+      this.postForm.paperId = id;
+      getSimpleTestPaper(id).then(response => {
+        _this4.paperData = response.data;
+      })
+      this.postForm.deptIds.forEach((v) => {
+        this.$nextTick(() => {
+          this.$refs.dept.setChecked(v, true, false);
+        })
+      })
     },
     nextStep() {
       var _this = this;
@@ -275,17 +349,33 @@ export default {
     },
     submitForm() {
       var _this3 = this;
-      addExam(this.postForm).then(response => {
-        console.log(response)
-        if (response.code === 200) {
-          this.$router.go(-1)
-        }
-      })
-    }
+      this.postForm.deptIds = this.getDeptAllCheckedKeys();
+      if (this.postForm.id != null && this.postForm.id != '') {
+        updateExam(this.postForm).then(response => {
+          if (response.code === 200) {
+            this.$notify({
+              title: '成功',
+              message: '保存成功！',
+              type: 'success'
+            });
+            this.$router.go(-1)
+          }
+        })
+      } else {
+        addExam(this.postForm).then(response => {
+          if (response.code === 200) {
+            this.$notify({
+              title: '成功',
+              message: '保存成功！',
+              type: 'success'
+            });
+            this.$router.go(-1)
+          }
+        })
+      }
+
+    },
+
   }
 }
 </script>
-
-<style scoped>
-
-</style>

@@ -31,6 +31,7 @@
           icon="el-icon-edit"
           size="mini"
           :disabled="single"
+          @click="handleUpdate"
         >修改
         </el-button>
       </el-col>
@@ -41,6 +42,7 @@
           icon="el-icon-delete"
           size="mini"
           :disabled="multiple"
+          @click="handleDelete"
         >删除
         </el-button>
       </el-col>
@@ -97,10 +99,11 @@
 </template>
 
 <script>
-import {listTestPaper} from "@/api/vm/testPaper";
+import {delTestPaper, listTestPaper} from "@/api/vm/testPaper";
 import {listCourse} from "@/api/vm/course";
 import {param} from "@/utils";
 import paperForm from "@/views/vm/testPaper/paperForm";
+import {delExam} from "@/api/vm/exam";
 
 export default {
   name: "index",
@@ -184,11 +187,28 @@ export default {
         })
       })
     },
+    handleDelete(row){
+      const ids = row.id || this.ids;
+      this.$confirm('是否确认删除作业编号为"' + ids + '"的数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return delTestPaper(ids);
+      }).then(() => {
+        this.getList();
+        this.msgSuccess("删除成功");
+      }).catch(() => {
+      });
+    },
     handleUpdate(row) {
-      this.$router.push({
-        name: 'paperUpdate',
-        params: {id:row.id,title: this.postForm.title, type: this.postForm.type, category: this.postForm.category}
-      })
+      const ids = row.id || this.ids[0];
+      if (ids){
+        this.$router.push({
+          name: 'paperUpdate',
+          params: {id:ids!=null&&ids!=undefined?ids:row.id,title: this.postForm.title, type: this.postForm.type, category: this.postForm.category}
+        })
+      }
     },
     // 多选框选中数据
     handleSelectionChange(selection) {

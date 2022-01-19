@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lazy.vm.mapper.ExamDeptMapper">
+
+    <resultMap type="ExamDept" id="ExamDeptResult">
+        <result property="examId"    column="exam_id"    />
+        <result property="deptId"    column="dept_id"    />
+    </resultMap>
+
+    <sql id="selectExamDeptVo">
+        select exam_id, dept_id from edu_exam_dept
+    </sql>
+
+    <select id="selectExamDeptList" parameterType="ExamDept" resultMap="ExamDeptResult">
+        <include refid="selectExamDeptVo"/>
+        <where>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+        </where>
+    </select>
+
+    <select id="selectExamDeptById" parameterType="Integer" resultType="Integer">
+        select dept_id from edu_exam_dept
+        where dept_id = #{deptId}
+    </select>
+    <select id="selectByExamId" resultType="java.lang.Integer">
+        select dept_id from edu_exam_dept where exam_id = #{examId}
+    </select>
+
+    <insert id="insertExamDept" parameterType="ExamDept">
+        insert into edu_exam_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="examId != null">exam_id,</if>
+            <if test="deptId != null">dept_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="examId != null">#{examId},</if>
+            <if test="deptId != null">#{deptId},</if>
+        </trim>
+    </insert>
+    <insert id="batchExamDept">
+        insert into edu_exam_dept(exam_id, dept_id) values
+        <foreach item="item" index="index" collection="list" separator=",">
+            (#{item.examId},#{item.deptId})
+        </foreach>
+    </insert>
+
+    <update id="updateExamDept" parameterType="ExamDept">
+        update edu_exam_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptId != null">dept_id = #{deptId},</if>
+        </trim>
+        where exam_id = #{examId}
+    </update>
+
+    <delete id="deleteExamDeptById" parameterType="String">
+        delete from edu_exam_dept where exam_id = #{examId}
+    </delete>
+
+    <delete id="deleteExamDeptByIds" parameterType="String">
+        delete from edu_exam_dept where exam_id in
+        <foreach item="examId" collection="array" open="(" separator="," close=")">
+            #{examId}
+        </foreach>
+    </delete>
+</mapper>

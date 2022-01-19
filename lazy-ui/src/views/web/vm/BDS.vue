@@ -1,23 +1,28 @@
 <template>
-  <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
-    <div><h2>BDS电离层延迟改正实验</h2></div>
+  <div  style="max-width: 1500px;margin: 0 auto;padding: 16px;float: right;width: 60%">
+    <div><h2>{{exData.title}}</h2></div>
     <el-divider/>
-    <div style="height:300px;overflow:auto;background:#EEEEEE;">
-      <el-card>
+    <div>
+      <el-card style="position: absolute;left: 5px; top: 42px; width: 40%;height:700px;overflow:auto;">
         <div slot="header" class="clearfix">
           <span>实验步骤</span>
+          <span style="float: right;color: #498c5f" v-if="exData.resource==null">暂未上传实验大纲</span>
+          <span v-else style="float: right;color: #498c5f"> <a
+            :href="exData.resource.url" target="_blank">点击此处下载实验大纲</a></span>
         </div>
-        <img v-if="isType" src="../../../assets/images/firnula/BDS.jpg" />
+        <div v-html="exData.process">
+
+        </div>
       </el-card>
     </div>
     <el-card>
-      <span>卫星位置：{{ data.input.X }},{{ data.input.Y }},{{ data.input.Z }}</span>
+      <span>卫星位置：<span style="color: #ffb061">{{ data.input.X }},{{ data.input.Y }},{{ data.input.Z }}</span></span>
     </el-card>
     <el-card style="margin-top: 10px">
-      <span>用户位置:{{ data.input2.X }},{{ data.input2.Y }},{{ data.input2.Z }}</span>
+      <span>用户位置:<span style="color: #ffb061">{{ data.input2.X }},{{ data.input2.Y }},{{ data.input2.Z }}</span></span>
     </el-card>
     <el-card style="margin-top: 10px">
-      <span>频点参数 B1:{{ data.output.result1 }}</span>
+      <span>频点参数 B1:<span style="color: #ffb061">{{ data.output.result1 }}</span></span>
     </el-card>
     <el-card class="card" style="margin-top: 10px">
       <div style="text-align: center">
@@ -131,11 +136,13 @@
 <script>
 import {exp9_bds_dianLiCeng} from "@/api/vm/vmTest";
 import _ from 'lodash'
+import {getExperiment} from "@/api/vm/ex";
 
 export default {
   name: "BDS",
   data() {
     return {
+      exData:{},
       isType: true,
       data: {},
       form: {},
@@ -156,6 +163,10 @@ export default {
     }
   },
   created() {
+    const query = this.$route.query
+    getExperiment(query.id).then(response => {
+      this.exData = response.data
+    })
     exp9_bds_dianLiCeng().then(response => {
       this.data = response.data
       console.log(response)

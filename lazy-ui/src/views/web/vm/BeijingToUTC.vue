@@ -1,67 +1,61 @@
 <template>
-  <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
+  <div style="max-width: 1500px;margin: 0 auto;padding: 16px;float: right;width: 60%">
     <div><h2>北斗时与北京时的转换</h2></div>
-    <div style="margin-top: 10px">
-      <el-steps :current="current">
-        <el-step v-for="item in steps" :key="item.title" :title="item.title"/>
-      </el-steps>
-    </div>
-    <div>
+    <!--    <div style="margin-top: 10px">-->
+    <!--      <el-steps :current="current">-->
+    <!--        <el-step v-for="item in steps" :key="item.title" :title="item.title"/>-->
+    <!--      </el-steps>-->
+    <!--    </div>-->
+    <div style="position: absolute;left: 0; width: 40%;height:700px;overflow:auto;">
       <el-card>
         <div slot="header" class="clearfix">
           <span>实验步骤</span>
+          <span style="float: right;color: #498c5f" v-if="data.resource==null">暂未上传实验大纲</span>
+          <span v-else style="float: right;color: #498c5f"> <a
+            :href="data.resource.url" target="_blank">点击此处下载实验大纲</a></span>
         </div>
-        <div v-if="!showBj" style="font-size:20px;font-weight: 700">
-          系统随机生北斗时，用户根据转换公式，计算出UTC，填入提示的框中，由系统判断对错；
+        <div v-html="data.process">
+
         </div>
-        <img v-if="!showBj" src="../../../assets/images/firnula/BeidouToUtc.png" />
-        <div v-if="showBj" style="font-size:20px;font-weight: 700">
-          请将上一步计算的UTC，根据转换公式，计算出北京时间，填入提示的框中，由系统判断对错；
-        </div>
-        <img v-if="showBj" src="../../../assets/images/firnula/UTCTOLOCAL.png" />
       </el-card>
     </div>
-    <div class="card" style="margin-top: 10px">
-      <p>ps:请先将北斗时转换成UTC进行输入</p>
-      <div>北斗时：{{ form.bd }}</div>
-      <div style="text-align: center">
-        <div style="padding-top: 25px">
-          <el-form :form="form" label-width="80px">
-            <el-row :gutter="24">
-              <el-col :span="12">
-                <el-form-item label="UTC">
-                  <el-input placeholder="请输入UTC" :disabled="showBj" v-model="form.utc"/>
-                </el-form-item>
-
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="北京时">
-                  <el-input placeholder="北京时" :disabled="!showBj" v-model="form.bjTime"/>
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="24" :style="{ textAlign: 'center' }">
-                <el-button type="primary" html-type="submit" @click="bdsWeekWIS2UTC">
-                  提交
-                </el-button>
-              </el-col>
-            </el-row>
-          </el-form>
-        </div>
-      </div>
+    <div class="card" style="margin-top: 10px;">
+      <!--      <p>输入格式:YYYY-M-D HH:ss:mm</p>-->
+      <el-form label-width="80px">
+        <el-col :span="24">
+          <el-form-item label="北斗时">
+            <el-input v-model="form.bd" style="width: 200px"></el-input>
+            <el-button @click="generateData">刷新</el-button>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="UTC">
+            <el-input v-model="form.utc" placeholder="输入北斗时转换的UTC" style="width: 200px"></el-input>
+            <el-button @click="submitUTC">提交</el-button>
+          </el-form-item>
+        </el-col>
+        <el-col :span="24">
+          <el-form-item label="北京时">
+            <el-input placeholder="输入UTC转换的北京时间" ref="bjInput" v-model="form.bjTime" style="width: 200px"/>
+            <el-button @click="submitBEIJIN">提交</el-button>
+          </el-form-item>
+        </el-col>
+      </el-form>
     </div>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
+import {getExperiment} from "@/api/vm/ex";
+import {parseTime} from "@/utils/lazy";
 
 export default {
   name: "BeijingToUTC",
   data() {
     return {
-      form: {},
+      data: {},
+      form: {bd: '', bjTime: '',utc:''},
       showBj: false,
       current: 0,
       steps: [
@@ -75,69 +69,82 @@ export default {
           title: '结果',
         },
       ],
+      utcTime: '',
+      beiJinTime: ''
     }
   },
   created() {
-
     var bdsWeek = Math.floor(Math.random() * 1000 + 1);
     var bdsWIS = Math.floor(Math.random() * 604800 + 1);
     this.form.bd = bdsWeek + "周" + bdsWIS
+    const query = this.$route.query
+    getExperiment(query.id).then(response => {
+      this.data = response.data
+    })
   },
   methods: {
-    bdsWeekWIS2UTC(bdsWeek, bdsWIS) {
-      if (!this.showBj) {
-        var bd = this.form.bd;
-        var utc = this.form.utc;
-        var arr = bd.split("周");
-        bdsWeek = arr[0] * 1;
-        bdsWIS = arr[1] * 1;
+    generateData() {
+      var bdsWeek = Math.floor(Math.random() * 1000 + 1);
+      var bdsWIS = Math.floor(Math.random() * 604800 + 1);
+      this.form.bd = bdsWeek + "周" + bdsWIS
+    },
+    submitUTC() {
+      var bd = this.form.bd;
+      var utc = this.form.utc;
+      var arr = bd.split("周");
+      let bdsWeek = arr[0] * 1;
+      let bdsWIS = arr[1] * 1;
+      var difFromBegin = bdsWeek * 604800 + bdsWIS;
+      var bdsBeginTime = new Date(2006, 1, 1, 0, 0, 0);
+      var ts = bdsBeginTime.getSeconds() + difFromBegin - 4.0
+      // 北京时间
+      bdsBeginTime.setSeconds(ts)
+      this.beiJinTime = parseTime(bdsBeginTime, '{y}-{m}-{d} {h}:{i}:{s}')
+      console.log("北京时间：", parseTime(bdsBeginTime, '{y}-{m}-{d} {h}:{i}:{s}'))
+      var utcTime = moment(bdsBeginTime).utc().format('YYYY-MM-DD HH:mm:ss')
+      this.utcTime = utcTime;
+      console.log("系统UTC时间：", utcTime)
+      console.log("用户UTC时间：", utc)
+      if (utc == '') {
 
-        var difFromBegin = bdsWeek * 604800 + bdsWIS;
-        var bdsBeginTime = new Date(2006, 1, 1, 0, 0, 0);
-        var ts = bdsBeginTime.getSeconds() + difFromBegin - 4.0
-        // 北京时间
-        bdsBeginTime.setSeconds(ts)
-        console.log("北京时间：", bdsBeginTime)
-
-        // UTC
-        var date = moment(bdsBeginTime.getUTCFullYear() + "-" + bdsBeginTime.getUTCMonth() + "-" + bdsBeginTime.getUTCDate()
-          + " " + bdsBeginTime.getUTCHours() + ":" + bdsBeginTime.getUTCMinutes() + ":" + bdsBeginTime.getUTCSeconds()).format('YYYY-MM-DD HH:mm:ss');
-        var da = new Date(date);//系统UTC时间
-        console.log("da",date)
-        var db = new Date(utc);//用户输入UTC时间
-        if (da.getTime() === db.getTime()) {
-          this.notifySuccess("正确", "转换正确")
-          this.showBj = true;
-        } else {
-          this.notifyError("转换错误，请重试")
-        }
+        return;
+      }
+      if (utcTime == utc) {
+        this.notifySuccess("正确", "转换正确")
       } else {
-        var utc = this.form.utc;
-        var db = new Date(utc);
-        console.log(db)
-        var bjTime = this.form.bjTime;
-        var bj = new Date(bjTime);
-        console.log("bj",bj)
-        console.log("utc",db.getFullYear(),db.getMonth()+1,db.getDate(),db.getHours(),db.getMinutes(),db.getSeconds())
-        var date =bj.getUTCFullYear() + "-" + (bj.getUTCMonth()+1) + "-" + bj.getUTCDate()
-          + " " + bj.getUTCHours() + ":" + bj.getUTCMinutes() + ":" + bj.getUTCSeconds()
-        var date1 = new Date(date);
-        console.log(date1,date)
-        if (date1.getTime()===db.getTime()){
+        this.$confirm('转换错误，正确答案为：' + utcTime, '提示', {
+          confirmButtonText: '重试',
+          type: 'warning'
+        }).then(() => {
+
+        })
+      }
+    },
+    submitBEIJIN() {
+      //获取用户输入的北京时间
+      var userBeiJinTime = this.form.bjTime
+      var systemBeiJinTime = this.beiJinTime
+      console.log("系统北京时间", this.beiJinTime)
+      console.log("用户北京时间", userBeiJinTime)
+      if (userBeiJinTime !== '') {
+        if (userBeiJinTime === systemBeiJinTime) {
           this.notifySuccess("正确", "转换正确")
-        }else {
-          this.notifyError("转换错误，请重试")
+        } else {
+          this.$confirm('转换错误，正确答案为：' + systemBeiJinTime, '提示', {
+            confirmButtonText: '重试',
+            type: 'warning'
+          }).then(() => {
+
+          })
         }
       }
-
     }
-
-
   },
 }
 </script>
 
 <style scoped>
+@import "../../../../public/tinymce/skins/content/default/content.min.css";
 
 .card {
   min-height: 250px;

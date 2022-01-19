@@ -1,8 +1,10 @@
 package com.lazy.vm.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lazy.vm.domain.Answer;
 
+import java.util.Date;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -66,6 +68,16 @@ public class TestPaperVo {
 
     private List<Answer> answers;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date gmtCreate;
+
+    public Date getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(Date gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
 
     public String getId() {
         return id;

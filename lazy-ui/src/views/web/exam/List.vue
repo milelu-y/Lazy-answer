@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import {listExam, listExamJoinPaper} from "@/api/vm/exam";
+import {listExam, listExamJoinPaper, listUserExam} from "@/api/vm/exam";
 import {listCourse} from "@/api/vm/course";
 
 export default {
@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     getList() {
-      listExam(this.queryParams).then(response => {
+      listUserExam(this.queryParams).then(response => {
         this.listExams = response.rows
         this.total = response.total;
       })

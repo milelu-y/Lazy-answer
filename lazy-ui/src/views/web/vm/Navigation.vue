@@ -1,13 +1,18 @@
 <template>
-  <div style="max-width: 1200px;margin: 0 auto;padding: 16px;">
-    <div><h2>导航电文计算卫星钟差实验</h2></div>
+  <div  style="max-width: 1500px;margin: 0 auto;padding: 16px;float: right;width: 60%">
+    <div><h2>{{exData.title}}</h2></div>
     <el-divider/>
     <div>
-      <el-card>
+      <el-card style="position: absolute;left: 5px; top: 42px; width: 40%;height:700px;overflow:auto;">
         <div slot="header" class="clearfix">
           <span>实验步骤</span>
+          <span style="float: right;color: #498c5f" v-if="exData.resource==null">暂未上传实验大纲</span>
+          <span v-else style="float: right;color: #498c5f"> <a
+            :href="exData.resource.url" target="_blank">点击此处下载实验大纲</a></span>
         </div>
-        <img v-if="isType" src="../../../assets/images/firnula/BDTTOGPST.png" />
+        <div v-html="exData.process">
+
+        </div>
       </el-card>
     </div>
     <el-card>
@@ -21,14 +26,14 @@
             <el-row :gutter="24">
               <el-col :span="24">
                 <el-form-item label="BDT钟差" prop="time">
-                  <el-input :style="{width: '100%'}" v-model="BDT" placeholder="BDT钟差"></el-input>
+                  <el-input :style="{width: '100%'}" ref="BDT" v-model="BDT" placeholder="BDT钟差"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="24">
               <el-col :span="24">
                 <el-form-item label="GPST钟差" prop="time">
-                  <el-input :style="{width: '100%'}" :disabled="isType" v-model="GPST" placeholder="GPST钟差"></el-input>
+                  <el-input :style="{width: '100%'}" ref="GPST" :disabled="isType" v-model="GPST" placeholder="GPST钟差"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -48,6 +53,7 @@
 
 <script>
 import {exp7_dianwen} from "@/api/vm/vmTest";
+import {getExperiment} from "@/api/vm/ex";
 
 export default {
   name: "Navigation",
@@ -55,11 +61,16 @@ export default {
     return {
       isType: true,
       data: {},
+      exData: {},
       BDT:null,
       GPST:null
     }
   },
   created() {
+    const query = this.$route.query
+    getExperiment(query.id).then(response => {
+      this.exData = response.data
+    })
     exp7_dianwen().then(response => {
       console.log(response)
       this.data = response.data
@@ -70,17 +81,34 @@ export default {
       if (this.isType){
         var v = this.BDT
         if ((v*1) ===this.data.output.result1){
-          this.notifySuccess("正确", "转换正确")
-          this.isType=false
+          //this.notifySuccess("正确", "转换正确")
+          this.$confirm('转换正确!', '提示', {
+            confirmButtonText: '下一题',
+            type: 'success'
+          }).then(() => {
+            this.isType=false
+            this.$refs.GPST.focus();
+          })
         } else {
           this.notifyError("转换错误，请重试")
+          this.$refs.BDT.focus()
         }
       }else {
         var v = this.GPST
         if ((v*1) ===this.data.output.result2){
-          this.notifySuccess("正确", "转换正确")
-          this.isType=false
+          this.$confirm('转换正确!', '提示', {
+            confirmButtonText: '完成',
+            type: 'success'
+          }).then(() => {
+            //this.showBj = true;
+            this.isType=false
+            //this.$refs.GPST.focus();
+            this.BDT=''
+            this.GPST=''
+          })
+
         } else {
+          this.$refs.GPST.focus();
           this.notifyError("转换错误，请重试")
         }
       }

@@ -37,6 +37,9 @@ import DictTag from '@/components/DictTag'
 // 头部标签组件
 import VueMeta from 'vue-meta'
 
+import tinymce from 'tinymce'
+import VueTinymce from '@packy-tang/vue-tinymce'
+
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
@@ -47,6 +50,7 @@ Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
+Vue.prototype.$tinymce = tinymce // 将全局tinymce对象指向给Vue作用域下
 
 Vue.prototype.msgSuccess = function (msg) {
   this.$message({ showClose: true, message: msg, type: "success" });
@@ -70,7 +74,7 @@ Vue.component('ImageUpload', ImageUpload)
 
 Vue.use(directive)
 Vue.use(VueMeta)
-
+Vue.use(VueTinymce)
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

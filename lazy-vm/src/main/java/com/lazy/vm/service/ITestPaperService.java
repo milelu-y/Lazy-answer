@@ -23,6 +23,8 @@ public interface ITestPaperService
      */
     public TestPaperVo selectTestPaperById(String id);
 
+    public TestPaperVo selectSimpleTestPaperById(String id);
+
     /**
      * 查询试卷列表
      *

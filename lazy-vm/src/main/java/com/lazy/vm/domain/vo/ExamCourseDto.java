@@ -7,6 +7,15 @@ package com.lazy.vm.domain.vo;
 public class ExamCourseDto {
     private String courseId;
     private String title;
+    private Integer deptId;
+
+    public Integer getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
+    }
 
     public String getCourseId() {
         return courseId;

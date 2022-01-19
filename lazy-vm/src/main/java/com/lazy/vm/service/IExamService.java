@@ -19,7 +19,7 @@ public interface IExamService
      * @param id 试卷添加ID
      * @return 试卷添加
      */
-    public Exam selectExamById(String id);
+    public ExamVo selectExamById(String id);
 
     /**
      * 查询试卷添加列表
@@ -28,6 +28,14 @@ public interface IExamService
      * @return 试卷添加集合
      */
     public List<Exam> selectExamList(Exam exam);
+
+    /**
+     * 用户查询试卷添加列表
+     *
+     * @param exam 试卷添加
+     * @return 试卷添加集合
+     */
+    public List<Exam> selectUserExamList(Exam exam);
 
     /**
      * 新增试卷添加
@@ -43,7 +51,7 @@ public interface IExamService
      * @param exam 试卷添加
      * @return 结果
      */
-    public int updateExam(Exam exam);
+    public int updateExam(ExamVo exam);
 
     /**
      * 批量删除试卷添加

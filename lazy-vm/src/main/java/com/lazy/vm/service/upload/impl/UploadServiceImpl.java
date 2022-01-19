@@ -27,4 +27,9 @@ public class UploadServiceImpl extends BaseUpload implements UploadService {
         }
         return result;
     }
+
+    @Override
+    public AjaxResult deleteFile(String id) {
+        return   uploadClient.deleteFile(id);
+    }
 }

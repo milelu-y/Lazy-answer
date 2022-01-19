@@ -1,66 +1,89 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lazy.vm.mapper.ExperimentMapper">
-    
+
     <resultMap type="Experiment" id="ExperimentResult">
         <result property="id"    column="id"    />
         <result property="courseId"    column="course_id"    />
-        <result property="experimentName"    column="experiment_name"    />
-        <result property="introduce"    column="introduce"    />
-        <result property="gmtCreate"    column="gmt_create"    />
-        <result property="gmtModified"    column="gmt_modified"    />
+        <result property="title"    column="title"    />
+        <result property="intro"    column="intro"    />
+        <result property="url"    column="url"    />
+        <result property="process"    column="process"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="outline"    column="outline"    />
+        <result property="reserveField3"    column="reserve_field3"    />
+        <result property="reserveField4"    column="reserve_field4"    />
     </resultMap>
 
     <sql id="selectExperimentVo">
-        select id, course_id, experiment_name, introduce, gmt_create, gmt_modified from edu_experiment
+        select id, course_id, title, intro, url, process, create_time, update_time, outline, reserve_field3, reserve_field4 from edu_experiment
     </sql>
 
     <select id="selectExperimentList" parameterType="Experiment" resultMap="ExperimentResult">
         <include refid="selectExperimentVo"/>
-        <where>  
+        <where>
             <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
-            <if test="experimentName != null  and experimentName != ''"> and experiment_name like concat('%', #{experimentName}, '%')</if>
-            <if test="introduce != null  and introduce != ''"> and introduce = #{introduce}</if>
-            <if test="gmtCreate != null "> and gmt_create = #{gmtCreate}</if>
-            <if test="gmtModified != null "> and gmt_modified = #{gmtModified}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="intro != null  and intro != ''"> and intro = #{intro}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+            <if test="process != null  and process != ''"> and process = #{process}</if>
+            <if test="outline != null  and outline != ''"> and outline = #{outline}</if>
+            <if test="reserveField3 != null  and reserveField3 != ''"> and reserve_field3 = #{reserveField3}</if>
+            <if test="reserveField4 != null  and reserveField4 != ''"> and reserve_field4 = #{reserveField4}</if>
         </where>
     </select>
-    
+
     <select id="selectExperimentById" parameterType="String" resultMap="ExperimentResult">
         <include refid="selectExperimentVo"/>
         where id = #{id}
     </select>
-        
+
     <insert id="insertExperiment" parameterType="Experiment">
         insert into edu_experiment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="courseId != null">course_id,</if>
-            <if test="experimentName != null">experiment_name,</if>
-            <if test="introduce != null">introduce,</if>
-            <if test="gmtCreate != null">gmt_create,</if>
-            <if test="gmtModified != null">gmt_modified,</if>
-         </trim>
+            <if test="title != null">title,</if>
+            <if test="intro != null">intro,</if>
+            <if test="url != null">url,</if>
+            <if test="process != null">process,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="outline != null">outline,</if>
+            <if test="reserveField3 != null">reserve_field3,</if>
+            <if test="reserveField4 != null">reserve_field4,</if>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="courseId != null">#{courseId},</if>
-            <if test="experimentName != null">#{experimentName},</if>
-            <if test="introduce != null">#{introduce},</if>
-            <if test="gmtCreate != null">#{gmtCreate},</if>
-            <if test="gmtModified != null">#{gmtModified},</if>
-         </trim>
+            <if test="title != null">#{title},</if>
+            <if test="intro != null">#{intro},</if>
+            <if test="url != null">#{url},</if>
+            <if test="process != null">#{process},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="outline != null">#{outline},</if>
+            <if test="reserveField3 != null">#{reserveField3},</if>
+            <if test="reserveField4 != null">#{reserveField4},</if>
+        </trim>
     </insert>
 
     <update id="updateExperiment" parameterType="Experiment">
         update edu_experiment
         <trim prefix="SET" suffixOverrides=",">
             <if test="courseId != null">course_id = #{courseId},</if>
-            <if test="experimentName != null">experiment_name = #{experimentName},</if>
-            <if test="introduce != null">introduce = #{introduce},</if>
-            <if test="gmtCreate != null">gmt_create = #{gmtCreate},</if>
-            <if test="gmtModified != null">gmt_modified = #{gmtModified},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="intro != null">intro = #{intro},</if>
+            <if test="url != null">url = #{url},</if>
+            <if test="process != null">process = #{process},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="outline != null">outline = #{outline},</if>
+            <if test="reserveField3 != null">reserve_field3 = #{reserveField3},</if>
+            <if test="reserveField4 != null">reserve_field4 = #{reserveField4},</if>
         </trim>
         where id = #{id}
     </update>
@@ -70,7 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteExperimentByIds" parameterType="String">
-        delete from edu_experiment where id in 
+        delete from edu_experiment where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

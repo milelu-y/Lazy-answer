@@ -73,6 +73,13 @@ public class TestPaperController extends BaseController
         return AjaxResult.success(testPaperService.selectTestPaperById(id));
     }
 
+    @PreAuthorize("@ss.hasPermi('vm:testPaper:query')")
+    @GetMapping(value = "simpleInfo/{id}")
+    public AjaxResult getSimpleInfo(@PathVariable("id") String id)
+    {
+        return AjaxResult.success(testPaperService.selectSimpleTestPaperById(id));
+    }
+
     /**
      * 新增试卷
      */

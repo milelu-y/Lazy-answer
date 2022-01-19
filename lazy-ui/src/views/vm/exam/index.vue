@@ -82,6 +82,7 @@
 
 <script>
 import {addExam, delExam, exportExam, getExam, listExam, updateExam} from "@/api/vm/exam";
+import {delTestPaper} from "@/api/vm/testPaper";
 
 export default {
   name: "Task",
@@ -155,13 +156,15 @@ export default {
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset();
-      const id = row.id || this.ids
-      getExam(id).then(response => {
-        this.form = response.data;
-        this.open = true;
-        this.title = "修改作业";
-      });
+
+      this.$router.push('/vm/exam/form/update/'+this.ids[0])
+      // this.reset();
+      // const id = row.id || this.ids
+      // getExam(id).then(response => {
+      //   this.form = response.data;
+      //   this.open = true;
+      //   this.title = "修改作业";
+      // });
     },
     /** 提交按钮 */
     submitForm() {
@@ -195,7 +198,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(function () {
-        return delExam(ids);
+        return delTestPaper(ids);
       }).then(() => {
         this.getList();
         this.msgSuccess("删除成功");

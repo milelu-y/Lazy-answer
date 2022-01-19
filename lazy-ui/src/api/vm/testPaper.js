@@ -17,6 +17,14 @@ export function getTestPaper(id) {
   })
 }
 
+// 查询简单的试卷详细
+export function getSimpleTestPaper(id) {
+  return request({
+    url: '/vm/testPaper/simpleInfo/' + id,
+    method: 'get'
+  })
+}
+
 // 新增试卷
 export function addTestPaper(data) {
   return request({

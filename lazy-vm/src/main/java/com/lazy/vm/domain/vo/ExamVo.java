@@ -75,7 +75,7 @@ public class ExamVo {
 
     private List<SysUser> personList;
 
-    private List<String> departIds;
+    private List<Integer> deptIds;
 
     public String getId() {
         return id;
@@ -181,12 +181,12 @@ public class ExamVo {
         this.personList = personList;
     }
 
-    public List<String> getDepartIds() {
-        return departIds;
+    public List<Integer> getDeptIds() {
+        return deptIds;
     }
 
-    public void setDepartIds(List<String> departIds) {
-        this.departIds = departIds;
+    public void setDeptIds(List<Integer> deptIds) {
+        this.deptIds = deptIds;
     }
 
     public String getStatus() {

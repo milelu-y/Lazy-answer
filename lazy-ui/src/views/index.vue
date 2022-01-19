@@ -1,272 +1,314 @@
 <template>
-<!--  <div class="app-container home">
-    <div class="s-box2b">
-      <div class="v-box">
-        <el-card class="box-card">
-          <div class="card-title1">
-            时间表示方式的转换实验
-          </div>
-          <div class="card-btn btn-bg1">
-            <router-link :to="{ name: 'timeTransition'}">
+  <!--  <div class="app-container home">
+      <div class="s-box2b">
+        <div class="v-box">
+          <el-card class="box-card">
+            <div class="card-title1">
+              时间表示方式的转换实验
+            </div>
+            <div class="card-btn btn-bg1">
+              <router-link :to="{ name: 'timeTransition'}">
+                查看详情
+              </router-link>
+            </div>
+            <div class="card-img">
+              <img width="100%">
+            </div>
+          </el-card>
+          <el-card class="box-card">
+            <div class="card-title1">
+              UTC与北京时间的转换
+            </div>
+            <div class="card-btn btn-bg2">
               查看详情
-            </router-link>
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            UTC与北京时间的转换
-          </div>
-          <div class="card-btn btn-bg2">
-            查看详情
-          </div>
-          <div class="card-img">
-            <img  width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            地心地固直角坐标系与大地坐标系的转换
-          </div>
-          <div class="card-btn btn-bg3">
-            查看详情
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
+            </div>
+            <div class="card-img">
+              <img  width="100%">
+            </div>
+          </el-card>
+          <el-card class="box-card">
+            <div class="card-title1">
+              地心地固直角坐标系与大地坐标系的转换
+            </div>
+            <div class="card-btn btn-bg3">
+              查看详情
+            </div>
+            <div class="card-img">
+              <img width="100%">
+            </div>
+          </el-card>
+        </div>
+        <div class="v-box">
+          <el-card class="box-card">
+            <div class="card-title1">
+              根据历书计算卫星位置实验
+            </div>
+            <div class="card-btn btn-bg1">
+              查看详情
+            </div>
+            <div class="card-img">
+              <img width="100%">
+            </div>
+          </el-card>
+          <el-card class="box-card">
+            <div class="card-title1">
+              根据星历计算卫星位置
+            </div>
+            <div class="card-btn btn-bg2">
+              查看详情
+            </div>
+            <div class="card-img">
+              <img  width="100%">
+            </div>
+          </el-card>
+          <el-card class="box-card">
+            <div class="card-title1">
+              根据导航电文计算卫星钟差
+            </div>
+            <div class="card-btn btn-bg3">
+              查看详情
+            </div>
+            <div class="card-img">
+              <img width="100%">
+            </div>
+          </el-card>
+        </div>
+        <div class="v-box">
+          <el-card class="box-card">
+            <div class="card-title1">
+              GPS电离层延迟改正实验
+            </div>
+            <div class="card-btn btn-bg1">
+              查看详情
+            </div>
+            <div class="card-img">
+              <img width="100%">
+            </div>
+          </el-card>
+          <el-card class="box-card">
+            <div class="card-title1">
+              BDS电离层延迟改正实验
+            </div>
+            <div class="card-btn btn-bg2">
+              查看详情
+            </div>
+            <div class="card-img">
+              <img  width="100%">
+            </div>
+          </el-card>
+          <el-card class="box-card">
+            <div class="card-title1">
+              双频电离层改正实验
+            </div>
+            <div class="card-btn btn-bg3">
+              查看详情
+            </div>
+            <div class="card-img">
+              <img width="100%">
+            </div>
+          </el-card>
+        </div>
       </div>
-      <div class="v-box">
-        <el-card class="box-card">
-          <div class="card-title1">
-            根据历书计算卫星位置实验
-          </div>
-          <div class="card-btn btn-bg1">
-            查看详情
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            根据星历计算卫星位置
-          </div>
-          <div class="card-btn btn-bg2">
-            查看详情
-          </div>
-          <div class="card-img">
-            <img  width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            根据导航电文计算卫星钟差
-          </div>
-          <div class="card-btn btn-bg3">
-            查看详情
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-      </div>
-      <div class="v-box">
-        <el-card class="box-card">
-          <div class="card-title1">
-            GPS电离层延迟改正实验
-          </div>
-          <div class="card-btn btn-bg1">
-            查看详情
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            BDS电离层延迟改正实验
-          </div>
-          <div class="card-btn btn-bg2">
-            查看详情
-          </div>
-          <div class="card-img">
-            <img  width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            双频电离层改正实验
-          </div>
-          <div class="card-btn btn-bg3">
-            查看详情
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-      </div>
-    </div>
-  </div>-->
+    </div>-->
   <div class="app-container home">
-    <div class="s-box2b">
-      <div class="v-box">
-        <el-card class="box-card">
+    <div v-for="(item,index) in exList">
+      <el-col :span="6">
+        <el-card class="" style="height: 30vh;position: relative;background-color: #1ab394">
           <div class="card-title1">
-            时间表示方式的转换实验
+            {{ item.title }}
           </div>
-          <div class="card-btn btn-bg1">
-            <router-link to="/web/vm/TimeTransition">
-              查看详情
-            </router-link>
+          <div style="color: #5a5e66">
+            {{ item.intro }}
+          </div>
+          <div class="card-btn btn-bg1" @click="toPage(item)">
+            查看详情
           </div>
           <div class="card-img">
             <img width="100%">
           </div>
         </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            UTC与北京时间的转换
-          </div>
-          <div class="card-btn btn-bg2">
-            <router-link to="/web/vm/BeijingToUTC">
-              查看详情
-            </router-link>
-          </div>
-          <div class="card-img">
-            <img  width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            地心地固直角坐标系与大地坐标系的转换
-          </div>
-          <div class="card-btn btn-bg3">
-            <router-link to="/web/vm/dxdgzjzbx">
-              查看详情
-            </router-link>
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-      </div>
-      <div class="v-box">
-        <el-card class="box-card">
-          <div class="card-title1">
-            根据历书计算卫星位置实验
-          </div>
-          <div class="card-btn btn-bg1">
-            <router-link to="/web/vm/liShuToSatellitePosition">
-              查看详情
-            </router-link>
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            根据星历计算卫星位置
-          </div>
-          <div class="card-btn btn-bg2">
-            <router-link to="/web/vm/xingliTOweixing">
-              查看详情
-            </router-link>
-          </div>
-          <div class="card-img">
-            <img  width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            根据导航电文计算卫星钟差
-          </div>
-          <div class="card-btn btn-bg3">
-            <router-link to="/web/vm/Navigation">
-              查看详情
-            </router-link>
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-      </div>
-      <div class="v-box">
-        <el-card class="box-card">
-          <div class="card-title1">
-            GPS电离层延迟改正实验
-          </div>
-          <div class="card-btn btn-bg1">
-            <router-link to="/web/vm/GPS">
-              查看详情
-            </router-link>
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            BDS电离层延迟改正实验
-          </div>
-          <div class="card-btn btn-bg2">
-            <router-link to="/web/vm/BDS">
-              查看详情
-            </router-link>
-          </div>
-          <div class="card-img">
-            <img  width="100%">
-          </div>
-        </el-card>
-        <el-card class="box-card">
-          <div class="card-title1">
-            双频电离层改正实验
-          </div>
-          <div class="card-btn btn-bg3">
-            <router-link to="/web/vm/GSM">
-              查看详情
-            </router-link>
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-      </div>
-      <div class="v-box">
-        <el-card class="box-card">
-          <div class="card-title1">
-            地心地固直角坐标系与东北天坐标系的转换
-          </div>
-          <div class="card-btn btn-bg1">
-            <router-link to="/web/vm/dongbei">
-              查看详情
-            </router-link>
-          </div>
-          <div class="card-img">
-            <img width="100%">
-          </div>
-        </el-card>
-      </div>
+      </el-col>
+
     </div>
+    <!--    <div class="s-box2b">-->
+    <!--      <div class="v-box">-->
+    <!--        <el-card class="box-card">-->
+    <!--          <div class="card-title1">-->
+    <!--            时间表示方式的转换实验-->
+    <!--          </div>-->
+    <!--          <div class="card-btn btn-bg1">-->
+    <!--            <router-link to="/web/vm/TimeTransition">-->
+    <!--              查看详情-->
+    <!--            </router-link>-->
+    <!--          </div>-->
+    <!--          <div class="card-img">-->
+    <!--            <img width="100%">-->
+    <!--          </div>-->
+    <!--        </el-card>-->
+    <!--        <el-card class="box-card">-->
+    <!--          <div class="card-title1">-->
+    <!--            UTC与北京时间的转换-->
+    <!--          </div>-->
+    <!--          <div class="card-btn btn-bg2">-->
+    <!--            <router-link to="/web/vm/BeijingToUTC">-->
+    <!--              查看详情-->
+    <!--            </router-link>-->
+    <!--          </div>-->
+    <!--          <div class="card-img">-->
+    <!--            <img width="100%">-->
+    <!--          </div>-->
+    <!--        </el-card>-->
+    <!--        <el-card class="box-card">-->
+    <!--          <div class="card-title1">-->
+    <!--            地心地固直角坐标系与大地坐标系的转换-->
+    <!--          </div>-->
+    <!--          <div class="card-btn btn-bg3">-->
+    <!--            <router-link to="/web/vm/dxdgzjzbx">-->
+    <!--              查看详情-->
+    <!--            </router-link>-->
+    <!--          </div>-->
+    <!--          <div class="card-img">-->
+    <!--            <img width="100%">-->
+    <!--          </div>-->
+    <!--        </el-card>-->
+    <!--      </div>-->
+    <!--      <div class="v-box">-->
+    <!--        <el-card class="box-card">-->
+    <!--          <div class="card-title1">-->
+    <!--            根据历书计算卫星位置实验-->
+    <!--          </div>-->
+    <!--          <div class="card-btn btn-bg1">-->
+    <!--            <router-link to="/web/vm/liShuToSatellitePosition">-->
+    <!--              查看详情-->
+    <!--            </router-link>-->
+    <!--          </div>-->
+    <!--          <div class="card-img">-->
+    <!--            <img width="100%">-->
+    <!--          </div>-->
+    <!--        </el-card>-->
+    <!--        <el-card class="box-card">-->
+    <!--          <div class="card-title1">-->
+    <!--            根据星历计算卫星位置-->
+    <!--          </div>-->
+    <!--          <div class="card-btn btn-bg2">-->
+    <!--            <router-link to="/web/vm/xingliTOweixing">-->
+    <!--              查看详情-->
+    <!--            </router-link>-->
+    <!--          </div>-->
+    <!--          <div class="card-img">-->
+    <!--            <img width="100%">-->
+    <!--          </div>-->
+    <!--        </el-card>-->
+    <!--        <el-card class="box-card">-->
+    <!--          <div class="card-title1">-->
+    <!--            根据导航电文计算卫星钟差-->
+    <!--          </div>-->
+    <!--          <div class="card-btn btn-bg3">-->
+    <!--            <router-link to="/web/vm/Navigation">-->
+    <!--              查看详情-->
+    <!--            </router-link>-->
+    <!--          </div>-->
+    <!--          <div class="card-img">-->
+    <!--            <img width="100%">-->
+    <!--          </div>-->
+    <!--        </el-card>-->
+    <!--      </div>-->
+    <!--      <div class="v-box">-->
+    <!--        <el-card class="box-card">-->
+    <!--          <div class="card-title1">-->
+    <!--            GPS电离层延迟改正实验-->
+    <!--          </div>-->
+    <!--          <div class="card-btn btn-bg1">-->
+    <!--            <router-link to="/web/vm/GPS">-->
+    <!--              查看详情-->
+    <!--            </router-link>-->
+    <!--          </div>-->
+    <!--          <div class="card-img">-->
+    <!--            <img width="100%">-->
+    <!--          </div>-->
+    <!--        </el-card>-->
+    <!--        <el-card class="box-card">-->
+    <!--          <div class="card-title1">-->
+    <!--            BDS电离层延迟改正实验-->
+    <!--          </div>-->
+    <!--          <div class="card-btn btn-bg2">-->
+    <!--            <router-link to="/web/vm/BDS">-->
+    <!--              查看详情-->
+    <!--            </router-link>-->
+    <!--          </div>-->
+    <!--          <div class="card-img">-->
+    <!--            <img width="100%">-->
+    <!--          </div>-->
+    <!--        </el-card>-->
+    <!--        <el-card class="box-card">-->
+    <!--          <div class="card-title1">-->
+    <!--            双频电离层改正实验-->
+    <!--          </div>-->
+    <!--          <div class="card-btn btn-bg3">-->
+    <!--            <router-link to="/web/vm/GSM">-->
+    <!--              查看详情-->
+    <!--            </router-link>-->
+    <!--          </div>-->
+    <!--          <div class="card-img">-->
+    <!--            <img width="100%">-->
+    <!--          </div>-->
+    <!--        </el-card>-->
+    <!--      </div>-->
+    <!--      <div class="v-box">-->
+    <!--        <el-card class="box-card">-->
+    <!--          <div class="card-title1">-->
+    <!--            地心地固直角坐标系与东北天坐标系的转换-->
+    <!--          </div>-->
+    <!--          <div class="card-btn btn-bg1">-->
+    <!--            <router-link to="/web/vm/dongbei">-->
+    <!--              查看详情-->
+    <!--            </router-link>-->
+    <!--          </div>-->
+    <!--          <div class="card-img">-->
+    <!--            <img width="100%">-->
+    <!--          </div>-->
+    <!--        </el-card>-->
+    <!--      </div>-->
+    <!--    </div>-->
+
+    <!--    <vue-tinymce-->
+    <!--      v-model="content"-->
+    <!--      :setting="setting" />-->
   </div>
 </template>
 
 <script>
+import {addExperiment, getExperiment, listExperiment, updateExperiment} from "@/api/vm/ex";
+
 export default {
   name: "index",
   data() {
     return {
       // 版本号
       version: "3.6.0",
+      exList: []
     };
+  },
+  created() {
+    listExperiment().then(response => {
+      this.exList = response.rows
+    })
   },
   methods: {
     goTarget(href) {
       window.open(href, "_blank");
     },
+    getList() {
+
+    },
+    toPage(item) {
+      let url = item.url
+      let id = item.id
+      this.$router.push({
+        path: url,
+        query: { id: id}
+      })
+    }
   },
 };
 </script>
@@ -277,6 +319,7 @@ export default {
   height: 100vh;
   background-color: #2e9adf;
 }
+
 /**非公共部分 */
 .c-box1 {
   background-color: #2e9adf;
@@ -284,22 +327,26 @@ export default {
   margin: 20px auto 0;
   height: calc(90vh - 20px);
 }
+
 .s-box2 {
   display: flex;
   justify-content: space-between;
   margin: 20px auto 0;
   padding: 0 20px;
 }
+
 .s-box3a {
   width: 36%;
   background-color: #fff;
   height: 40vh;
   border-radius: 12px;
 }
+
 .s-box3b {
   width: 26%;
   height: 40vh;
 }
+
 .s-box4a {
   width: 100%;
   height: 10vh;
@@ -309,9 +356,11 @@ export default {
   align-items: center;
   justify-content: center;
 }
+
 .s-box4a .el-input__inner {
   border-radius: 100px !important;
 }
+
 .s-box4b {
   width: 100%;
   height: 28vh;
@@ -319,6 +368,7 @@ export default {
   margin-top: 20px;
   border-radius: 12px;
 }
+
 .s-box2b {
   //height: 40vh;
   margin: 20px auto 0;
@@ -326,6 +376,7 @@ export default {
   background-color: #fff;
   width: calc(100% - 40px);
 }
+
 .v-title {
   padding: 0 20px;
   height: 6vh;
@@ -334,6 +385,7 @@ export default {
   font-size: 20px;
   border-bottom: 1px solid #f2f2f2;
 }
+
 .v-title1 {
   padding: 0 20px;
   height: 6vh;
@@ -345,67 +397,82 @@ export default {
   border-bottom: 1px solid #f2f2f2;
   justify-content: space-between;
 }
+
 .v-title1 span:nth-child(2) {
   color: #666666;
   font-size: 16px;
 }
+
 .v-box {
   align-items: center;
   display: flex;
   justify-content: space-between;
   padding: 0 20px;
 }
+
 .box-card {
-  width: 32%;
+  //width: 32%;
   margin: 20 auto 0;
   max-height: 220px;
   height: 40vh;
   position: relative;
 }
+
 .box-card:nth-child(1) {
   background-color: #44d9c0;
 }
+
 .box-card:nth-child(2) {
   background-color: #f0c783;
 }
+
 .box-card:nth-child(3) {
   background-color: #3dafe2;
 }
+
 .card-title1 {
   margin-top: 5px;
   font-size: 30px;
   color: #fff;
   text-align: left;
 }
+
 .card-title2 {
   margin-top: 5px;
   font-size: 20px;
   text-align: left;
 }
+
 .title-color1 {
   color: #1ead95;
 }
+
 .btn-bg1 {
   background-color: #1ead95;
   border: 1px solid #a2ffef;
   color: #a2ffef;
 }
+
 .title-color2 {
   color: #c98d2c;
 }
+
 .btn-bg2 {
   background-color: #c98d2c;
   border: 1px solid #ffe9c4;
   color: #ffe9c4;
 }
+
 .title-color3 {
   color: #187fad;
 }
+
 .btn-bg3 {
   background-color: #187fad;
   border: 1px solid #c0ecff;
   color: #c0ecff;
 }
+
 .card-btn {
   position: absolute;
   text-align: center;
@@ -415,6 +482,7 @@ export default {
   width: 100px;
   cursor: pointer;
 }
+
 .card-img {
   position: absolute;
   overflow: hidden;
@@ -423,12 +491,14 @@ export default {
   width: 80px;
   overflow: hidden;
 }
+
 .v-bar {
   width: 100%;
   height: 48vh;
   margin: 10 auto;
   overflow: hidden;
 }
+
 .v-pie {
   width: 100%;
   height: 48vh;
@@ -436,6 +506,7 @@ export default {
   overflow: hidden;
   position: relative;
 }
+
 .v-expie {
   position: absolute;
   right: 30px;
@@ -445,16 +516,19 @@ export default {
   margin-bottom: auto;
   height: 48vh;
 }
+
 .v-pie1 {
-  height: calc(48vh/9);
+  height: calc(48vh / 9);
   font-size: 14px;
   display: flex;
   align-items: center;
 }
+
 .v-pie1 div {
   position: relative;
   margin-right: 14px;
 }
+
 .v-pie1 div:nth-child(1):before {
   position: absolute;
   content: '';
@@ -467,42 +541,55 @@ export default {
   height: 6px;
   border-radius: 50%;
 }
+
 .v-pie1:nth-child(1) div {
   color: #42c3af;
 }
+
 .v-pie1:nth-child(1) div:nth-child(1):before {
   background-color: #42c3af;
 }
+
 .v-pie1:nth-child(2) div {
   color: #31a4ff;
 }
+
 .v-pie1:nth-child(2) div:nth-child(1):before {
   background-color: #31a4ff;
 }
+
 .v-pie1:nth-child(3) div {
   color: #f263b4;
 }
+
 .v-pie1:nth-child(3) div:nth-child(1):before {
   background-color: #f263b4;
 }
+
 .v-pie1:nth-child(4) div {
   color: #ffc15e;
 }
+
 .v-pie1:nth-child(4) div:nth-child(1):before {
   background-color: #ffc15e;
 }
+
 .v-pie1:nth-child(5) div {
   color: #fa675c;
 }
+
 .v-pie1:nth-child(5) div:nth-child(1):before {
   background-color: #fa675c;
 }
+
 .v-pie1:nth-child(6) div {
   color: #1c9399;
 }
+
 .v-pie1:nth-child(6) div:nth-child(1):before {
   background-color: #1c9399;
 }
+
 .v-pie1 div:nth-child(1) {
   color: #333 !important;
 }
@@ -515,12 +602,14 @@ export default {
     font-size: 17.5px;
     border-left: 5px solid #eee;
   }
+
   hr {
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
     border-top: 1px solid #eee;
   }
+
   .col-item {
     margin-bottom: 20px;
   }

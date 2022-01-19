@@ -26,36 +26,39 @@
         >新增
         </el-button>
       </el-col>
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="success"-->
-<!--          plain-->
-<!--          icon="el-icon-edit"-->
-<!--          size="mini"-->
-<!--          :disabled="single"-->
-<!--          v-hasPermi="['vm:testQuestion:edit']"-->
-<!--        >修改-->
-<!--        </el-button>-->
-<!--      </el-col>-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="danger"-->
-<!--          plain-->
-<!--          icon="el-icon-delete"-->
-<!--          size="mini"-->
-<!--          :disabled="multiple"-->
-<!--          v-hasPermi="['vm:testQuestion:remove']"-->
-<!--        >删除-->
-<!--        </el-button>-->
-<!--      </el-col>-->
+      <!--      <el-col :span="1.5">-->
+      <!--        <el-button-->
+      <!--          type="success"-->
+      <!--          plain-->
+      <!--          icon="el-icon-edit"-->
+      <!--          size="mini"-->
+      <!--          :disabled="single"-->
+      <!--          v-hasPermi="['vm:testQuestion:edit']"-->
+      <!--        >修改-->
+      <!--        </el-button>-->
+      <!--      </el-col>-->
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          v-hasPermi="['vm:testQuestion:remove']"
+          @click="handleDelete"
+        >删除
+        </el-button>
+      </el-col>
     </el-row>
     <el-table border :data="answerList" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center"></el-table-column>
       <el-table-column label="题型" align="center" prop="type" :formatter="typeFormat"></el-table-column>
       <el-table-column label="难度" align="center" prop="level" :formatter="levelFormat"></el-table-column>
       <el-table-column label="章节" align="center" prop="chapterId" :formatter="chapterFormat"></el-table-column>
       <el-table-column label="试题内容" align="center" prop="content" show-overflow-tooltip>
         <template slot-scope="scope">
-          <router-link :to="{ name: 'quAdd', params:{id: scope.row.id,quId:taskId,chapters:chapters}}" style="color: #00afff">
+          <router-link :to="{ name: 'quAdd', params:{id: scope.row.id,quId:taskId,chapters:chapters}}"
+                       style="color: #00afff">
             {{ scope.row.content }}
           </router-link>
         </template>
@@ -73,8 +76,9 @@
 </template>
 
 <script>
-import {listAnswer} from "@/api/vm/answer";
+import {delAnswer, listAnswer} from "@/api/vm/answer";
 import {getTask} from "@/api/vm/task";
+import {delExam} from "@/api/vm/exam";
 
 export default {
   name: "TestQuestions",
@@ -90,7 +94,7 @@ export default {
       ids: [],
       // 非单个禁用
       single: true,
-      total:0,
+      total: 0,
       // 非多个禁用
       multiple: true,
       // 显示搜索条件
@@ -100,7 +104,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         courseId: null,
-        taskId:null,
+        taskId: null,
         title: null,
         singleCount: null,
         multipleCount: null,
@@ -112,8 +116,8 @@ export default {
   },
   created() {
     const id = this.$route.params.id
-    this.queryParams.taskId=id
-    this.taskId=id
+    this.queryParams.taskId = id
+    this.taskId = id
     getTask(id).then(response => {
       this.chapters = response.data.chapters
     })
@@ -166,8 +170,25 @@ export default {
     handleAdd() {
       // this.$router.push('/vm/question/testQuestionForm/')
       console.log(this.taskId)
-      this.$router.push({path: '/vm/question/testQuestionForm/', query: {quId:this.taskId,chapters: this.chapters}})
+      this.$router.push({path: '/vm/question/testQuestionForm/', query: {quId: this.taskId, chapters: this.chapters}})
     },
+
+    //删除题目
+    handleDelete(row) {
+      const ids = row.id || this.ids;
+      this.$confirm('是否确认删除作业编号为"' + ids + '"的数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(function () {
+        return delAnswer(ids);
+      }).then(() => {
+        this.getList();
+        this.msgSuccess("删除成功");
+      }).catch(() => {
+      });
+    },
+
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.id)

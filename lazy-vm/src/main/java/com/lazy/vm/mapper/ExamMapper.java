@@ -61,4 +61,6 @@ public interface ExamMapper
     public int deleteExamByIds(String[] ids);
 
     List<Exam> selectExamJoinPaperList(ExamCourseDto examCourseDto);
+
+    List<Exam> selectUserExamList(Exam exam);
 }
