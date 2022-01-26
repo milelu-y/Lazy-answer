@@ -8,7 +8,7 @@
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
-          @change="handleQuery"
+          @input="handleQuery"
         />
       </el-form-item>
     </el-form>
@@ -74,7 +74,7 @@
           </router-link>
         </template>
       </el-table-column>
-      <el-table-column label="题库分类" align="center" prop="type"/>
+      <el-table-column label="题库分类" align="center" prop="type" :formatter="typeFormatter"/>
       <el-table-column label="试题数量" align="center" prop="multipleCount"/>
       <el-table-column label="创建时间" align="center" prop="gmtCreate"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -98,7 +98,8 @@
 
 <script>
 import {listTask, getTask, delTask, addTask, updateTask, exportTask} from "@/api/vm/task";
-
+import {listCourse} from "@/api/vm/course";
+import _ from "lodash"
 export default {
   name: "Task",
   data() {
@@ -145,11 +146,15 @@ export default {
         updateTime: [
           {required: true, message: "更新时间不能为空", trigger: "blur"}
         ],
-      }
+      },
+      courseList: []
     };
   },
   created() {
     this.getList();
+    listCourse().then(response => {
+      this.courseList = response.rows;
+    })
   },
   methods: {
     /** 查询作业列表 */
@@ -269,6 +274,15 @@ export default {
         this.exportLoading = false;
       }).catch(() => {
       });
+    },
+    typeFormatter(row) {
+      console.log(row);
+      let data = _.find(this.courseList, {id: row.type})
+      if (data){
+        return data.title
+      }else {
+        console.log("不存在")
+      }
     }
   }
 };

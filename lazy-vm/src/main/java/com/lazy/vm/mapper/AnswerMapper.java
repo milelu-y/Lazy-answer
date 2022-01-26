@@ -68,4 +68,6 @@ public interface AnswerMapper
 
 
     public List<Answer> getTestPaperAnswer(String testPaperId);
+
+    List<AnswerVo> selectExcludes(AnswerVo answerVo);
 }

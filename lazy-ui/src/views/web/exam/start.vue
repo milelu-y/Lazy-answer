@@ -11,7 +11,7 @@
             </div>
             <div class="card-box">
               <div class="item" v-for="(item,index) in type.quList">
-                <div class="num " :class="{'current':item.id===cardItem.id}" @click="handleCurrent(item)">{{
+                <div class="num " :class="[{'current':item.id===cardItem.id},{'filled':item.answered}]" @click="handleCurrent(item)">{{
                     index + 1
                   }}
                 </div>
@@ -74,6 +74,7 @@ export default {
       allItem: [],
       // 当前试题内容
       quData: {
+        answer: '',
         answerList: []
       },
       paperData: {},
@@ -212,6 +213,7 @@ export default {
 </script>
 
 <style scoped>
+@import "../../../../public/tinymce/skins/content/default/content.min.css";
 .title {
   font-size: 14px;
   font-weight: 700;
@@ -241,6 +243,11 @@ export default {
 .card-box .item .current {
   border-radius: 2px;
   background: #FFBA00;
+  color: #fff;
+}
+.card-box .item .filled {
+  border-radius: 2px;
+  background: #1890ff;
   color: #fff;
 }
 

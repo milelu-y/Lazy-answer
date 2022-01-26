@@ -100,6 +100,6 @@ public class TaskController extends BaseController
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
-        return toAjax(taskService.deleteTaskByIds(ids));
+        return taskService.deleteTaskByIds(ids);
     }
 }

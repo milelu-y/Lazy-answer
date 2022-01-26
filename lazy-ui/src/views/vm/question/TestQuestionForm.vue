@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-col :span="24">
-      <el-form ref="postForm" :model="postForm" :rules="rules" label-position="left" label-width="150px">
+      <el-form ref="postForm" :model="postForm" label-position="left" label-width="150px">
         <el-card>
           <el-form-item label="题目类型 " prop="type">
             <el-select v-model="postForm.type" class="filter-item" @change="handleTypeChange">
@@ -23,7 +23,7 @@
               />
             </el-select>
           </el-form-item>
-          <el-form-item label="所属章节 " prop="level">
+          <el-form-item label="所属章节 " prop="chapterId">
             <el-select v-model="postForm.chapterId" class="filter-item">
               <el-option
                 v-for="item in chapters"
@@ -34,15 +34,17 @@
             </el-select>
           </el-form-item>
           <el-form-item label="试题内容" prop="content">
-            <el-input v-model="postForm.content" type="textarea"/>
+<!--            <el-input v-model="postForm.content" type="textarea"/>-->
+            <timymce-editor ref="content"></timymce-editor>
           </el-form-item>
 
-          <el-form-item label="整题解析" prop="oriPrice">
-            <el-input v-model="postForm.analysis" type="textarea" :precision="1" :max="999999"/>
+          <el-form-item label="整题解析" prop="analysis">
+<!--            <el-input v-model="postForm.analysis" type="textarea" :precision="1" :max="999999"/>-->
+            <timymce-editor ref="analysis"></timymce-editor>
           </el-form-item>
         </el-card>
 
-        <div v-if="postForm.quType!==4" class="filter-container" style="margin-top: 25px">
+        <div v-if="postForm.type!=='3'" class="filter-container" style="margin-top: 25px">
           <el-button class="filter-item" type="primary" icon="el-icon-plus" size="small" plain @click="handleAdd">
             添加
           </el-button>
@@ -90,9 +92,11 @@
 <script>
 import {getTask} from "@/api/vm/task";
 import {addAnswer, getAnswer, updateAnswer} from "@/api/vm/answer"
+import timymceEditor from "@/components/TimymceEditor";
 
 export default {
   name: "TestQuestionForm",
+  components:{timymceEditor},
   data() {
     return {
       id: '',
@@ -119,6 +123,7 @@ export default {
     }
   },
   created() {
+    let that = this;
     this.getDicts("vm_qu_type").then(response => {
       this.quType = response.data;
     });
@@ -145,6 +150,11 @@ export default {
         this.postForm.level = response.data.level + ""
         this.postForm.type = response.data.type + ""
         // this.postForm.answerList = JSON.parse(response.data.options)
+        setTimeout(function () {
+          that.$refs.content.setContent(that.postForm.content);
+
+          that.$refs.analysis.setContent(that.postForm.analysis);
+        },300)
       })
     }
   },
@@ -162,6 +172,7 @@ export default {
         this.postForm.answerList.push({isRight: false, content: '', analysis: ''})
         this.postForm.answerList.push({isRight: false, content: '', analysis: ''})
       }
+
     },
     // 添加子项
     handleAdd() {
@@ -171,6 +182,8 @@ export default {
       this.postForm.answerList.splice(index, 1)
     },
     submitForm() {
+      this.postForm.content=this.$refs.content.content;
+      this.postForm.analysis=this.$refs.analysis.content;
       let rightCount = 0
       this.postForm.answerList.forEach(function (item) {
         if (item.isRight) {
@@ -205,6 +218,8 @@ export default {
           return
         }
       }
+      console.log(this.postForm)
+      var that = this;
       this.$refs.postForm.validate((valid) => {
         if (!valid) {
           return
@@ -220,7 +235,19 @@ export default {
                 type: 'success',
                 duration: 2000
               })
+              // that.$confirm('试题添加成功，接下来您要？', '提示', {
+              //   confirmButtonText: '继续添加下一题',
+              //   cancelButtonText: '返回列表',
+              //   type: 'warning'
+              // }).then(function () {
+              //   // 刷新页面
+              //   // _this2.clearForm();
+              //
+              // }).catch(function () {
+              //   that.$router.push({path: '/vm/question/testQuestionForm/', query: {quId: that.taskId, chapters: that.chapters}});
+              // });
             }
+             this.$router.go(-1)
           })
         }else {
           console.log("修改")
@@ -233,9 +260,9 @@ export default {
                 duration: 2000
               })
             }
+            this.$router.go(-1)
           })
         }
-        this.$router.go(-1)
       })
     },
     onCancel() {
@@ -246,5 +273,17 @@ export default {
 </script>
 
 <style scoped>
-
+>>>.tox-tinymce {
+  border: 1px solid #ccc;
+  border-radius: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  overflow: hidden;
+  position: relative;
+  visibility: inherit!important;
+  z-index: 1;
+}
 </style>

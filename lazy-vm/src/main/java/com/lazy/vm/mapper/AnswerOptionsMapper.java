@@ -52,6 +52,14 @@ public interface AnswerOptionsMapper
     public int deleteAnswerOptionsById(String id);
 
     /**
+     * 根据题目ＩＤ删除答案选项
+     *
+     * @param quId 答案选项ID
+     * @return 结果
+     */
+    public int deleteAnswerOptionsByQuId(String quId);
+
+    /**
      * 批量删除答案选项
      *
      * @param ids 需要删除的数据ID

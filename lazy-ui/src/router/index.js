@@ -160,6 +160,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/vm/question/testQuestionForm',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/vm/question/TestQuestionForm'], resolve),
+        name: 'quUpdate',
+        meta: {title: '修改试题', activeMenu: '/vm/question'}
+      }
+    ]
+  },
+  {
     path: '/vm/testPaper/paperForm',
     component: Layout,
     hidden: true,

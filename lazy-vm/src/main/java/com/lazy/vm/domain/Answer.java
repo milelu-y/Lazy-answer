@@ -32,6 +32,9 @@ public class Answer extends BaseEntity
     @Excel(name = "题目内容")
     private String content;
 
+    @Excel(name = "题目内容")
+    private String contentText;
+
     /** 答案 */
     @Excel(name = "答案")
     private String answer;
@@ -166,6 +169,14 @@ public class Answer extends BaseEntity
     public Date getGmtModified()
     {
         return gmtModified;
+    }
+
+    public String getContentText() {
+        return contentText;
+    }
+
+    public void setContentText(String contentText) {
+        this.contentText = contentText;
     }
 
     @Override

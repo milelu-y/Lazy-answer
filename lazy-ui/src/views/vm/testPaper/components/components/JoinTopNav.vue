@@ -31,6 +31,7 @@
             <el-dropdown-item :command="{ quType: '0', title: '单选题' }">单选题</el-dropdown-item>
             <el-dropdown-item :command="{ quType: '1', title: '多选题' }">多选题</el-dropdown-item>
             <el-dropdown-item :command="{ quType: '2', title: '判断题' }">判断题</el-dropdown-item>
+            <el-dropdown-item :command="{ quType: '3', title: '简答题' }">简答题</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>

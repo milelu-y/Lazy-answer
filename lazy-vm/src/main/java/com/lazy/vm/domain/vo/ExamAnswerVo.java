@@ -19,7 +19,7 @@ import java.util.List;
  * @author lazy
  * @date 2021-11-03
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ExamAnswerVo {
     private static final long serialVersionUID = 1L;
 
@@ -49,6 +49,11 @@ public class ExamAnswerVo {
     private String content;
 
     /**
+     * 题目内容
+     */
+    private String contentText;
+
+    /**
      * 章节ID
      */
     private String chapterId;
@@ -62,6 +67,8 @@ public class ExamAnswerVo {
      * 答案
      */
     private Boolean answerd;
+
+    private String answer;
 
     /**
      * 选项
@@ -229,6 +236,30 @@ public class ExamAnswerVo {
 
     public void setAnswerList(List<ExamAnswerOptions> answerList) {
         this.answerList = answerList;
+    }
+
+    public String getContentText() {
+        return contentText;
+    }
+
+    public void setContentText(String contentText) {
+        this.contentText = contentText;
+    }
+
+    public Boolean getRight() {
+        return isRight;
+    }
+
+    public void setRight(Boolean right) {
+        isRight = right;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     @Override

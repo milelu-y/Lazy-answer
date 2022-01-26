@@ -14,14 +14,14 @@
         <result property="gmtModified"    column="gmt_modified"    />
         <result property="userId"    column="user_id"    />
         <result property="quCount"    column="qu_count"    />
-        <result property="reserveField2"    column="reserve_field2"    />
-        <result property="reserveField3"    column="reserve_field3"    />
-        <result property="reserveField4"    column="reserve_field4"    />
+        <result property="objScore"    column="obj_score"    />
+        <result property="subjScore"    column="subj_score"    />
+        <result property="hasSaq"    column="has_saq"    />
         <result property="reserveField5"    column="reserve_field5"    />
     </resultMap>
 
     <sql id="selectTestPaperVo">
-        select id, title, total_score, type, category, gmt_create, gmt_modified, user_id, qu_count, reserve_field2, reserve_field3, reserve_field4, reserve_field5 from edu_test_paper
+        select id, title, total_score, type, category, gmt_create, gmt_modified, user_id, qu_count, obj_score, subj_score, has_saq, reserve_field5 from edu_test_paper
     </sql>
 
     <select id="selectTestPaperList" parameterType="TestPaper" resultMap="TestPaperResult">
@@ -35,9 +35,9 @@
             <if test="gmtModified != null "> and gmt_modified = #{gmtModified}</if>
             <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>
             <if test="quCount != null  and reserveField1 != ''"> and qu_count = #{quCount}</if>
-            <if test="reserveField2 != null  and reserveField2 != ''"> and reserve_field2 = #{reserveField2}</if>
-            <if test="reserveField3 != null  and reserveField3 != ''"> and reserve_field3 = #{reserveField3}</if>
-            <if test="reserveField4 != null  and reserveField4 != ''"> and reserve_field4 = #{reserveField4}</if>
+            <if test="objScore != null  and objScore != ''"> and obj_score = #{objScore}</if>
+            <if test="subjScore != null  and subjScore != ''"> and subj_score = #{subjScore}</if>
+            <if test="hasSaq != null  and hasSaq != ''"> and has_saq = #{hasSaq}</if>
             <if test="reserveField5 != null  and reserveField5 != ''"> and reserve_field5 = #{reserveField5}</if>
         </where>
     </select>
@@ -59,9 +59,9 @@
             <if test="gmtModified != null">gmt_modified,</if>
             <if test="userId != null">user_id,</if>
             <if test="quCount != null">qu_count,</if>
-            <if test="reserveField2 != null">reserve_field2,</if>
-            <if test="reserveField3 != null">reserve_field3,</if>
-            <if test="reserveField4 != null">reserve_field4,</if>
+            <if test="objScore != null">obj_score,</if>
+            <if test="subjScore != null">subj_score,</if>
+            <if test="hasSaq != null">has_saq,</if>
             <if test="reserveField5 != null">reserve_field5,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -74,9 +74,9 @@
             <if test="gmtModified != null">#{gmtModified},</if>
             <if test="userId != null">#{userId},</if>
             <if test="quCount != null">#{quCount},</if>
-            <if test="reserveField2 != null">#{reserveField2},</if>
-            <if test="reserveField3 != null">#{reserveField3},</if>
-            <if test="reserveField4 != null">#{reserveField4},</if>
+            <if test="objScore != null">#{objScore},</if>
+            <if test="subjScore != null">#{subjScore},</if>
+            <if test="hasSaq != null">#{hasSaq},</if>
             <if test="reserveField5 != null">#{reserveField5},</if>
         </trim>
     </insert>
@@ -92,9 +92,9 @@
             <if test="gmtModified != null">gmt_modified = #{gmtModified},</if>
             <if test="userId != null">user_id = #{userId},</if>
             <if test="quCount != null">qu_count = #{quCount},</if>
-            <if test="reserveField2 != null">reserve_field2 = #{reserveField2},</if>
-            <if test="reserveField3 != null">reserve_field3 = #{reserveField3},</if>
-            <if test="reserveField4 != null">reserve_field4 = #{reserveField4},</if>
+            <if test="objScore != null">obj_score = #{objScore},</if>
+            <if test="subjScore != null">subj_score = #{subjScore},</if>
+            <if test="hasSaq != null">has_saq = #{hasSaq},</if>
             <if test="reserveField5 != null">reserve_field5 = #{reserveField5},</if>
         </trim>
         where id = #{id}

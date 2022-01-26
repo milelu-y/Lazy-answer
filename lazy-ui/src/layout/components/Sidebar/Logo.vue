@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      title: '虚拟实验管理系统',
+      title: '实验系统',
       logo: logoImg
     }
   }

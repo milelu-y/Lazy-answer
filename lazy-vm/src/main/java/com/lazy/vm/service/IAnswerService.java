@@ -39,10 +39,10 @@ public interface IAnswerService
     /**
      * 修改作业题目
      *
-     * @param answer 作业题目
+     * @param answerVo 作业题目
      * @return 结果
      */
-    public int updateAnswer(Answer answer);
+    public int updateAnswer(AnswerVo answerVo);
 
     /**
      * 批量删除作业题目
@@ -69,4 +69,11 @@ public interface IAnswerService
     public int testScore(List<AnswerVo> answerVo);
 
     public List<Answer> getTestPaperAnswer(String testPaperId);
+
+    /**
+     * 查询题目
+     * @param answerVo
+     * @return
+     */
+    List<AnswerVo> pagingWithAnswer(AnswerVo answerVo);
 }

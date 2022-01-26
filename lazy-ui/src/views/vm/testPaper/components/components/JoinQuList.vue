@@ -2,7 +2,7 @@
   <div>
     <h4>题目列表</h4>
     <el-alert v-if="groupList.length===0" title="请点击右侧【添加新的大题】开始添加数据" type="info"></el-alert>
-    <qu-select-dialog :dialogShow.sync="dialogVisible" @select="select" @close="closeDialog" :quType.sync="quType"
+    <qu-select-dialog v-if="dialogVisible" :dialogShow.sync="dialogVisible" @select="select" @close="closeDialog" :quType.sync="quType"
                       :excludes.sync="excludes"></qu-select-dialog>
     <el-card class="content-card" v-for="(item,index) in groupList">
       <div slot="header" class="clearfix" style="background: rgb(238, 238, 238); margin: -20px; padding: 20px">
@@ -17,7 +17,7 @@
                 <div class="no">{{ key + 1 }}</div>
                 <div style="flex-grow: 1">
                   <div class="content">
-                    <p>{{ row.content }}</p>
+                    <p>{{ row.contentText }}</p>
                   </div>
                 </div>
               </div>
@@ -28,7 +28,7 @@
                 </div>
               </div> <!--题目选项-->
               <div class="score-box">
-                <div v-if="row.analysis!=null&&row.analysis!==''"><span>{{ row.analysis }}</span></div>
+                <div v-if="row.analysis!=null&&row.analysis!==''"><div v-html="row.analysis"></div></div>
                 <div v-else><span>本题暂未设置题目解析！</span></div>
               </div>
             </div>
@@ -110,9 +110,11 @@ export default {
         var fixedAnswers = [];
         for (let j = 0; j < data[i].answerList.length; j++) {
           var a = data[i].answerList[j];
+          console.log("a",a)
           fixedAnswers.push({
             answerId: a.id,
             content: a.content,
+            contentText:a.contentText,
             analysis: a.analysis,
             isRight: a.isRight,
             pathScore: 0
@@ -122,6 +124,7 @@ export default {
           id: data[i].id, //题目id
           type: data[i].type, //题目类型
           content: data[i].content,
+          contentText: data[i].contentText,
           analysis: data[i].analysis,
           score: 0,
           answerList: fixedAnswers, //题目选项
@@ -134,11 +137,13 @@ export default {
     },
     // 移除题目
     removeItem(list, index) {
-      if (list.length === 1) {
-        list = []
-      } else {
+      console.log(list,index)
+      // if (list.length === 1) {
+      //   list = []
+      //   list.splice(index,1)
+      // } else {
         list.splice(index, 1);
-      }
+      // }
     },
     handleScoreChange() {
       var paperQu = 0;
@@ -150,7 +155,7 @@ export default {
         var quList = item.quList;
         for (var j = 0; j < quList.length; j++) {
           totalScore += parseInt(quList[j].score); // 排除的ID
-          excludes.push({id: quList[j].id});
+          excludes.push(quList[j].id);
         }
         item.totalScore = totalScore;
         item.quCount = quList.length;

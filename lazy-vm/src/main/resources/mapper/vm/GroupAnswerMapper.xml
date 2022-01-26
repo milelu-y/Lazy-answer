@@ -50,6 +50,18 @@
             <if test="score != null">#{score},</if>
         </trim>
     </insert>
+    <insert id="insertGroupAnswers" parameterType="java.util.List">
+        insert into edu_group_answer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">group_id,</if>
+            <if test="answerId != null">answer_id,</if>
+            <if test="score != null">score,</if>
+        </trim>
+        values
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item.groupId},#{item.answerId},#{item.score}
+        </foreach>
+    </insert>
 
     <update id="updateGroupAnswer" parameterType="GroupAnswer">
         update edu_group_answer

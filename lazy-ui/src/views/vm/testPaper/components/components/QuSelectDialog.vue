@@ -10,7 +10,19 @@
           <el-form ref="postForm" :model="postForm">
             <el-col :span="24">
               <el-form-item prop="title" class="filter-item">
-                <el-input size="medium" placeholder="搜索题库" style="width: 200px" v-model="postForm.title"/>
+                <!--                <el-input size="medium" placeholder="选择搜索题库" style="width: 200px" @change="getList" v-model="postForm.title"/>-->
+                <el-select v-model="queryParams.taskId" placeholder="选择搜索题库" @change="getList ">
+                  <el-option
+                    v-for="item in taskList"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item prop="title" class="filter-item">
+                <el-input size="medium" placeholder="试题内容" style="width: 200px" @input="getList"
+                          v-model="queryParams.content"/>
               </el-form-item>
               <el-button type="primary" @click="handleConfirm()" style="float: right">确认{{ ids.length }}项</el-button>
             </el-col>
@@ -30,7 +42,7 @@
           width="50">
         </el-table-column>
         <el-table-column label="试题类型" align="center" prop="type" width="100" :formatter="typeFormat"></el-table-column>
-        <el-table-column label="试题内容" prop="content" show-overflow-tooltip></el-table-column>
+        <el-table-column label="试题内容" prop="contentText" show-overflow-tooltip></el-table-column>
         <el-table-column label="创建时间" align="center" prop="gmtCreate" width="200"></el-table-column>
       </el-table>
       <pagination
@@ -45,8 +57,9 @@
 </template>
 
 <script>
-import {listAnswer} from "@/api/vm/answer";
+import {listAnswer, pagingWithAnswer} from "@/api/vm/answer";
 import _ from 'lodash'
+import {listTask} from "@/api/vm/task";
 
 export default {
   name: "QuSelectDialog",
@@ -83,22 +96,33 @@ export default {
         type: '',
         taskId: '',
       },
+      taskList: [],
     }
   },
   created() {
-
     this.getList()
     this.getDicts("vm_qu_type").then(response => {
       this.types = response.data;
     });
+    //查询题库
+    this.getListQuestion()
   },
   methods: {
+    getListQuestion() {
+      listTask().then(response => {
+        this.taskList = response.rows;
+        console.log(this.taskList)
+        // this.loading = false;
+      });
+    },
     getList() {
       this.loading = true;
       this.queryParams.type = this.quType;
-      listAnswer(this.queryParams).then(response => {
+      this.queryParams.excludes = this.excludes;
+      console.log(this.queryParams)
+      pagingWithAnswer(this.queryParams).then(response => {
         this.tableData = response.rows;
-        _.pullAllBy(this.tableData, this.excludes, 'id')
+        //_.pullAllBy(this.tableData, this.excludes, 'id')
         this.total = response.total;
         this.loading = false;
       });

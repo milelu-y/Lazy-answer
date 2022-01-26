@@ -63,4 +63,10 @@ public interface GroupAnswerMapper
     List<GroupAnswer> selectGroupAnswerByGroupId(String id);
 
     Integer selectScoreByAnswerId(String quId);
+
+    /**
+     * 批量插入
+     * @param groupAnswers
+     */
+    void insertGroupAnswers(List<GroupAnswer> groupAnswers);
 }

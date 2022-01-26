@@ -16,50 +16,72 @@ import java.util.Date;
  * @author lazy
  * @date 2021-11-04
  */
-public class ExamAnswer
-{
+public class ExamAnswer {
     private static final long serialVersionUID = 1L;
 
-    /** 作业id */
+    /**
+     * 作业id
+     */
     private String id;
 
-    /** 题库id */
+    /**
+     * 题库id
+     */
     @Excel(name = "题库id")
     private String quId;
 
-    /** 题目类型：1（single: 单选题）、2（multiple: 多选题）、3 （fill: 填空题）、4（aq: 问答题）、5（judgment: 判断题） */
+    /**
+     * 题目类型：1（single: 单选题）、2（multiple: 多选题）、3 （fill: 填空题）、4（aq: 问答题）、5（judgment: 判断题）
+     */
     @Excel(name = "题目类型：1", readConverterExp = "s=ingle:,单=选题")
     private Integer type;
 
-    /** 题目难度 */
+    /**
+     * 题目难度
+     */
     @Excel(name = "题目难度")
     private Integer level;
 
-    /** 答案 */
+    /**
+     * 答案
+     */
     @Excel(name = "答案")
     private Boolean answerd;
 
-    /** 考试id */
+    private String answer;
+    /**
+     * 考试id
+     */
     @Excel(name = "考试id")
     private String paperId;
 
-    /** 排序 */
+    /**
+     * 排序
+     */
     @Excel(name = "排序")
     private Integer sort;
 
-    /** 是否标记 */
+    /**
+     * 是否标记
+     */
     @Excel(name = "是否标记")
     private Boolean mark;
 
-    /** 分数 */
+    /**
+     * 分数
+     */
     @Excel(name = "分数")
     private Integer score;
 
-    /** 是否正确 */
+    /**
+     * 是否正确
+     */
     @Excel(name = "是否正确")
     private Boolean isRight;
 
-    /** 分组id */
+    /**
+     * 分组id
+     */
     @Excel(name = "分组id")
     private String groupId;
 
@@ -67,45 +89,42 @@ public class ExamAnswer
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-    /** 更新时间 */
+    /**
+     * 更新时间
+     */
     @UpdateTime
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-    public void setId(String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
-    public void setQuId(String quId)
-    {
+
+    public void setQuId(String quId) {
         this.quId = quId;
     }
 
-    public String getQuId()
-    {
+    public String getQuId() {
         return quId;
     }
-    public void setType(Integer type)
-    {
+
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public Integer getType()
-    {
+    public Integer getType() {
         return type;
     }
-    public void setLevel(Integer level)
-    {
+
+    public void setLevel(Integer level) {
         this.level = level;
     }
 
-    public Integer getLevel()
-    {
+    public Integer getLevel() {
         return level;
     }
 
@@ -129,40 +148,35 @@ public class ExamAnswer
         isRight = right;
     }
 
-    public void setPaperId(String paperId)
-    {
+    public void setPaperId(String paperId) {
         this.paperId = paperId;
     }
 
-    public String getPaperId()
-    {
+    public String getPaperId() {
         return paperId;
     }
-    public void setSort(Integer sort)
-    {
+
+    public void setSort(Integer sort) {
         this.sort = sort;
     }
 
-    public Integer getSort()
-    {
+    public Integer getSort() {
         return sort;
     }
-    public void setScore(Integer score)
-    {
+
+    public void setScore(Integer score) {
         this.score = score;
     }
 
-    public Integer getScore()
-    {
+    public Integer getScore() {
         return score;
     }
-    public void setGroupId(String groupId)
-    {
+
+    public void setGroupId(String groupId) {
         this.groupId = groupId;
     }
 
-    public String getGroupId()
-    {
+    public String getGroupId() {
         return groupId;
     }
 
@@ -187,9 +201,17 @@ public class ExamAnswer
         this.updateTime = updateTime;
     }
 
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("id", getId())
                 .append("quId", getQuId())
                 .append("type", getType())

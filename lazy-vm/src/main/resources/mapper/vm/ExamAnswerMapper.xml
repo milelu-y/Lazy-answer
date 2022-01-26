@@ -45,8 +45,14 @@
         where id = #{id}
     </select>
     <select id="selectExamAnswerByQuId" resultType="com.lazy.vm.domain.vo.ExamAnswerVo">
-        select id, qu_id quId, type, level, answerd, paper_id paperId, sort, mark, score, is_right isRight, group_id groupId from edu_exam_answer
+        select id, qu_id quId, type, level, answerd,answer,paper_id paperId, sort, mark, score, is_right isRight, group_id groupId from edu_exam_answer
         where paper_id= #{paperId} and  qu_id = #{quId}
+    </select>
+    <select id="deleteExamAnswerByQuId" resultType="com.lazy.vm.domain.vo.ExamAnswerVo">
+        delete from edu_exam_answer where  qu_id = #{quId}
+    </select>
+    <select id="getExamAnswerByQuId" resultType="int">
+        SELECT count(*) from edu_exam_answer where qu_id=#{quId}
     </select>
 
     <insert id="insertExamAnswer" parameterType="ExamAnswer">
@@ -90,6 +96,7 @@
             <if test="type != null">type = #{type},</if>
             <if test="level != null">level = #{level},</if>
             <if test="answerd != null">answerd = #{answerd},</if>
+            <if test="answer != null">answer = #{answer},</if>
             <if test="paperId != null">paper_id = #{paperId},</if>
             <if test="sort != null">sort = #{sort},</if>
             <if test="mark != null">mark = #{mark},</if>

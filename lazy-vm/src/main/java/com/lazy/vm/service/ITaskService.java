@@ -1,6 +1,8 @@
 package com.lazy.vm.service;
 
 import java.util.List;
+
+import com.lazy.common.core.domain.AjaxResult;
 import com.lazy.vm.domain.Task;
 import com.lazy.vm.domain.vo.TaskVo;
 
@@ -50,7 +52,7 @@ public interface ITaskService
      * @param ids 需要删除的作业ID
      * @return 结果
      */
-    public int deleteTaskByIds(Long[] ids);
+    public AjaxResult deleteTaskByIds(Long[] ids);
 
     /**
      * 删除作业信息
@@ -58,5 +60,5 @@ public interface ITaskService
      * @param id 作业ID
      * @return 结果
      */
-    public int deleteTaskById(Long id);
+    public AjaxResult deleteTaskById(Long id);
 }

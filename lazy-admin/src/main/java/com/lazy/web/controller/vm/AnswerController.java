@@ -48,6 +48,13 @@ public class AnswerController extends BaseController
         return getDataTable(list);
     }
 
+    @PostMapping("/paging-with-answer")
+    public TableDataInfo list(@RequestBody  AnswerVo answerVo)
+    {
+        startPage();
+        List<AnswerVo> list = answerService.pagingWithAnswer(answerVo);
+        return getDataTable(list);
+    }
     /**
      * 导出作业题目列表
      */
@@ -88,9 +95,9 @@ public class AnswerController extends BaseController
     @PreAuthorize("@ss.hasPermi('vm:Answer:edit')")
     @Log(title = "作业题目", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody Answer answer)
+    public AjaxResult edit(@RequestBody AnswerVo answerVo)
     {
-        return toAjax(answerService.updateAnswer(answer));
+        return toAjax(answerService.updateAnswer(answerVo));
     }
 
     /**

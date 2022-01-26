@@ -88,8 +88,8 @@ public class ExamServiceImpl implements IExamService {
         if (exam.getLimitTime() != null && !exam.getLimitTime() && exam.getStatus() != null && exam.getStatus() == 2) {
             exam.setStatus(0);
         }
-        examMapper.insertExam(exam);
-        return insertExamDept(examVo);
+        insertExamDept(examVo);
+        return  examMapper.insertExam(exam);
     }
 
     /**
@@ -120,8 +120,8 @@ public class ExamServiceImpl implements IExamService {
      */
     @Override
     public int deleteExamByIds(String[] ids) {
-        examMapper.deleteExamByIds(ids);
-        return examDeptMapper.deleteExamDeptByIds(ids);
+        examDeptMapper.deleteExamDeptByIds(ids);
+        return examMapper.deleteExamByIds(ids);
     }
 
     /**
@@ -132,15 +132,15 @@ public class ExamServiceImpl implements IExamService {
      */
     @Override
     public int deleteExamById(String id) {
-        examMapper.deleteExamById(id);
         //删除部门
-        return examDeptMapper.deleteExamDeptById(id);
+        examDeptMapper.deleteExamDeptById(id);
+        return  examMapper.deleteExamById(id);
     }
 
     @Override
     public List<Exam> selectExamJoinPaperList(ExamCourseDto examCourseDto) {
         Long deptId = SecurityUtils.getLoginUser().getUser().getDeptId();
-        examCourseDto.setDeptId(deptId.intValue());
+       // examCourseDto.setDeptId(deptId.intValue());
         return examMapper.selectExamJoinPaperList(examCourseDto);
     }
 

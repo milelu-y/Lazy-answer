@@ -23,13 +23,12 @@
     </sql>
 
     <select id="selectExperimentList" parameterType="Experiment" resultMap="ExperimentResult">
-        <include refid="selectExperimentVo"/>
+        select id, course_id, title, intro, url, create_time, update_time, outline, reserve_field3, reserve_field4 from edu_experiment
         <where>
             <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
             <if test="title != null  and title != ''"> and title = #{title}</if>
             <if test="intro != null  and intro != ''"> and intro = #{intro}</if>
             <if test="url != null  and url != ''"> and url = #{url}</if>
-            <if test="process != null  and process != ''"> and process = #{process}</if>
             <if test="outline != null  and outline != ''"> and outline = #{outline}</if>
             <if test="reserveField3 != null  and reserveField3 != ''"> and reserve_field3 = #{reserveField3}</if>
             <if test="reserveField4 != null  and reserveField4 != ''"> and reserve_field4 = #{reserveField4}</if>

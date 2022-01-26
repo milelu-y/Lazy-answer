@@ -8,6 +8,7 @@
         <result property="id"    column="id"    />
         <result property="type"    column="type"    />
         <result property="content"    column="content"    />
+        <result property="contentText"    column="content_text"    />
         <result property="answer"    column="answer"    />
         <result property="level"    column="level"    />
         <result property="options"    column="options"    />
@@ -19,14 +20,15 @@
     </resultMap>
 
     <sql id="selectAnswerVo">
-        select id, type, content, answer, level, options, chapter_id, analysis, task_id, gmt_create, gmt_modified from edu_answer
+        select id, type, content,content_text, level, options, chapter_id, analysis, task_id, gmt_create, gmt_modified from edu_answer
     </sql>
 
     <select id="selectAnswerList" parameterType="Answer" resultMap="AnswerResult">
         <include refid="selectAnswerVo"/>
         <where>
             <if test="type != null "> and type = #{type}</if>
-            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="content != null  and content != ''"> and content like concat('%', #{content}, '%')</if>
+            <if test="contentText != null  and contentText != ''"> and content_text like concat('%', #{contentText}, '%')</if>
             <if test="answer != null  and answer != ''"> and answer = #{answer}</if>
             <if test="level != null "> and level = #{level}</if>
             <if test="options != null  and options != ''"> and options = #{options}</if>
@@ -49,6 +51,7 @@
             <if test="id != null">id,</if>
             <if test="type != null">type,</if>
             <if test="content != null">content,</if>
+            <if test="contentText != null">content_text,</if>
             <if test="answer != null">answer,</if>
             <if test="level != null">level,</if>
             <if test="options != null">options,</if>
@@ -62,6 +65,7 @@
             <if test="id != null">#{id},</if>
             <if test="type != null">#{type},</if>
             <if test="content != null">#{content},</if>
+            <if test="contentText != null">#{contentText},</if>
             <if test="answer != null">#{answer},</if>
             <if test="level != null">#{level},</if>
             <if test="options != null">#{options},</if>
@@ -78,6 +82,7 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="type != null">type = #{type},</if>
             <if test="content != null">content = #{content},</if>
+            <if test="contentText != null">content_text = #{contentText},</if>
             <if test="answer != null">answer = #{answer},</if>
             <if test="level != null">level = #{level},</if>
             <if test="options != null">options = #{options},</if>
@@ -102,9 +107,25 @@
     </delete>
 
     <select id="getTestPaperAnswer"  parameterType="String">
-        select a.id, a.type, a.content, a.answer, a.level, a.options, a.create_time, a.chapter_id, a.update_time, a.analysis, a.task_id
+        select a.id, a.type, a.content,a.content_text a.answer, a.level, a.options, a.create_time, a.chapter_id, a.update_time, a.analysis, a.task_id
         from edu_answer a,  edu_answer_testPaper b
         where a.id = b.answer_id  and  b.test_paper_id = #{testPaperId}
+    </select>
+    <select id="selectExcludes" resultType="com.lazy.vm.domain.vo.AnswerVo">
+        select id, type, content,content_text contentText, answer, level, options, chapter_id chapterId , analysis, task_id taskId from edu_answer
+        <where>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="contentText != null  and contentText != ''"> and content_text like concat('%', #{contentText}, '%')</if>
+            <if test="answer != null  and answer != ''"> and answer = #{answer}</if>
+            <if test="excludes != null  and excludes.size()>0">
+            and id not in
+                <foreach item="id" collection="excludes" open="(" separator="," close=")">
+                #{id}
+                </foreach>
+            </if>
+            <if test="taskId != null  and taskId != ''"> and task_id = #{taskId}</if>
+        </where>
+
     </select>
 
 </mapper>

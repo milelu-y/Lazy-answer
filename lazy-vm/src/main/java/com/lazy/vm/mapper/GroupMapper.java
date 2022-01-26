@@ -72,4 +72,10 @@ public interface GroupMapper
      * @param paperId
      */
     void deleteGroupByPaperId(String paperId);
+
+    /**
+     * 批量插入
+     * @param groupTempList
+     */
+    void insertGroups(List<Group> groupTempList);
 }

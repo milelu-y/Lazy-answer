@@ -63,13 +63,38 @@ public interface IExamPaperService
      */
     public int deleteExamPaperById(String id);
 
+    /**
+     * 创建试卷，待优化，很慢
+     * @param paperCreateVo
+     * @return
+     */
     AjaxResult createPaper(PaperCreateVo paperCreateVo);
 
+    /**
+     * 填充选项
+     * @param fullAnswerVo
+     * @return
+     */
     Map fullAnswer(ExamAnswerVo fullAnswerVo);
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     AjaxResult saveExam(String id);
 
+    /**
+     * 查询题目详情
+     * @param paperQuQueryDTO
+     * @return
+     */
     AjaxResult quDetail(PaperQuQueryDTO paperQuQueryDTO);
 
+    /**
+     * 返回结果，计算分数
+     * @param id
+     * @return
+     */
     AjaxResult paperResult(String id);
 }

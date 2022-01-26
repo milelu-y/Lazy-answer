@@ -31,7 +31,7 @@
         <where>
             <if test="courseId != null  and courseId != ''"> and course_id = #{courseId}</if>
             <if test="type != null  and type != ''"> and type = #{type}</if>
-            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
             <if test="singleCount != null "> and single_count = #{singleCount}</if>
             <if test="multipleCount != null "> and multiple_count = #{multipleCount}</if>
             <if test="judgment != null "> and judgment = #{judgment}</if>

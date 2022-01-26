@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lazy.common.utils.DateUtils;
+import com.lazy.common.utils.DelTagsUtil;
 import com.lazy.common.utils.SecurityUtils;
 import com.lazy.common.utils.uuid.SnowflakeIdWorker;
 import com.lazy.vm.domain.Achievement;
@@ -87,6 +88,7 @@ public class AnswerServiceImpl implements IAnswerService {
         String id = SnowflakeIdWorker.getId();
         BeanUtils.copyProperties(answerVo, answer);
         answer.setId(id);
+        answer.setContentText(DelTagsUtil.getTextFromHtml(answerVo.getContent()));
         for (AnswerOptionsVo answerOptionsVo : answerVo.getAnswerList()) {
             AnswerOptions answerOptions = new AnswerOptions();
             BeanUtils.copyProperties(answerOptionsVo, answerOptions);
@@ -99,12 +101,23 @@ public class AnswerServiceImpl implements IAnswerService {
     /**
      * 修改作业题目
      *
-     * @param answer 作业题目
+     * @param answerVo 作业题目
      * @return 结果
      */
     @Override
-    public int updateAnswer(Answer answer) {
+    public int updateAnswer(AnswerVo answerVo) {
+        Answer answer = new Answer();
+        BeanUtils.copyProperties(answerVo, answer);
         answer.setUpdateTime(DateUtils.getNowDate());
+        answer.setContentText(DelTagsUtil.getTextFromHtml(answerVo.getContent()));
+        //删除所有题目选项然后重新增加
+        answerOptionsMapper.deleteAnswerOptionsByQuId(answer.getId());
+        for (AnswerOptionsVo answerOptionsVo : answerVo.getAnswerList()) {
+            AnswerOptions answerOptions = new AnswerOptions();
+            BeanUtils.copyProperties(answerOptionsVo, answerOptions);
+            answerOptions.setQuId(answer.getId());
+            answerOptionsMapper.insertAnswerOptions(answerOptions);
+        }
         return answerMapper.updateAnswer(answer);
     }
 
@@ -116,6 +129,10 @@ public class AnswerServiceImpl implements IAnswerService {
      */
     @Override
     public int deleteAnswerByIds(Long[] ids) {
+        //删除作业前把选项删除
+        for (Long id : ids) {
+            answerOptionsMapper.deleteAnswerOptionsByQuId(id.toString());
+        }
         return answerMapper.deleteAnswerByIds(ids);
     }
 
@@ -127,6 +144,8 @@ public class AnswerServiceImpl implements IAnswerService {
      */
     @Override
     public int deleteAnswerById(Long id) {
+        //删除作业前把选项删除
+        answerOptionsMapper.deleteAnswerOptionsByQuId(id.toString());
         return answerMapper.deleteAnswerById(id);
     }
 
@@ -163,11 +182,16 @@ public class AnswerServiceImpl implements IAnswerService {
 
     @Override
     public List<Answer> getTestPaperAnswer(String testPaperId) {
-        if (!testPaperId.equals("")) {
+        if (!"".equals(testPaperId)) {
             List<Answer> testPaperAnswer = answerMapper.getTestPaperAnswer(testPaperId);
             return testPaperAnswer;
         }
         return null;
     }
 
+    @Override
+    public List<AnswerVo> pagingWithAnswer(AnswerVo answerVo) {
+        List<AnswerVo> answerVoList= answerMapper.selectExcludes(answerVo);
+        return answerVoList;
+    }
 }

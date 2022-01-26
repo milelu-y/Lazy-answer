@@ -120,7 +120,7 @@
                   <div v-if="postForm.openType===1">
                     <el-input v-model="postForm.password" placeholder="输入权限密码" style="width: 200px"></el-input>
                   </div>
-                  <div v-if="postForm.openType===2">
+                  <div v-show="postForm.openType===2">
                     <p>选择班级:</p>
                     <el-input
                       placeholder="输入关键字进行过滤"
@@ -182,7 +182,7 @@ export default {
         // 试卷ID
         paperId: null,
         // 作业部门列表
-        departIds: [],
+        deptIds: [],
         // 限制作业次数
         chance: 1,
         //作业时长

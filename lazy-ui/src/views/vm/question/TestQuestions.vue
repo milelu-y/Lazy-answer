@@ -5,12 +5,12 @@
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item prop="content">
         <el-input
-          v-model="queryParams.content"
+          v-model="queryParams.contentText"
           placeholder="试题内容"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
-          @change="handleQuery"
+          @input="handleQuery"
         />
       </el-form-item>
     </el-form>
@@ -57,9 +57,9 @@
       <el-table-column label="章节" align="center" prop="chapterId" :formatter="chapterFormat"></el-table-column>
       <el-table-column label="试题内容" align="center" prop="content" show-overflow-tooltip>
         <template slot-scope="scope">
-          <router-link :to="{ name: 'quAdd', params:{id: scope.row.id,quId:taskId,chapters:chapters}}"
+          <router-link :to="{ name: 'quUpdate', params:{id: scope.row.id,quId:taskId,chapters:chapters}}"
                        style="color: #00afff">
-            {{ scope.row.content }}
+            {{ scope.row.contentText }}
           </router-link>
         </template>
       </el-table-column>

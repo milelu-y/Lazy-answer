@@ -287,7 +287,9 @@ public class ExamPaperServiceImpl implements IExamPaperService {
         ExamAnswer examAnswer = new ExamAnswer();
 
         BeanUtils.copyProperties(fullAnswerVo, examAnswer);
-
+        if (examAnswer.getAnswer()!=null&&!"".equals(examAnswer.getAnswer())) {//判断是否回答
+            flag = true;
+        }
         examAnswerMapper.updateExamAnswer(examAnswer);
         Map<String, Object> map = new HashMap<>();
         map.put("fill", flag);
@@ -360,11 +362,13 @@ public class ExamPaperServiceImpl implements IExamPaperService {
 
 
         ExamAnswerVo examAnswerVo = examAnswerMapper.selectExamAnswerByQuId(paperId, quId);
+        String temp = examAnswerVo.getAnswer();
         String answerVoId = examAnswerVo.getId();
         BeanUtils.copyProperties(answer, examAnswerVo);
         examAnswerVo.setId(answerVoId);
         examAnswerVo.setQuId(quId);
         examAnswerVo.setPaperId(paperId);
+        examAnswerVo.setAnswer(temp);
         List<ExamAnswerOptions> examAnswerOptions = examAnswerOptionsMapper.selectExamAnswerOptionsByQuId(paperId, quId);
         examAnswerVo.setAnswerList(examAnswerOptions);
         return AjaxResult.success(examAnswerVo);

@@ -39,7 +39,7 @@ import VueMeta from 'vue-meta'
 
 import tinymce from 'tinymce'
 import VueTinymce from '@packy-tang/vue-tinymce'
-
+// import 'tinymce/tinymce.min.js'
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey

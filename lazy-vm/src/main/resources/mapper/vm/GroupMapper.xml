@@ -74,6 +74,24 @@
             <if test="totalScore != null">#{totalScore},</if>
         </trim>
     </insert>
+    <insert id="insertGroups" parameterType="java.util.List">
+        insert into edu_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="itemRand != null">item_rand,</if>
+            <if test="paperId != null">paper_id,</if>
+            <if test="perScore != null">per_score,</if>
+            <if test="quCount != null">qu_count,</if>
+            <if test="quType != null">qu_type,</if>
+            <if test="title != null">title,</if>
+            <if test="totalScore != null">total_score,</if>
+        </trim>
+        values
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item.id},#{item.itemRand},#{item.paperId},#{item.perScore},#{item.quCount},
+               #{item.quType},#{item.title},#{item.totalScore}
+        </foreach>
+    </insert>
 
     <update id="updateGroup" parameterType="Group">
         update edu_group

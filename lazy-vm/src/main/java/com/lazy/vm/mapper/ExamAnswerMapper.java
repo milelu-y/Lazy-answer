@@ -62,4 +62,12 @@ public interface ExamAnswerMapper
     public int deleteExamAnswerByIds(String[] ids);
 
     ExamAnswerVo selectExamAnswerByQuId(@Param("paperId") String paperId ,@Param("quId") String quId);
+
+    /**
+     * 根据题库id删除
+     * @param toString
+     */
+    void deleteExamAnswerByQuId(String quId);
+
+    int getExamAnswerByQuId(String quId);
 }

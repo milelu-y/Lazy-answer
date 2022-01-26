@@ -44,10 +44,10 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button >
+        <el-button>
           <router-link to="/web/index">取 消</router-link>
         </el-button>
-        <el-button type="primary" @click="handleCreate">开始答题</el-button>
+        <el-button type="primary" :loading="loading" @click="handleCreate">开始答题</el-button>
       </span>
     </el-dialog>
   </div>
@@ -62,11 +62,11 @@ export default {
   data() {
     return {
       deviceDebug: false,
-      loading: true,
+      loading: false,
       checkData: {},
       postForm: {
         examId: null,
-        password:''
+        password: ''
       },
     }
   },
@@ -83,17 +83,19 @@ export default {
         this.checkData = response.data
       })
     },
-    handleCreate(){
-      if (this.checkData.openType===1&& !this.postForm.password){
+    handleCreate() {
+      if (this.checkData.openType === 1 && !this.postForm.password) {
         this.$message.error('答题密码不能为空！');
         return
       }
       //创建试卷
-      createPaper(this.postForm).then(response=>{
-        if(response.code===200){
+      this.loading = true
+      createPaper(this.postForm).then(response => {
+        if (response.code === 200) {
+          this.loading = false;
           this.$router.push({
-            name:'startExam',
-            params:{id:response.data.id}
+            name: 'startExam',
+            params: {id: response.data.id}
           })
         }
       })

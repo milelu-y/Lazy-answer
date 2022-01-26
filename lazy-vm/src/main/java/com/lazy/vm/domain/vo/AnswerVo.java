@@ -1,12 +1,16 @@
 package com.lazy.vm.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lazy.common.annotation.Excel;
+import com.lazy.common.annotation.UpdateTime;
+import com.lazy.common.core.domain.BaseEntity;
 
+import java.util.Date;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AnswerVo {
+public class AnswerVo{
 
     /**
      * 题目id
@@ -14,7 +18,7 @@ public class AnswerVo {
     private String id;
 
     /**
-     * 题目类型：1（single: 单选题）、2（multiple: 多选题）、3 （fill: 填空题）、4（aq: 问答题）、5（judgment: 判断题）
+     * 题目类型：0（single: 单选题）、1（multiple: 多选题）、2、（judgment: 判断题）、3（aq: 问答题)
      */
     private Integer type;
 
@@ -22,6 +26,8 @@ public class AnswerVo {
      * 题目内容
      */
     private String content;
+
+    private String contentText;
 
     /**
      * 答案
@@ -64,8 +70,12 @@ public class AnswerVo {
      * 试卷id
      */
     private String testPaperId;
+    private Date gmtCreate;
 
+    private Date gmtModified;
     private List<AnswerOptionsVo> answerList;
+
+    private List<String> excludes;
 
     public String getTestPaperId() {
         return testPaperId;
@@ -169,5 +179,37 @@ public class AnswerVo {
 
     public void setScore(String score) {
         this.score = score;
+    }
+
+    public List<String> getExcludes() {
+        return excludes;
+    }
+
+    public void setExcludes(List<String> excludes) {
+        this.excludes = excludes;
+    }
+
+    public String getContentText() {
+        return contentText;
+    }
+
+    public void setContentText(String contentText) {
+        this.contentText = contentText;
+    }
+
+    public Date getGmtCreate() {
+        return gmtCreate;
+    }
+
+    public void setGmtCreate(Date gmtCreate) {
+        this.gmtCreate = gmtCreate;
+    }
+
+    public Date getGmtModified() {
+        return gmtModified;
+    }
+
+    public void setGmtModified(Date gmtModified) {
+        this.gmtModified = gmtModified;
     }
 }

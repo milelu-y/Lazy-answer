@@ -13,17 +13,24 @@
           <div style="display: flex">
             <div class="no">1.</div>
             <div style="flex-grow: 1;">
-              <div class="content"><p>{{ quData.content }}</p></div>
+              <div class="content"><p>{{ quData.contentText }}</p></div>
             </div>
           </div>
         </el-col>
         <el-col :span="1"></el-col>
-        <el-col :span="24" style="padding-top: 20px;">
+        <el-col :span="24" style="padding-top: 20px;" v-if="quData.type===0||quData.type===1||quData.type===2">
           <div class="option">
             <label :class="{'selected':item.checked}" style="cursor: pointer;"
                    v-for="(item ,index) in quData.answerList" @click="handleItemClick(item)">
               <span>{{ String.fromCharCode(index + 65) }} </span> &nbsp; &nbsp; &nbsp;<span
               style="margin-left: 5px"> {{ item.content }}</span>
+            </label>
+          </div>
+        </el-col>
+        <el-col :span="24" style="padding-top: 20px;" v-if="quData.type===3">
+          <div class="option">
+            <label>
+              <timymce-editor ref="timymce" :value="quData.answer" @setData="setData"></timymce-editor>
             </label>
           </div>
         </el-col>
@@ -33,8 +40,11 @@
 </template>
 
 <script>
+import timymceEditor from "@/components/TimymceEditor";
+
 export default {
   name: "QuItem",
+  components: {timymceEditor},
   props: {
     value: {
       type: Object,
@@ -73,13 +83,22 @@ export default {
     this.fillData(this.value);
   },
   methods: {
+    setData(val) {
+      this.quData.answer=val;
+      // let that =this;
+      // this.quData.answer="1";
+      // console.log("this.quData",this.quData)
+      // that.$set(that.quData.answer,'answer',val)
+    },
     // 填充数据
     fillData: function fillData(data) {
       if (!data) {
         return;
       }
-
       this.quData = data;
+      if (data.type === 3 && this.$refs.timymce) {
+        this.$refs.timymce.setContent(data.answer || '');
+      }
     },
     handleItemClick(item) {
       console.log(item)

@@ -8,6 +8,14 @@ export function listAnswer(query) {
     params: query
   })
 }
+export function pagingWithAnswer(data) {
+  return request({
+    url: '/vm/Answer/paging-with-answer?pageNum='+data.pageNum+"&pageSize="+data.pageSize,
+    method: 'post',
+    data: data
+  })
+}
+
 
 // 查询作业题目详细
 export function getAnswer(id) {

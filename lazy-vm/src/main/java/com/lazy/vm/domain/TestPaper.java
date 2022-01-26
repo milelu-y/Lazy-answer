@@ -80,20 +80,20 @@ public class TestPaper extends BaseEntity {
     /**
      * 预留
      */
-    @Excel(name = "预留")
-    private String reserveField2;
+    @Excel(name = "客观分数")
+    private Integer objScore;
 
     /**
      * 预留
      */
-    @Excel(name = "预留")
-    private String reserveField3;
+    @Excel(name = "主观分数")
+    private Integer subjScore;
 
     /**
      * 预留
      */
-    @Excel(name = "预留")
-    private String reserveField4;
+    @Excel(name = "是否包含简答题")
+    private Boolean hasSaq;
 
     /**
      * 预留
@@ -174,28 +174,28 @@ public class TestPaper extends BaseEntity {
         this.quCount = quCount;
     }
 
-    public void setReserveField2(String reserveField2) {
-        this.reserveField2 = reserveField2;
+    public Integer getObjScore() {
+        return objScore;
     }
 
-    public String getReserveField2() {
-        return reserveField2;
+    public void setObjScore(Integer objScore) {
+        this.objScore = objScore;
     }
 
-    public void setReserveField3(String reserveField3) {
-        this.reserveField3 = reserveField3;
+    public Integer getSubjScore() {
+        return subjScore;
     }
 
-    public String getReserveField3() {
-        return reserveField3;
+    public void setSubjScore(Integer subjScore) {
+        this.subjScore = subjScore;
     }
 
-    public void setReserveField4(String reserveField4) {
-        this.reserveField4 = reserveField4;
+    public Boolean getHasSaq() {
+        return hasSaq;
     }
 
-    public String getReserveField4() {
-        return reserveField4;
+    public void setHasSaq(Boolean hasSaq) {
+        this.hasSaq = hasSaq;
     }
 
     public void setReserveField5(String reserveField5) {
@@ -218,9 +218,6 @@ public class TestPaper extends BaseEntity {
                 .append("gmtModified", getGmtModified())
                 .append("userId", getUserId())
                 .append("quCount", getQuCount())
-                .append("reserveField2", getReserveField2())
-                .append("reserveField3", getReserveField3())
-                .append("reserveField4", getReserveField4())
                 .append("reserveField5", getReserveField5())
                 .toString();
     }

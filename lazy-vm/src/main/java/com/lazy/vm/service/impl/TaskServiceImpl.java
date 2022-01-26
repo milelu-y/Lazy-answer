@@ -2,12 +2,14 @@ package com.lazy.vm.service.impl;
 
 import java.util.List;
 
+import com.lazy.common.core.domain.AjaxResult;
 import com.lazy.common.utils.DateUtils;
 import com.lazy.common.utils.uuid.SnowflakeIdWorker;
 import com.lazy.vm.domain.Chapter;
 import com.lazy.vm.domain.vo.ChapterVo;
 import com.lazy.vm.domain.vo.TaskVo;
 import com.lazy.vm.mapper.ChapterMapper;
+import com.lazy.vm.mapper.ExamAnswerMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,9 @@ public class TaskServiceImpl implements ITaskService {
     @Autowired
     private ChapterMapper chapterMapper;
 
+    @Autowired
+    private ExamAnswerMapper answerMapper;
+
     /**
      * 查询作业
      *
@@ -40,7 +45,7 @@ public class TaskServiceImpl implements ITaskService {
     public TaskVo selectTaskById(String id) {
         List<ChapterVo> chapterVos = chapterMapper.selectChapterByTaskId(id);
         Task task = taskMapper.selectTaskById(id);
-        if (task==null){
+        if (task == null) {
             return null;
         }
         TaskVo taskVo = new TaskVo();
@@ -124,8 +129,15 @@ public class TaskServiceImpl implements ITaskService {
      * @return 结果
      */
     @Override
-    public int deleteTaskByIds(Long[] ids) {
-        return taskMapper.deleteTaskByIds(ids);
+    public AjaxResult deleteTaskByIds(Long[] ids) {
+        //删除需要查看是否有题目在此题库
+        //answerMapper.selectExamAnswerByQuId();
+//        for (Long id : ids) {
+//            if (answerMapper.getExamAnswerByQuId(id.toString()) > 0) {
+//                return AjaxResult.error("题库存在试题，请先删除试题");
+//            }
+//        }
+        return AjaxResult.success(taskMapper.deleteTaskByIds(ids));
     }
 
     /**
@@ -135,7 +147,10 @@ public class TaskServiceImpl implements ITaskService {
      * @return 结果
      */
     @Override
-    public int deleteTaskById(Long id) {
-        return taskMapper.deleteTaskById(id);
+    public AjaxResult deleteTaskById(Long id) {
+//        if (answerMapper.getExamAnswerByQuId(id.toString()) > 0) {
+//            return AjaxResult.error("题库存在试题，请先删除试题");
+//        }
+        return AjaxResult.success(taskMapper.deleteTaskById(id));
     }
 }

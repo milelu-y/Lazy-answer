@@ -38,6 +38,7 @@
   "dependencies": {
     "@packy-tang/vue-tinymce": "^1.1.2",
     "@riophae/vue-treeselect": "0.4.0",
+    "@tinymce/tinymce-vue": "^4.0.5",
     "ant-design-vue": "^1.7.8",
     "axios": "0.21.0",
     "clipboard": "2.0.6",

@@ -68,6 +68,10 @@
         delete from edu_answer_options where id = #{id}
     </delete>
 
+    <delete id="deleteAnswerOptionsByQuId" parameterType="String">
+        delete from edu_answer_options where qu_id = #{quId}
+    </delete>
+
     <delete id="deleteAnswerOptionsByIds" parameterType="String">
         delete from edu_answer_options where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">

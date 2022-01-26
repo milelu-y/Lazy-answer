@@ -140,9 +140,11 @@ export default {
       };
       this.postForm.groupList.push(data);
       var index = this.postForm.groupList.length - 1;
+      console.log("index",index)
       this.$refs.joinQuList.openSelectQu(index);
     },
     removeItem(list,index){
+      console.log(list,index)
       list.splice(index, 1);
     },
     //同步分数

@@ -56,11 +56,11 @@
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="作业名称" align="center" prop="title">
       </el-table-column>
-      <el-table-column label="开放权限" align="center" prop="openType"/>
+      <el-table-column label="开放权限" align="center" :formatter="openTypeFormat" prop="openType"/>
       <el-table-column label="作业时间" align="center" prop="totalTime"/>
       <el-table-column label="作业总分" align="center" prop="totalScore"/>
       <el-table-column label="及格线" align="center" prop="qualifyScore"/>
-      <el-table-column label="状态" align="center" prop="status"/>
+      <el-table-column label="状态" :formatter="statusFormat" align="center" prop="status"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <router-link to="/" style="color: #00afff">
@@ -114,12 +114,28 @@ export default {
         pageSize: 10,
         title: null,
       },
+      statusOptions:[],
+      openTypes:[]
     };
   },
   created() {
     this.getList();
+    this.getDicts("vm_job_status").then(response => {
+      this.statusOptions = response.data;
+    });
+    this.getDicts("vm_open_type").then(response => {
+      this.openTypes = response.data;
+    });
   },
   methods: {
+    // 操作日志状态字典翻译
+    statusFormat(row, column) {
+      return this.selectDictLabel(this.statusOptions, row.status);
+    },
+    openTypeFormat(row, column) {
+      console.log("row",row)
+      return this.selectDictLabel(this.openTypes, row.openType);
+    },
     /** 查询作业列表 */
     getList() {
       this.loading = true;
@@ -198,7 +214,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(function () {
-        return delTestPaper(ids);
+        return delExam(ids);
       }).then(() => {
         this.getList();
         this.msgSuccess("删除成功");

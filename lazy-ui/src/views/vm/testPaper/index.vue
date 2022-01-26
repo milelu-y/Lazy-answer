@@ -54,7 +54,7 @@
           <el-button type="text" @click="handleUpdate(scope.row)">{{ scope.row.title }}</el-button>
         </template>
       </el-table-column>
-      <el-table-column label="组卷方式" align="center" prop="type" width="150"></el-table-column>
+      <el-table-column label="组卷方式" align="center" prop="type" width="150" :formatter="typeFormatter"></el-table-column>
       <el-table-column label="试卷分类" align="center" prop="category"></el-table-column>
       <el-table-column label="总分" align="center" prop="totalScore" show-overflow-tooltip></el-table-column>
       <el-table-column label="创建人" align="center" prop="userId" show-overflow-tooltip></el-table-column>
@@ -144,6 +144,7 @@ export default {
         fillCount: null,
         aqCount: null
       },
+      packages:[]
     }
   },
   created() {
@@ -151,8 +152,14 @@ export default {
     listCourse().then(response => {
       this.courseOptions = response.rows;
     })
+    this.getDicts("vm_exam_package").then(response => {
+      this.packages = response.data;
+    });
   },
   methods: {
+    typeFormatter(row){
+      return this.selectDictLabel(this.packages, row.type);
+    },
     /** 查询考试管理列表 */
     getList() {
       this.loading = true;

@@ -127,6 +127,11 @@ public class TestPaperServiceImpl implements ITestPaperService {
         TestPaper testPaper = new TestPaper();
         String paperId = SnowflakeIdWorker.getId();
         testPaperVo.setId(paperId);
+        boolean hasSeq = false;
+        int objScore = 0;
+        int subjScore = 0;
+        List<GroupAnswer> groupAnswers = new ArrayList<>();
+        List<Group> groups = new ArrayList<>();
         for (GroupVo groupVo : testPaperVo.getGroupList()) {
             String groupId = SnowflakeIdWorker.getId();//分组ID
             groupVo.setPaperId(paperId);
@@ -135,18 +140,33 @@ public class TestPaperServiceImpl implements ITestPaperService {
                 String answerId = answerVo.getId(); //题目ID
                 //TODO: 插入中间表
                 GroupAnswer groupAnswer = new GroupAnswer(groupId, answerId, answerVo.getScore());
-                groupAnswerMapper.insertGroupAnswer(groupAnswer);
+                Integer type = answerVo.getType();
+                //存在主观题
+                if (type == 3) {
+                    hasSeq = true;
+                    subjScore += Integer.valueOf(answerVo.getScore());
+                } else {
+                    objScore += Integer.valueOf(answerVo.getScore());
+                }
+                groupAnswers.add(groupAnswer);
+                //groupAnswerMapper.insertGroupAnswer(groupAnswer);
             }
             //插入分组表
             Group group = new Group();
             group.setId(groupId);
             BeanUtils.copyProperties(groupVo, group);
-            groupMapper.insertGroup(group);
+            //groupMapper.insertGroup(group);
+            groups.add(group);
         }
+        groupAnswerMapper.insertGroupAnswers(groupAnswers);
+        groupMapper.insertGroups(groups);
         //插入试卷表
         BeanUtils.copyProperties(testPaperVo, testPaper);
         Long userId = SecurityUtils.getLoginUser().getUser().getUserId();
         testPaper.setUserId(String.valueOf(userId));
+        testPaper.setHasSaq(hasSeq);
+        testPaper.setObjScore(objScore);
+        testPaper.setSubjScore(subjScore);
         return testPaperMapper.insertTestPaper(testPaper);
     }
 
@@ -162,12 +182,21 @@ public class TestPaperServiceImpl implements ITestPaperService {
         TestPaper testPaper = new TestPaper();
         String paperId = testPaperVo.getId();
         List<Group> groups = groupMapper.selectGroupByPaperId(paperId);
+//        String[] groupIds = new String[groups.size()];
+//        for (int i = 0; i < groups.size(); i++) {
+//            groupIds[i]= groups.get(i).getId();
+//        }
+        //groupMapper.deleteGroupByIds(groupIds);//删除分组
+        //groupAnswerMapper.deleteGroupAnswerByIds(groupIds);//删除分组与题目关联表
         for (Group group : groups) {
             String id = group.getId();
             groupMapper.deleteGroupById(id);//删除分组
             groupAnswerMapper.deleteGroupAnswerById(id);//删除分组与题目关联表
         }
+
+
         List<GroupVo> groupList = testPaperVo.getGroupList();
+//        List<Group> groupTempList = new ArrayList<>();
         for (GroupVo groupVo : groupList) {
             String groupId = SnowflakeIdWorker.getId();//分组ID
             groupVo.setPaperId(paperId);
@@ -182,8 +211,10 @@ public class TestPaperServiceImpl implements ITestPaperService {
             Group group = new Group();
             group.setId(groupId);
             BeanUtils.copyProperties(groupVo, group);
+//            groupTempList.add(group);
             groupMapper.insertGroup(group);
         }
+//        groupMapper.insertGroups(groupTempList);//批量插入
         //修改试卷表
         BeanUtils.copyProperties(testPaperVo, testPaper);
         Long userId = SecurityUtils.getLoginUser().getUser().getUserId();

@@ -1,28 +1,29 @@
 {
-  "_from": "tinymce",
+  "_from": "tinymce@^5.10.2",
   "_id": "tinymce@5.10.2",
   "_inBundle": false,
   "_integrity": "sha512-5QhnZ6c8F28fYucLLc00MM37fZoAZ4g7QCYzwIl38i5TwJR5xGqzOv6YMideyLM4tytCzLCRwJoQen2LI66p5A==",
   "_location": "/tinymce",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "range",
     "registry": true,
-    "raw": "tinymce",
+    "raw": "tinymce@^5.10.2",
     "name": "tinymce",
     "escapedName": "tinymce",
-    "rawSpec": "",
+    "rawSpec": "^5.10.2",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "^5.10.2"
   },
   "_requiredBy": [
     "#USER",
     "/",
-    "/@packy-tang/vue-tinymce"
+    "/@packy-tang/vue-tinymce",
+    "/@tinymce/tinymce-vue"
   ],
   "_resolved": "https://registry.npmjs.org/tinymce/-/tinymce-5.10.2.tgz",
   "_shasum": "cf1ff01025909be26c64348509e6de8e70d58e1d",
-  "_spec": "tinymce",
+  "_spec": "tinymce@^5.10.2",
   "_where": "E:\\Program Files (x86)\\Java\\code\\RuoYi-Vue-master\\lazy-ui",
   "author": {
     "name": "Tiny Technologies, Inc"
