@@ -51,3 +51,12 @@ export function exportExperiment(query) {
     params: query
   })
 }
+
+//接收机参数
+export function receiver(query) {
+  return request ({
+    url: '@public/a',
+    method:'get',
+    params:query
+  })
+}

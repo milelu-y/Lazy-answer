@@ -152,10 +152,10 @@ public class ExamServiceImpl implements IExamService {
             examDept.setDeptId(deptId);
             examDeptList.add(examDept);
         }
-        if (examDeptList.size() > 0) {
+//        if (examDeptList.size() > 0) {
             return examDeptMapper.batchExamDept(examDeptList);
-        }
-        return 0;
+//        }
+//        return 0;
     }
 
     public List<Integer> getExamDeptIds(Integer deptId) {
