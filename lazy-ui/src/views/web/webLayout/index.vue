@@ -61,18 +61,18 @@ export default {
         {
           index: 0,
           url: '/web/index',
-          name: '在线答题'
+          name: '在线作业'
         },
         {
           index: 1,
           url: '/web/vm/vmIndex',
           name: '虚拟实验'
         },
-        {
-          index: 2,
-          url: '',
-          name: '用户中心'
-        },
+        // {
+        //   index: 2,
+        //   url: '',
+        //   name: '用户中心'
+        // },
       ]
     }
   },
