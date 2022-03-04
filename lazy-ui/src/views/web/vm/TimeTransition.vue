@@ -10,14 +10,14 @@
 <!--    </div>-->
     <el-divider/>
     <div>
-      <el-card style="position: absolute;left: 5px; top: 50px; width: 40%;height:700px;overflow:auto;">
+      <el-card style="position:absolute;left:5px;top:0px;width:40%;height:100%;overflow-y:auto;">
         <div slot="header" class="clearfix">
           <span>实验流程</span>
           <!--          <span @click="isCaonima" style="color:red"> 展开>>> </span>-->
           <span style="float: right;color: #498c5f"> <a
             :href="data.resource.url" :download="data.resource.name" target="_blank">点击此处下载实验大纲</a></span>
         </div>
-        <div v-html="data.process"></div>
+        <div style="padding-top:25px;" v-html="data.process"></div>
         <!--        <div style="font-size:20px;font-weight: 700">-->
         <!--          1）系统随机生成格里高利时，用户根据转换公式，计算出儒略日后，填入提示的框中，由系统判断对错；-->
         <!--        </div>-->
@@ -77,7 +77,7 @@
             <el-row>
               <el-col :span="24" :style="{ textAlign: 'center' }">
                 <el-button @click="submitHandle" type="primary">
-                  提交
+                  转换
                 </el-button>
               </el-col>
             </el-row>
@@ -131,37 +131,37 @@ export default {
             if ((this.form.julian * 1) === this.julianTime(this.form.time)) {
               this.active = 2
               this.notifySuccess("正确", "转换正确")
-              this.randomDate()
-              this.rest();
+              // this.randomDate()
+              // this.rest();
             } else {
               this.active = 2
               this.$confirm('转换错误，正确答案为：' +this.julianTime(this.form.time) , '提示', {
-                confirmButtonText: '重试',
+                confirmButtonText: '确定',
                 type: 'warning'
               }).then(() => {
-
+                this.form.julian = this.julianTime(this.form.time)
               })
-              this.rest();
+              // this.rest();
             }
           } else {
             let system = moment(this.julianToTime(this.form.julian)).format("YYYY-MM-DD HH:mm:ss")
             var date = new Date(this.form.time);
             let user = moment(date).format("YYYY-MM-DD HH:mm:ss");
-            console.log(system,user)
+            console.log(system,user,date)
             if (user === system) {
               this.active = 2
               this.notifySuccess("正确", "转换正确")
-              this.rest();
+              // this.rest();
               this.$set(this.form.julian, 'julian', this.randomJulianDate())
             } else {
               this.active = 2
               this.$confirm('转换错误，正确答案为：' +system , '提示', {
-                confirmButtonText: '重试',
+                confirmButtonText: '确定',
                 type: 'warning'
               }).then(() => {
-
+                this.form.time = moment(this.julianToTime(this.form.julian)).format("YYYY-MM-DD HH:mm:ss")
               })
-              this.rest();
+              // this.rest();
             }
           }
         }

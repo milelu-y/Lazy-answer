@@ -18,20 +18,62 @@
       :data="tableData"
       style="width: 100%">
       <el-table-column
-        prop="title"
-        label="标题"
-        width="180">
+        prop="classall"
+        label="班级"
+        align="center"
+        >
       </el-table-column>
       <el-table-column
-        prop="userScore"
+        prop="names"
+        label="姓名"
+        align="center"
+        >
+      </el-table-column>
+      <el-table-column
+        prop="jobname"
+        label="作业名称"
+        align="center"
+        >
+      </el-table-column>
+      <el-table-column
+        prop="subittime"
+        label="提交时间"
+        align="center"
+        >
+      </el-table-column>
+      <el-table-column
+        prop="score"
         label="得分"
-        width="180">
+        align="center"
+        >
       </el-table-column>
       <el-table-column
         prop="totalScore"
-        label="总分">
+        label="总分"
+        align="center">
       </el-table-column>
+      <el-table-column
+        prop="operation"
+        label="操作"
+        align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+            <!-- <el-button type="text" size="small">编辑</el-button> -->
+          </template>
+        </el-table-column>
     </el-table>
+    <!-- 查看作业情况 -->
+    <el-dialog
+      title="作业完成情况"
+      :visible.sync="open"
+      width="30%"
+      :before-close="handleClose">
+      <span>错题详情</span>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
+        <el-button type="primary" @click="dialogVisible">确 定</el-button>
+      </span>
+    </el-dialog>
     <user-select ref="userSelect" @selectHandle="selectHandle"></user-select>
   </div>
 </template>
@@ -63,7 +105,11 @@ export default {
       data: [],
       loading: false,
       total: 0,
-      tableData: []
+      tableData: [
+        {classall:'20级1213',names:'张三',jobname:'第一章',subittime:'2022-3-3 11:20:30',score:'60',totalScore:'60',},
+        {classall:'20级1314',names:'admin',jobname:'第二章',subittime:'2022-3-3 11:50:30',score:'80',totalScore:'80',},
+        ],
+      open:false
     }
   },
   methods: {
@@ -80,8 +126,24 @@ export default {
     handleQuery() {
       userAllWork(this.queryParams.userId).then(response => {
         this.tableData = response.data
+        // console.log('???',this.tableData)
       })
-    }
+    },
+    //查看得分情况详情
+    handleClick(row){
+      this.open = true
+    },
+    //关闭弹出层
+    handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      },
+    dialogVisible(){
+      this.open = false
+    },
   }
 }
 </script>
