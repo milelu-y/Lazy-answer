@@ -61,13 +61,13 @@
       <el-table-column label="作业总分" align="center" prop="totalScore"/>
       <el-table-column label="及格线" align="center" prop="qualifyScore"/>
       <el-table-column label="状态" :formatter="statusFormat" align="center" prop="status"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <!-- <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <router-link to="/" style="color: #00afff">
             <i class="el-icon-pie-chart"></i> 统计分析
           </router-link>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
 
     <pagination

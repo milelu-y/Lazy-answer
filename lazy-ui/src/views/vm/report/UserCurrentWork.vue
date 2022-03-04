@@ -21,25 +21,69 @@
         <el-button icon="el-icon-refresh">重置</el-button>
       </el-form-item>
     </el-form>
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          :loading="exportLoading"
+          @click="handleExport"
+          v-hasPermi="['vm:task:export']"
+        >导出
+        </el-button>
+      </el-col>
+    </el-row>
+
     <el-table
       border
       :data="tableData"
-      style="width: 100%">
+      style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center"/>
       <el-table-column
         prop="title"
-        label="标题"
-        width="180">
+        label="章节"
+        align="center"
+        >
       </el-table-column>
       <el-table-column
-        prop="userScore"
-        label="得分"
-        width="180">
+        prop="nums"
+        label="提交人数"
+        align="center"
+        >
       </el-table-column>
       <el-table-column
+        prop="numbers"
+        label="平均分"
+        align="center">
+      </el-table-column>
+      <el-table-column
+        prop="total"
+        label="总分"
+        align="center">
+      </el-table-column>
+       <el-table-column
         prop="totalScore"
-        label="总分">
+        label="操作"
+        align="center">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="text" size="small">统计分析</el-button>
+          </template>
       </el-table-column>
     </el-table>
+    <el-dialog
+      title="统计情况"
+      :visible.sync="open"
+      width="30%"
+      :before-close="handleClose">
+      <span>错题详情1</span>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
+        <el-button type="primary" @click="dialogVisible">确 定</el-button>
+      </span>
+    </el-dialog>
     <user-select ref="userSelect" @selectHandle="selectHandle"></user-select>
     <exam-select ref="examSelect" @selectHandle="selectExamHandle"></exam-select>
   </div>
@@ -74,7 +118,8 @@ export default {
       data:[],
       loading: false,
       total: 0,
-      tableData: []
+      tableData: [{title:'第一章',nums:'48',numbers:'78',total:'3744'}],
+      open:false
     }
   },
   created() {
@@ -105,6 +150,10 @@ export default {
         console.log(response)
         this.tableData.push(response.data)
       })
+    },
+    //统计分析
+    handleClick(){
+      this.open = true
     }
   }
 }
