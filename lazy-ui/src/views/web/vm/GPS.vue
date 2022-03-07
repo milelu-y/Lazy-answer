@@ -423,5 +423,13 @@ export default {
 </script>
 
 <style scoped>
-
+.clearfix{
+   padding: 14px 15px 7px;
+    min-height: 40px;
+    position: fixed;
+    background: #e6ebf5;
+    width: 39%;
+    top: 0;
+    left: 6px;
+}
 </style>

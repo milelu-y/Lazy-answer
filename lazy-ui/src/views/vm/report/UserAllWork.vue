@@ -13,16 +13,43 @@
         <el-button icon="el-icon-refresh">重置</el-button>
       </el-form-item>
     </el-form>
+    <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5">
+        <el-button
+          type="warning"
+          plain
+          icon="el-icon-download"
+          size="mini"
+          
+          v-hasPermi="['vm:task:export']"
+        >导出
+        </el-button>
+      </el-col>
+      <!-- <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-edit"
+          :disabled="single"
+          size="mini"
+          @click="statistics"
+          v-hasPermi="['vm:task:export']"
+        >统计
+        </el-button>
+      </el-col> -->
+    </el-row>
     <el-table
       border
       :data="tableData"
-      style="width: 100%">
-      <el-table-column
+      style="width: 100%"
+      >
+      <el-table-column type="selection" width="55" align="center"/>
+      <!-- <el-table-column
         prop="classall"
         label="班级"
         align="center"
         >
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="names"
         label="姓名"
@@ -47,30 +74,70 @@
         align="center"
         >
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="totalScore"
         label="总分"
         align="center">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="operation"
         label="操作"
         align="center">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">统计分析</el-button>
+            <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
           </template>
         </el-table-column>
     </el-table>
     <!-- 查看作业情况 -->
     <el-dialog
-      title="作业完成情况"
+      title="作业得分情况"
       :visible.sync="open"
       width="30%"
       :before-close="handleClose">
-      <span>错题详情</span>
+      <div class="choice">选择题：
+        <el-tag
+          style="margin:0 5px"
+          v-for="item in items"
+          :key="item.label"
+          :type="item.type"
+          effect="dark">
+          {{ item.label }}
+        </el-tag>
+      </div>
+      <div class="judge">判断题：
+        <el-tag
+          style="margin:0 5px"
+          v-for="item in judge"
+          :key="item.label"
+          :type="item.type"
+          effect="dark">
+          {{ item.label }}
+        </el-tag>
+      </div>
+      <div class="answer">简答题：
+        <el-tag
+          style="margin:0 5px"
+          v-for="item in answer"
+          :key="item.label"
+          :type="item.type"
+          effect="dark">
+          {{ item.label }}
+        </el-tag>
+      </div>
       <span slot="footer" class="dialog-footer">
         <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
-        <el-button type="primary" @click="dialogVisible">确 定</el-button>
+        <el-button type="primary" @click="dialogVisiblelist">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 统计得分情况 -->
+    <el-dialog
+      title="得分情况"
+      :visible.sync="opennice"
+      width="30%"
+      :before-close="handleClose">
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
+        <el-button type="primary" @click="dialogVisiblelist">确 定</el-button>
       </span>
     </el-dialog>
     <user-select ref="userSelect" @selectHandle="selectHandle"></user-select>
@@ -80,12 +147,15 @@
 <script>
 import UserSelect from "@/components/UserSelect";
 import {userAllWork} from "@/api/vm/report";
+import {exportTask} from "@/api/vm/task";
 
 export default {
   name: "UserAllWork",
   components: {UserSelect},
   data() {
     return {
+      // 选中数组
+      ids: [],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -106,10 +176,41 @@ export default {
       loading: false,
       total: 0,
       tableData: [
-        {classall:'20级1213',names:'张三',jobname:'第一章',subittime:'2022-3-3 11:20:30',score:'60',totalScore:'60',},
-        {classall:'20级1314',names:'admin',jobname:'第二章',subittime:'2022-3-3 11:50:30',score:'80',totalScore:'80',},
+        {names:'张三',jobname:'第一章',subittime:'2022-3-3 11:20:30',score:'60',totalScore:'60',},
+        {names:'admin',jobname:'第二章',subittime:'2022-3-3 11:50:30',score:'80',totalScore:'80',},
         ],
-      open:false
+      // 查看弹出层
+      open:false,
+      //统计弹出层
+      opennice:false,
+      exportLoading:false,
+      //弹出层得分情况
+      items: [
+          { type: 'success', label: '1' },
+          { type: 'success', label: '2' },
+          { type: 'danger', label: '3' },
+          { type: 'danger', label: '4' },
+          { type: 'success', label: '5' },
+          { type: 'success', label: '6' },
+          { type: 'success', label: '7' },
+          { type: 'success', label: '8' },
+          { type: 'success', label: '9' },
+          { type: 'success', label: '10' }
+        ],
+        judge:[
+          { type: 'success', label: '11' },
+          { type: 'success', label: '12' },
+          { type: 'danger', label: '13' },
+          { type: 'danger', label: '14' },
+          { type: 'success', label: '15' },
+        ],
+        answer:[
+          { type: 'success', label: '16' },
+          { type: 'success', label: '17' },
+          { type: 'danger', label: '18' },
+        ],
+      // 非单个禁用
+      // single: true,
     }
   },
   methods: {
@@ -141,13 +242,42 @@ export default {
           })
           .catch(_ => {});
       },
-    dialogVisible(){
+    dialogVisiblelist(){
       this.open = false
+    },
+    //导出按钮
+     handleExport() {
+      const queryParams = this.queryParams;
+      this.$confirm('是否确认导出所有作业数据项?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportTask(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        this.exportLoading = false;
+      }).catch(() => {
+      });
+    },
+     // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+      // this.single = selection.length !== 1
     },
   }
 }
 </script>
 
 <style scoped>
-
+  .choice {
+    padding: 5px 0;
+  }
+  .judge{
+    padding: 5px 0;
+  }
+  .answer{
+    padding: 5px 0;
+  }
 </style>

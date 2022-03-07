@@ -28,7 +28,6 @@
           plain
           icon="el-icon-download"
           size="mini"
-          :loading="exportLoading"
           @click="handleExport"
           v-hasPermi="['vm:task:export']"
         >导出
@@ -69,7 +68,7 @@
         label="操作"
         align="center">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">统计分析</el-button>
+            <el-button @click="handleClick(scope)" type="text" size="small">统计分析</el-button>
           </template>
       </el-table-column>
     </el-table>
@@ -78,10 +77,12 @@
       :visible.sync="open"
       width="30%"
       :before-close="handleClose">
-      <span>错题详情1</span>
+      <div class="items">最高分：</div>
+      <div class="items">最低分：</div>
+      <div class="items">平均分：</div>
       <span slot="footer" class="dialog-footer">
         <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
-        <el-button type="primary" @click="dialogVisible">确 定</el-button>
+        <el-button type="primary" @click="dialogVisiblelist">确 定</el-button>
       </span>
     </el-dialog>
     <user-select ref="userSelect" @selectHandle="selectHandle"></user-select>
@@ -119,7 +120,8 @@ export default {
       loading: false,
       total: 0,
       tableData: [{title:'第一章',nums:'48',numbers:'78',total:'3744'}],
-      open:false
+      open:false,
+      handleClose:false,
     }
   },
   created() {
@@ -154,11 +156,20 @@ export default {
     //统计分析
     handleClick(){
       this.open = true
+    },
+    // 多选框选中数据
+    handleSelectionChange(selection) {
+      this.ids = selection.map(item => item.id)
+    },
+    dialogVisiblelist(){
+      this.open = false
     }
   }
 }
 </script>
 
 <style scoped>
-
+  .items{
+    padding: 5px 0;
+  }
 </style>

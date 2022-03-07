@@ -271,6 +271,7 @@ export default {
         return exportTask(queryParams);
       }).then(response => {
         this.download(response.msg);
+        console.log("999",response.msg)
         this.exportLoading = false;
       }).catch(() => {
       });
