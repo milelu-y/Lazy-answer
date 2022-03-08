@@ -17,8 +17,8 @@
       </el-card>
     </div>
     <div class="clock" style="margin-bottom:15px;">
-      <el-button @click="subitbd" size="small">地心坐标</el-button>
-      <el-button @click="subitst" size="small">大地坐标</el-button>
+      <el-button @click="subitbd" size="small">切换</el-button>
+      <!-- <el-button @click="subitst" size="small">大地坐标</el-button> -->
     </div>
     <div class="allboady" v-show="markes">
       <el-card>
@@ -94,7 +94,8 @@ export default {
       data: {},
       markes:true,
       markenums:false,
-      geocentric:{X:'',Y:'',Z:''}
+      geocentric:{X:'',Y:'',Z:''},
+      num:0,
     }
   },
   created() {
@@ -190,28 +191,34 @@ export default {
 
     //切换地心坐标按钮
     subitbd(){
+      var a = this.num++
        Experiment().then(response => {
         console.log(response)
         this.dxdgzj = response.data.input
         this.output = response.data.output
       })
+      if( a%2 ===0){
+        this.markes = false
+        this.markenums = true
+      }else{
+        this.markes = true
+        this.markenums = false
+      }
       this.ddzbx = {B:'',L:'',H:''}
       this.geocentric = {X:'',Y:'',Z:''}
-      this.markes = true
-      this.markenums = false
     },
     //切换大地坐标系按钮
-    subitst(){
-       Experiment().then(response => {
-        console.log(response)
-        this.dxdgzj = response.data.input
-        this.output = response.data.output
-      })
-      this.ddzbx = {B:'',L:'',H:''}
-      this.geocentric = {X:'',Y:'',Z:''}
-      this.markes = false
-      this.markenums = true
-    },
+    // subitst(){
+    //    Experiment().then(response => {
+    //     console.log(response)
+    //     this.dxdgzj = response.data.input
+    //     this.output = response.data.output
+    //   })
+    //   this.ddzbx = {B:'',L:'',H:''}
+    //   this.geocentric = {X:'',Y:'',Z:''}
+    //   this.markes = false
+    //   this.markenums = true
+    // },
     //地心地固提交按钮
     geocentricSubit(){
       var system = this.geocentric.X + "," + this.geocentric.Y + "," + this.geocentric.Z

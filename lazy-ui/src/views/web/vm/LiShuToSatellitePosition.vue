@@ -339,6 +339,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.tTime = this.dataVX.output.result1
+            this.isTime1 = true
+            this.isTime2 = false
+            this.btn1 = false
+            this. btn2 = true
           })
         }
       }else if(!this.isTime2){
@@ -360,6 +364,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.wTime = this.dataVX.output.result2
+            this.isTime2 = true
+            this.isTime3 = false
+            this.btn2 = false
+            this. btn3 = true
           })
         }
       }else if(!this.isTime3){
@@ -381,6 +389,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.wxTime = this.dataVX.output.result3
+            this.isTime3 = true
+            this.isTime4 = false
+            this.btn3 = false
+            this. btn4 = true
           })
         }
       }else if(!this.isTime4){
@@ -402,6 +414,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.pjdTime = this.dataVX.output.result4
+            this.isTime4 = true
+            this.isTime5 = false
+            this.btn4 = false
+            this. btn5 = true
           })
         }
       }else if(!this.isTime5){
@@ -423,6 +439,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.pjjTime = this.dataVX.output.result5
+            this.isTime5 = true
+            this.isTime6 = false
+            this.btn5 = false
+            this. btn6 = true
           })
         }
       }else if(!this.isTime6){
@@ -444,6 +464,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.zjjTime = this.dataVX.output.result6
+            this.isTime6 = true
+            this.isTime7 = false
+            this.btn6 = false
+            this. btn7 = true
           })
         }
       }else if(!this.isTime7){
@@ -465,6 +489,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.wdfjTime = this.dataVX.output.result7
+            this.isTime7 = true
+            this.isTime8 = false
+            this.btn7 = false
+            this. btn8 = true
           })
         }
       }else if(!this.isTime8){
@@ -486,6 +514,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.jjjlTime = this.dataVX.output.result8
+            this.isTime8 = true
+            this.isTime9 = false
+            this.btn8 = false
+            this. btn9 = true
           })
         }
       }else if(!this.isTime9){
@@ -507,6 +539,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.pmzvTime = this.dataVX.output.result9
+            this.isTime9 = true
+            this.isTime10 = false
+            this.btn9 = false
+            this. btn10 = true
           })
         }
       }else if(!this.isTime10){
@@ -528,6 +564,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.sjdTime = this.dataVX.output.result10
+            this.isTime10 = true
+            this.isTime11 = false
+            this.btn10 = false
+            this. btn11 = true
           })
         }
       }else if(!this.isTime11){
@@ -549,6 +589,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.gdqjTime = this.dataVX.output.result11
+            this.isTime11 = true
+            this.isTime12 = false
+            this.btn11 = false
+            this. btn12 = true
           })
         }
       }else if(!this.isTime12){
@@ -569,6 +613,9 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.CGSTime = this.dataVX.output.result12
+            this.isTime12 = true
+            this.btn12 = false
+            this.btn13 = true
           })
         }
       }

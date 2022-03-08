@@ -28,6 +28,7 @@
           plain
           icon="el-icon-download"
           size="mini"
+          :loading="exportLoading"
           @click="handleExport"
           v-hasPermi="['vm:task:export']"
         >导出
@@ -95,6 +96,7 @@
 import UserSelect from "@/components/UserSelect";
 import ExamSelect from "@/components/ExamSelect";
 import {userCurrentWork} from "@/api/vm/report";
+import {exportTask} from "@/api/vm/task";
 
 export default {
   name: "UserCurrentWork",
@@ -122,6 +124,8 @@ export default {
       tableData: [{title:'第一章',nums:'48',numbers:'78',total:'3744'}],
       open:false,
       handleClose:false,
+      //导出弹出层
+      exportLoading:false
     }
   },
   created() {
@@ -163,7 +167,25 @@ export default {
     },
     dialogVisiblelist(){
       this.open = false
-    }
+    },
+    //导出列表
+    handleExport() {
+      const queryParams = this.queryParams;
+      console.log("列表",queryParams)
+      this.$confirm('是否确认导出所选的作业得分情况?', "警告", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.exportLoading = true;
+        return exportTask(queryParams);
+      }).then(response => {
+        this.download(response.msg);
+        console.log("999",response)
+        this.exportLoading = false;
+      }).catch(() => {
+      });
+    },
   }
 }
 </script>

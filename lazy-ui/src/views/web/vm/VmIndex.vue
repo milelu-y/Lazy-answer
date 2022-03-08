@@ -226,10 +226,12 @@ export default {
 }
 
 .card-btn {
-  position: absolute;
-  text-align: center;
-  right: 5%;
-  bottom: 5%;
+  // position: absolute;
+  // text-align: center;
+  // right: 5%;
+  // bottom: 5%;
+    float: right;
+    margin-top: 20%;
 }
 
 .card-img {

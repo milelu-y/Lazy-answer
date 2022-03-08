@@ -303,6 +303,10 @@ export default {
           type: 'warning'
         }).then(() => {
           this.form.utc = this.utcTime
+          this.timesbj = true
+          this.timesbj1 = false
+          this.operation = false
+          this.operation1 = true
         })
       }
     },
@@ -325,6 +329,10 @@ export default {
             type: 'warning'
           }).then(() => {
             this.form.bjTime = this.beiJinTime
+            this.timesbj = true
+            this.timesbj1 = true
+            this.operation = false
+            this.operation1 = false
           })
         }
       }
@@ -391,6 +399,10 @@ export default {
           type: 'warning'
         }).then(() => {
           this.form.bd = this.bdtime
+          this.timesbj = true
+          this.timesbj1 = false
+          this.operation = false
+          this.operation1 = true
         })
       }
     },
@@ -411,6 +423,10 @@ export default {
           type: 'warning'
         }).then(() => {
           this.form.bjTime = this.beiJinTime
+            this.timesbj = true
+            this.timesbj1 = true
+            this.operation = false
+            this.operation1 = false
         })
       }
     },
@@ -453,6 +469,10 @@ export default {
           type: 'warning'
         }).then(() => {
           this.form.utc = this.utcTime
+          this.timesbj = true
+          this.timesbj1 = false
+          this.operation = false
+          this.operation1 = true
         })
       }
     },
@@ -473,6 +493,10 @@ export default {
           type: 'warning'
         }).then(() => {
           this.form.bd = this.bdtime
+          this.timesbj = true
+          this.timesbj1 = true
+          this.operation = false
+          this.operation1 = false
         })
       }
     },

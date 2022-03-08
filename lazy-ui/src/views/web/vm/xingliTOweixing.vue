@@ -39,7 +39,7 @@
                 <el-button @click="refresh">刷新</el-button>
               </el-form-item> -->
 
-              <el-form-item  label="t时刻与参考时刻的时间差" prop="type" label-width="300px" style="width: 1000px" >
+              <el-form-item  label="t时刻与参考时刻的时间差" prop="type" label-width="300px" style="width: 800px" >
                 <el-col :span="22">
                   <el-input v-model="form.tTime" :style="{width: '100%'}"
                             :disabled="isTime1"
@@ -53,7 +53,7 @@
               </el-form-item>
 
 
-              <el-form-item  label="参考时刻的长半轴" prop="type" label-width="300px" style="width: 1000px">
+              <el-form-item  label="参考时刻的长半轴" prop="type" label-width="300px" style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.ckTime" :style="{width: '100%'}"
                             :disabled="isTime2"
@@ -67,7 +67,7 @@
               </el-form-item>
 
 
-              <el-form-item  label="t时刻的长半轴" prop="type" label-width="300px" style="width: 1000px">
+              <el-form-item  label="t时刻的长半轴" prop="type" label-width="300px" style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.wTime" :style="{width: '100%'}"
                             :disabled="isTime3"
@@ -81,7 +81,7 @@
               </el-form-item>
 
 
-              <el-form-item  label="参考时刻平均运动角速率" prop="type" label-width="300px" style="width: 1000px">
+              <el-form-item  label="参考时刻平均运动角速率" prop="type" label-width="300px" style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.wxTime" :style="{width: '100%'}"
                             :disabled="isTime4"
@@ -95,7 +95,7 @@
               </el-form-item>
 
 
-              <el-form-item  label="平均运动角速率的偏差" prop="pjtime" label-width="300px" style="width: 1000px">
+              <el-form-item  label="平均运动角速率的偏差" prop="pjtime" label-width="300px" style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.pjtime" :style="{width: '100%'}"
                             :disabled="isTime5"
@@ -109,7 +109,7 @@
               </el-form-item>
 
 
-              <el-form-item  label="改正后的平均运动角速率" prop="gztime" label-width="300px" style="width: 1000px">
+              <el-form-item  label="改正后的平均运动角速率" prop="gztime" label-width="300px" style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.gztime" :style="{width: '100%'}"
                             :disabled="isTime6"
@@ -123,7 +123,7 @@
               </el-form-item>
 
 
-              <el-form-item  label="计算平近点角" prop="jspTime" label-width="300px" style="width: 1000px">
+              <el-form-item  label="计算平近点角" prop="jspTime" label-width="300px" style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.jspTime" :style="{width: '100%'}"
                             :disabled="isTime7"
@@ -136,7 +136,7 @@
                 </el-col>
               </el-form-item>
 
-              <el-form-item  label="计算偏近点角" prop="pjjTime" label-width="300px" style="width: 1000px">
+              <el-form-item  label="计算偏近点角" prop="pjjTime" label-width="300px" style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.pjjTime" :style="{width: '100%'}"
                             :disabled="isTime8"
@@ -148,7 +148,7 @@
                   <el-button class="attribute" v-if="btn8" @click="handle">下一步</el-button>
                 </el-col>
               </el-form-item>
-              <el-form-item  label="计算真近点角" prop="zjjTime" label-width="300px" style="width: 1000px">
+              <el-form-item  label="计算真近点角" prop="zjjTime" label-width="300px" style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.zjjTime" :style="{width: '100%'}"
                             :disabled="isTime9"
@@ -160,7 +160,7 @@
                   <el-button class="attribute" v-if="btn9" @click="handle">下一步</el-button>
                 </el-col>
               </el-form-item>
-              <el-form-item  label="计算纬度幅角" prop="wdfjTime" label-width="300px" style="width: 1000px">
+              <el-form-item  label="计算纬度幅角" prop="wdfjTime" label-width="300px" style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.wdfjTime" :style="{width: '100%'}"
                             :disabled="isTime10"
@@ -172,7 +172,7 @@
                   <el-button class="attribute" v-if="btn10" @click="handle">下一步</el-button>
                 </el-col>
               </el-form-item>
-              <el-form-item  label="计算径向距离" prop="jjjlTime" label-width="300px" style="width: 1000px">
+              <el-form-item  label="计算径向距离" prop="jjjlTime" label-width="300px" style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.jjjlTime" :style="{width: '100%'}"
                             :disabled="isTime11"
@@ -185,7 +185,7 @@
                 </el-col>
               </el-form-item>
               <el-form-item  label="计算卫星在轨道平面内的坐标" prop="pmzvTime" label-width="300px"
-                            style="width: 1000px">
+                            style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.pmzvTime" :style="{width: '100%'}"
                             :disabled="isTime12"
@@ -198,7 +198,7 @@
                 </el-col>
               </el-form-item>
               <el-form-item  label="计算改正后的升交点经度" prop="sjdTime" label-width="300px"
-                            style="width: 1000px">
+                            style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.sjdTime" :style="{width: '100%'}"
                             :disabled="isTime13"
@@ -217,7 +217,7 @@
                                         clearable/>
                             </el-form-item>-->
               <el-form-item label="计算卫星在CGS2000坐标系中的坐标" prop="CGSTime" label-width="300px"
-                            style="width: 1000px">
+                            style="width: 800px">
                 <el-col :span="22">
                   <el-input v-model="form.CGSTime" :style="{width: '100%'}"
                             :disabled="isTime14"
@@ -366,6 +366,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.tTime = this.data.output.result1
+            this.isTime1 = true
+            this.isTime2 = false
+            this.btn1 = false
+            this.btn2 = true
           })
         }
       }else if(!this.isTime2){
@@ -387,6 +391,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.ckTime = this.data.output.result2
+            this.isTime2 = true
+            this.isTime3 = false
+            this.btn2 = false
+            this.btn3 = true
           })
         }
       }else if(!this.isTime3){
@@ -408,6 +416,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.wTime = this.data.output.result3
+            this.isTime3 = true
+            this.isTime4 = false
+            this.btn3 = false
+            this.btn4 = true
           })
         }
       }else if(!this.isTime4) {
@@ -421,7 +433,7 @@ export default {
           })
           this.isTime4 = true
           this.isTime5 = false
-         this.btn4 = false
+          this.btn4 = false
           this.btn5 = true
         } else {
           this.$confirm('转换错误，正确答案为：'+ v, '提示',{
@@ -429,6 +441,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.wxTime = this.data.output.result4
+            this.isTime4 = true
+            this.isTime5 = false
+            this.btn4 = false
+            this.btn5 = true
           })
         }
       }else if(!this.isTime5) {
@@ -450,6 +466,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.pjtime = this.data.output.result5
+            this.isTime5 = true
+            this.isTime6 = false
+            this.btn5 = false
+            this.btn6 = true
           })
         }
       }else if(!this.isTime6) {
@@ -471,6 +491,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.gztime = this.data.output.result6
+            this.isTime6 = true
+            this.isTime7 = false
+            this.btn6 = false
+            this.btn7 = true
           })
         }
       }else if(!this.isTime7) {
@@ -492,6 +516,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.jspTime = this.data.output.result7
+            this.isTime7 = true
+            this.isTime8 = false
+            this.btn7 = false
+            this.btn8 = true
           })
         }
       }else if(!this.isTime8) {
@@ -513,6 +541,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.pjjTime = this.data.output.result8
+            this.isTime8 = true
+            this.isTime9 = false
+            this.btn8 = false
+            this.btn9 = true
           })
         }
       }else if (!this.isTime9) {
@@ -534,6 +566,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.zjjTime = this.data.output.result9
+            this.isTime9 = true
+            this.isTime10 = false
+            this.btn9 = false
+            this.btn10 = true
           })
         }
       }else if(!this.isTime10) {
@@ -555,6 +591,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.wdfjTime = this.data.output.result10
+            this.isTime10 = true
+            this.isTime11 = false
+            this.btn10 = false
+            this.btn11 = true
           })
         }
       }else if(!this.isTime11) {
@@ -576,6 +616,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.jjjlTime = this.data.output.result11
+            this.isTime11 = true
+            this.isTime12 = false
+            this.btn11 = false
+            this.btn12 = true
           })
         }
       }else if(!this.isTime12) {
@@ -597,6 +641,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.pmzvTime = this.data.output.result12
+            this.isTime12 = true
+            this.isTime13 = false
+            this.btn12 = false
+            this.btn13 = true
           })
         }
       }else if(!this.isTime13){
@@ -618,6 +666,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.sjdTime = this.data.output.result13
+            this.isTime13 = true
+            this.isTime14 = false
+            this.btn13 = false
+            this.btn14 = true
           })
         }
       }else if(!this.isTime14){
@@ -639,6 +691,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.CGSTime = this.data.output.result14
+            this.isTime14 = true
+            this.lisTime14 = true
+            this.btn14 = false
+            this.btn15 = true
           })
         }
       }
