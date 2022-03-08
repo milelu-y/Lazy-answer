@@ -303,6 +303,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.height = this.data.output.result1
+            this.fwjFlag = false
+            this.heightFlag = true
+            this.btn1 = false
+            this.btn2 = true
           })
         }
       } else if (!this.fwjFlag) {
@@ -319,6 +323,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.fwj = this.data.output.result2
+            this.dxzjFlag = false
+            this.fwjFlag = true
+            this.btn2 = false
+            this.btn3 = true
           })
         }
       } else if (!this.dxzjFlag) {
@@ -335,6 +343,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.dxzj = this.data.output.result3
+            this.ccdFlag = false
+            this.dxzjFlag = true
+            this.btn3 = false
+            this.btn4 = true
           })
         }
       } else if (!this.ccdFlag) {
@@ -351,6 +363,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.ccd = this.data.output.result4 + "," + this.data.output.result5
+            this.ccdjwdFlag = false
+            this.ccdFlag = true
+            this.btn4 = false
+            this.btn5 = true
           })
         }
       } else if (!this.ccdjwdFlag) {
@@ -367,6 +383,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.ccdjwd = this.data.output.result6 + "," + this.data.output.result7
+            this.aiFlag = false
+            this.ccdjwdFlag = true
+            this.btn5 = false
+            this.btn6 = true
           })
         }
       } else if (!this.aiFlag) {
@@ -385,6 +405,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.ai = this.data.output.result21.join(",")
+            this.aoFlag = false
+            this.aiFlag = true
+            this.btn6 = false
+            this.btn7 = true
           })
         }
       } else if (!this.aoFlag) {
@@ -401,6 +425,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.ao = this.data.output.result8
+            this.vtecFlag = false
+            this.aoFlag = true
+            this.btn7 = false
+            this.btn8 = true
           })
         }
       } else if (!this.vtecFlag) {
@@ -417,6 +445,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.vtec = this.data.output.result9
+            this.tyFlag = false
+            this.vtecFlag = true
+            this.btn8 = false
+            this.btn9 = true
           })
         }
       } else if (!this.tyFlag) {
@@ -433,6 +465,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.ty = this.data.output.result15
+            this.tyvFlag = false
+            this.tyFlag = true
+            this.btn9 = false
+            this.btn10 = true
           })
         }
       } else if (!this.tyvFlag) {
@@ -449,6 +485,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.tyv = this.data.output.result10
+            this.yzFlag = false
+            this.tyvFlag = true
+            this.btn10 = false
+            this.btn11 = true
           })
         }
       } else if (!this.yzFlag) {
@@ -465,6 +505,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.yz = this.data.output.result11 + "," + this.data.output.result12
+            this.bdsFlag = false
+            this.yzFlag = true
+            this.btn11 = false
+            this.btn12 = true
           })
         }
       }else if (!this.bdsFlag) {
@@ -481,6 +525,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.bds = this.data.output.result13 + "," + this.data.output.result14
+            this.yzFlag = true
+            this.bdsFlag = true
+            this.btn12 = false
+            this.btn13 = true
           })
         }
       }

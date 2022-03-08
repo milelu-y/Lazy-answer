@@ -20,7 +20,7 @@
           plain
           icon="el-icon-download"
           size="mini"
-          
+          @click="handleExport()"
           v-hasPermi="['vm:task:export']"
         >导出
         </el-button>
@@ -164,8 +164,8 @@ export default {
         title: null,
         examId: null,
         userId: null,
-        open:false
       },
+      open:false,
       // 显示搜索条件
       showSearch: true,
       //弹出用户选择框
@@ -212,6 +212,9 @@ export default {
       // 非单个禁用
       // single: true,
     }
+  },
+  created(){
+    
   },
   methods: {
     selectUser() {

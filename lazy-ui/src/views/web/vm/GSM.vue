@@ -16,8 +16,8 @@
       </el-card>
     </div>
     <div class="clock">
-      <el-button @click="subitfront" size="small">修正前</el-button>
-      <el-button @click="subitafter" size="small">修正后</el-button>
+      <el-button @click="subitfront" size="small">切换</el-button>
+      <!-- <el-button @click="subitafter" size="small">修正后</el-button> -->
     </div>
     <div class="allbody" v-show= "frontlist">
       <el-card>
@@ -87,7 +87,7 @@
       </el-card>
 
       <el-card class="card" style="margin-top: 10px">
-        <p style="font-size: 14px;font-weight: 600;">计算各频点修正后的伪距,及各频点的电离层延迟值</p>
+        <p style="font-size: 14px;font-weight: 600;">计算各频点的伪距,及TGD</p>
         <!-- <p v-else>计算各频点的电离层延迟值</p> -->
         <div>
           <div style="padding-top: 25px;">
@@ -148,8 +148,8 @@ export default {
       timesbj:false,
       timesbj1:true,
       operation:true,
-      operation1:false
-
+      operation1:false,
+      num:0
     }
   },
   created() {
@@ -198,6 +198,10 @@ export default {
           type:'warning'
         }).then(()=>{
           this.wj = this.data.output.result1
+          this.timesbj = true
+          this.timesbj1 = false
+          this.operation = false
+          this.operation1 = true
         })
       }
     },
@@ -219,39 +223,56 @@ export default {
             type:'warning'
           }).then(()=>{
             this.dl = this.data.input3
+            this.timesbj = true
+            this.timesbj1 = true
+            this.operation = false
+            this.operation1 = false
           })
         }
       },
       //修正前按钮
       subitfront(){
+        var a = this.num++
         exp10_shuangpinDianLiCeng().then(response => {
           console.log(response)
           this.data = response.data
         })
-        this.wj = null
-        this.dl = null
-        this.frontlist = true
-        this.afterlist = false
-        this.timesbj = false
-        this.timesbj1 = true
-        this.operation = true
-        this.operation1 = false
+        if(a%2!=0){
+          this.wj = null
+          this.dl = null
+          this.frontlist = true
+          this.afterlist = false
+          this.timesbj = false
+          this.timesbj1 = true
+          this.operation = true
+          this.operation1 = false
+        }else{
+          this.afternum = null
+          this.aftername = null
+          this.frontlist = false
+          this.afterlist = true
+          this.timesbj = false
+          this.timesbj1 = true
+          this.operation = true
+          this.operation1 = false
+        }
+       
       },
       //修正后按钮
-      subitafter(){
-        exp10_shuangpinDianLiCeng().then(response => {
-          console.log(response)
-          this.data = response.data
-        })
-        this.afternum = null
-        this.aftername = null
-        this.frontlist = false
-        this.afterlist = true
-        this.timesbj = false
-        this.timesbj1 = true
-        this.operation = true
-        this.operation1 = false
-      },
+      // subitafter(){
+      //   exp10_shuangpinDianLiCeng().then(response => {
+      //     console.log(response)
+      //     this.data = response.data
+      //   })
+      //   this.afternum = null
+      //   this.aftername = null
+      //   this.frontlist = false
+      //   this.afterlist = true
+      //   this.timesbj = false
+      //   this.timesbj1 = true
+      //   this.operation = true
+      //   this.operation1 = false
+      // },
       //修正后伪距提交按钮
       submitafter(){
         var v = this.data.input
@@ -271,6 +292,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.afternum = this.data.input
+            this.timesbj = true
+            this.timesbj1 = false
+            this.operation = false
+            this.operation1 = true
           })
         }
       },
@@ -293,6 +318,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.aftername = this.data.input2
+            this.timesbj = true
+            this.timesbj1 = true
+            this.operation = false
+            this.operation1 = false
           })
         }
       }

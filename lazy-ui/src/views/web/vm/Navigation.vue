@@ -16,8 +16,8 @@
       </el-card>
     </div>
     <div class="clock">
-      <el-button @click="subitbd" size="small">计算</el-button>
-      <el-button @click="subitst" size="small">钟差</el-button>
+      <el-button @click="subitbd" size="small">切换</el-button>
+      <!-- <el-button @click="subitst" size="small">钟差</el-button> -->
     </div>
     <div class="bodyall" v-show="markes">
       <el-card>
@@ -145,7 +145,8 @@ export default {
       timesbj:false,
       timesbj1:true,
       operation:true,
-      operation1:false
+      operation1:false,
+      nums:0
 
     }
   },
@@ -193,6 +194,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.BDT = this.data.output.result1
+            this.timesbj = true
+            this.timesbj1 = false
+            this.operation = false
+            this.operation1 = true
           })
         }
       },
@@ -215,37 +220,54 @@ export default {
             type:'warning'
           }).then(()=>{
             this.GPST = this.data.output.result2
+            this.timesbj = true
+            this.timesbj1 = true
+            this.operation = false
+            this.operation1 = false
           })
         }
       },
       //计算按钮切换换算
       subitbd(){
+        var a = this.nums++
         exp7_dianwen().then(response => {
           this.data = response.data
         })
-        this.markes = true
-        this.nummakes = false
-         this.BDT = null
-        this.GPST = null
-        this.timesbj = false
-        this.timesbj1 = true
-        this.operation = true
-        this.operation1 = false
+        if( a%2 != 0){
+          this.markes = true
+          this.nummakes = false
+          this.BDT = null
+          this.GPST = null
+          this.timesbj = false
+          this.timesbj1 = true
+          this.operation = true
+          this.operation1 = false
+        }else{
+          this.markes = false
+          this.nummakes = true
+          this.bardes = ''
+          this.garpage = ''
+          this.timesbj = false
+          this.timesbj1 = true
+          this.operation = true
+          this.operation1 = false
+        }
+        
       },
       //钟差按钮切换
-      subitst(){
-        exp7_dianwen().then(response => {
-          this.data = response.data
-        })
-        this.markes = false
-        this.nummakes = true
-        this.bardes = ''
-        this.garpage = ''
-        this.timesbj = false
-        this.timesbj1 = true
-        this.operation = true
-        this.operation1 = false
-      },
+      // subitst(){
+      //   exp7_dianwen().then(response => {
+      //     this.data = response.data
+      //   })
+      //   this.markes = false
+      //   this.nummakes = true
+      //   this.bardes = ''
+      //   this.garpage = ''
+      //   this.timesbj = false
+      //   this.timesbj1 = true
+      //   this.operation = true
+      //   this.operation1 = false
+      // },
       //BDT提交按钮
       subitm(){
         var v = this.data.input
@@ -266,6 +288,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.bardes = this.data.input
+            this.timesbj = true
+            this.timesbj1 = false
+            this.operation = false
+            this.operation1 = true
           })
         }
       },
@@ -289,6 +315,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.garpage = this.data.input2
+            this.timesbj = true
+            this.timesbj1 = true
+            this.operation = false
+            this.operation1 = false
           })
         }
       }

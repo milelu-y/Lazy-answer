@@ -30,11 +30,15 @@
     </div>
     <div class="card" style="margin-top: 10px;">
 <!--      <p>ps:{{ isTime ? '请将格里高利时转换为儒略日后进行输入' : '请将儒略日转换为格里高利时后进行输入' }}</p>-->
-      <div>
-        <el-button @click="generateData">随机生成输入值</el-button>
-      </div>
-      <div style="text-align: center">
-        <a @click="switchTime">切换转换关系</a>
+      <!-- <div>
+        <el-button @click="generateData">刷新</el-button>
+      </div> -->
+      <div style="">
+        <div style="text-align: center;">
+          <el-button @click="switchTime">切换</el-button>
+          <el-button @click="generateData">刷新</el-button>
+        </div>
+        
         <!--        <a>儒略日转格里高利时></a>-->
         <div style="padding-top: 25px;">
           <el-form ref="form" :model="form" :rules="rules" size="medium" label-width="100px">

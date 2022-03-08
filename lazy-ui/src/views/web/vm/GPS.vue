@@ -266,6 +266,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.height = this.data.output.result1
+            this.fwjFlag = false
+            this.heightFlag = true
+            this.btn1 = false
+            this.btn2 = true
           })
         }
       } else if (!this.fwjFlag) {
@@ -287,6 +291,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.fwj = this.data.output.result2
+            this.ccdFlag = false
+            this.fwjFlag = true
+            this.btn2 = false
+            this.btn3 = true
           })
         }
       } else if (!this.ccdFlag) {
@@ -308,6 +316,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.ccd = this.data.output.result3 + "," + this.data.output.result4
+            this.A2Flag = false
+            this.ccdFlag = true
+            this.btn3 = false
+            this.btn4 = true
           })
         }
       } else if (!this.A2Flag) {
@@ -329,6 +341,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.A2 = this.data.output.result5
+            this.A2Flag = true
+            this.A4Flag = false
+            this.btn4 = false
+            this.btn5 = true
           })
         }
       } else if (!this.A4Flag) {
@@ -350,6 +366,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.A4 = this.data.output.result6
+            this.A4Flag = true
+            this.czdlFlag = false
+            this.btn5 = false
+            this.btn6 = true
           })
         }
       } else if (!this.czdlFlag) {
@@ -373,6 +393,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.czdl = this.data.output.result7
+            this.czdlFlag = true
+            this.tyFlag = false
+            this.btn6 = false
+            this.btn7 = true
           })
         }
       } else if (!this.tyFlag) {
@@ -394,6 +418,10 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.ty = this.data.output.result8
+            this.tyFlag = true
+            this.yinziFlag = false
+            this.btn7 = false
+            this.btn8 = true
           })
         }
       } else if (!this.yinziFlag) {
@@ -414,6 +442,9 @@ export default {
             type:'warning'
           }).then(()=>{
             this.form.yinzi = this.data.output.result9
+            this.yinziFlag = true
+            this.btn8 = false
+            this.btn9 = true
           })
         }
       }

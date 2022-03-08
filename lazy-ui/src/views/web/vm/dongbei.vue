@@ -253,6 +253,10 @@ export default {
                 this.earth.B = this.XYZ2ENUDATA.input2.B
                 this.earth.H = this.XYZ2ENUDATA.input2.L
                 this.earth.L = this.XYZ2ENUDATA.input2.H
+                this.timesbj = true
+                this.timesbj1 = false
+                this.operation = false
+                this.operation1 = true
               })
       }
     },
@@ -274,6 +278,10 @@ export default {
           type:'warning'
         }).then(()=>{
           this.northeast = this.XYZ2ENUDATA.output.e
+          this.timesbj = true
+          this.timesbj1 = true
+          this.operation = false
+          this.operation1 = false
         })
       }
     },
@@ -347,6 +355,10 @@ export default {
                 this.geocentricint.X = this.XYZ2ENUDATA.input.X
                 this.geocentricint.Y = this.XYZ2ENUDATA.input.Y
                 this.geocentricint.Z = this.XYZ2ENUDATA.input.Z
+                this.timesbj = true
+                this.timesbj1 = false
+                this.operation = false
+                this.operation1 = true
               })
       }
     },
@@ -372,6 +384,10 @@ export default {
                 this.earth.B = this.XYZ2ENUDATA.input2.B
                 this.earth.H = this.XYZ2ENUDATA.input2.L
                 this.earth.L = this.XYZ2ENUDATA.input2.H
+                this.timesbj = true
+                this.timesbj1 = true
+                this.operation = false
+                this.operation1 = false
               })
       }
     },
