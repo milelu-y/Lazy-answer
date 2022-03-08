@@ -178,7 +178,12 @@ export default {
   margin-bottom: 20px;
   line-height: 28px;
 }
-
+>>>.el-card__header {
+  padding: 14px 15px 7px;
+  min-height: 40px;
+  background: #e6ebf5;
+  top: 0;
+}
 >>> .el-card.is-always-shadow {
   box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
 }

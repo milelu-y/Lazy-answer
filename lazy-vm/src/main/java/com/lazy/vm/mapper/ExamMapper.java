@@ -63,4 +63,11 @@ public interface ExamMapper
     List<Exam> selectExamJoinPaperList(ExamCourseDto examCourseDto);
 
     List<Exam> selectUserExamList(Exam exam);
+
+    /**
+     * 批阅
+     * @param exam
+     * @return
+     */
+    List<Exam> selectExamReviewList(Exam exam);
 }

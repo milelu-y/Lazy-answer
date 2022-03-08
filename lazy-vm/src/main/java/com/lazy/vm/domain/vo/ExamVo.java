@@ -2,6 +2,7 @@ package com.lazy.vm.domain.vo;
 
 import com.lazy.common.core.domain.entity.SysUser;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -72,6 +73,14 @@ public class ExamVo {
     private String status;
 
     private Integer totalScore;
+
+    private Integer examUser;
+
+    private Integer unreadPaper;
+
+    private Date startTime;
+
+    private Date endTime;
 
     private List<SysUser> personList;
 
@@ -203,5 +212,37 @@ public class ExamVo {
 
     public void setTotalScore(Integer totalScore) {
         this.totalScore = totalScore;
+    }
+
+    public Integer getExamUser() {
+        return examUser;
+    }
+
+    public void setExamUser(Integer examUser) {
+        this.examUser = examUser;
+    }
+
+    public Integer getUnreadPaper() {
+        return unreadPaper;
+    }
+
+    public void setUnreadPaper(Integer unreadPaper) {
+        this.unreadPaper = unreadPaper;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 }

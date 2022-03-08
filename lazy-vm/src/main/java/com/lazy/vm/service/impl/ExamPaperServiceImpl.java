@@ -17,6 +17,7 @@ import com.lazy.vm.mapper.*;
 import com.lazy.vm.service.IExamPaperService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -240,6 +241,7 @@ public class ExamPaperServiceImpl implements IExamPaperService {
         examPaper.setId(examPaperId);
         examPaper.setExamId(examId);
         examPaper.setUserId(SecurityUtils.getLoginUser().getUser().getUserId().toString());
+        // examPaper.setHasReview(0); //设置阅卷
         //保存试卷
         examPaperMapper.insertExamPaper(examPaper);
         //保存分组
@@ -258,6 +260,7 @@ public class ExamPaperServiceImpl implements IExamPaperService {
                 examAnswerOptions.setChecked(false);
                 examAnswerOptions.setQuId(answerVo.getQuId());
                 examAnswerOptions.setContent(answerOptionsVo.getContent());
+                examAnswerOptions.setIsRight(answerOptions.getIsRight());
                 examAnswerOptionsMapper.insertExamAnswerOptions(examAnswerOptions);
             }
             answerVo.setIsRight(false);
@@ -287,7 +290,7 @@ public class ExamPaperServiceImpl implements IExamPaperService {
         ExamAnswer examAnswer = new ExamAnswer();
 
         BeanUtils.copyProperties(fullAnswerVo, examAnswer);
-        if (examAnswer.getAnswer()!=null&&!"".equals(examAnswer.getAnswer())) {//判断是否回答
+        if (examAnswer.getAnswer() != null && !"".equals(examAnswer.getAnswer())) {//判断是否回答
             flag = true;
         }
         examAnswerMapper.updateExamAnswer(examAnswer);
@@ -336,7 +339,7 @@ public class ExamPaperServiceImpl implements IExamPaperService {
             Map<String, Object> data = new HashMap<>();
             ExamPaper examPaper = examPaperMapper.selectExamPaperById(id);
             examPaper.setUserScore(unt);
-            examPaper.setStatus("1");
+            examPaper.setStatus(1);
             examPaperMapper.updateExamPaper(examPaper);
 
             Exam exam = examMapper.selectExamById(examPaper.getExamId());
@@ -378,7 +381,73 @@ public class ExamPaperServiceImpl implements IExamPaperService {
     public AjaxResult paperResult(String id) {
         PaperAdaptedVo paper = examPaperMapper.selectExamAndPaper(id);
         if (paper != null) {
+            //查询到学员答题组
+            ExamGroup examGroup = new ExamGroup();
+            examGroup.setPaperId(id);
+            List<ExamGroup> examGroups = examGroupMapper.selectExamGroupList(examGroup);
+            List<ExamGroupVo> examGroupVos = new ArrayList<>();
+            for (ExamGroup group : examGroups) {
+                ExamGroupVo examGroupVo = new ExamGroupVo();
+                BeanUtils.copyProperties(group, examGroupVo);
+                String groupId = examGroupVo.getId();
+                List<ExamAnswerVo> examAnswerVos = null;
+                if ("3".equals(group.getQuType())) {
+                    examAnswerVos = examAnswerMapper.selectExamAnswerByGroupIdType(id, groupId);
+                } else {
+                    examAnswerVos = examAnswerMapper.selectExamAnswerByGroupId(id, groupId);
+                }
+
+                examGroupVo.setQuList(examAnswerVos);
+
+                examGroupVos.add(examGroupVo);
+            }
+
+            paper.setGroupList(examGroupVos);
             return AjaxResult.success(paper);
+        }
+        return AjaxResult.error();
+    }
+
+    /**
+     * 根据考试id查询试卷
+     *
+     * @param examPaper
+     * @return
+     */
+    @Override
+    public List<ExamPaper> selectPendReviewList(ExamPaper examPaper) {
+        List<ExamPaper> lists = examPaperMapper.selectExamPaperByExamId(examPaper);
+        return lists;
+    }
+
+    /**
+     * 提交阅题
+     *
+     * @param paperAdaptedVo
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public AjaxResult reviewPaper(PaperAdaptedVo paperAdaptedVo) {
+        if (paperAdaptedVo == null) {
+            return AjaxResult.error();
+        }
+        //修改题目
+        List<ExamGroupVo> groupList = paperAdaptedVo.getGroupList();
+        for (ExamGroupVo examGroupVo : groupList) {
+            List<ExamAnswerVo> quList = examGroupVo.getQuList();
+            for (ExamAnswerVo examAnswerVo : quList) {
+                ExamAnswer examAnswer = new ExamAnswer();
+                BeanUtils.copyProperties(examAnswerVo, examAnswer);
+                examAnswerMapper.updateExamAnswer(examAnswer);
+            }
+        }
+        //修改试卷
+        ExamPaper examPaper = new ExamPaper();
+        BeanUtils.copyProperties(paperAdaptedVo, examPaper);
+        examPaper.setStatus(2);
+        if (examPaperMapper.updateExamPaper(examPaper) > 0) {
+            return AjaxResult.success();
         }
         return AjaxResult.error();
     }

@@ -11,6 +11,7 @@ public class PaperAdaptedVo {
     private String id;
 
     private String userId;
+    private String nickName;
 
     /**
      * 试卷标题
@@ -175,5 +176,13 @@ public class PaperAdaptedVo {
 
     public void setGroupList(List<ExamGroupVo> groupList) {
         this.groupList = groupList;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

@@ -8,63 +8,28 @@
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
-          @change="handleQuery"
+          @input="handleQuery"
         />
       </el-form-item>
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['vm:exam:add']"
-        >新增
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['vm:exam:edit']"
-        >修改
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['vm:exam:remove']"
-        >删除
-        </el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
-    <el-table border v-loading="loading" :data="examList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
+    <el-table border v-loading="false" :data="reviewList">
       <el-table-column label="作业名称" align="center" prop="title">
+        <template slot-scope="data">
+
+          <router-link :to="{ name: 'reviewList', params:{id: data.row.id}}" style="color: #00afff">
+            {{ data.row.title }}
+          </router-link>
+        </template>
       </el-table-column>
-      <el-table-column label="开放权限" align="center" :formatter="openTypeFormat" prop="openType"/>
-      <el-table-column label="作业时间" align="center" prop="totalTime"/>
-      <el-table-column label="作业总分" align="center" prop="totalScore"/>
-      <el-table-column label="及格线" align="center" prop="qualifyScore"/>
-      <el-table-column label="状态" :formatter="statusFormat" align="center" prop="status"/>
+      <el-table-column label="作业类型" align="center" prop="openType" :formatter="openTypeFormat"/>
+      <el-table-column label="作业时间" align="center" prop="data"/>
+      <el-table-column label="作答人数" align="center" prop="examUser"/>
+      <el-table-column label="待批试卷" align="center" prop="unreadPaper"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <router-link :to="{ name: 'stat', params:{id: scope.row.id}}" style="color: #00afff">
-            <i class="el-icon-pie-chart"></i> 统计分析
+          <router-link :to="{ name: 'reviewList', params:{id: scope.row.id}}" style="color: #00afff">
+            <i class="el-icon-document"></i> 批阅
           </router-link>
         </template>
       </el-table-column>
@@ -81,9 +46,10 @@
 </template>
 
 <script>
-import {addExam, delExam, exportExam, getExam, listExam, updateExam} from "@/api/vm/exam";
-import {delTestPaper} from "@/api/vm/testPaper";
-
+import {listTask, getTask, delTask, addTask, updateTask, exportTask} from "@/api/vm/task";
+import {listCourse} from "@/api/vm/course";
+import _ from "lodash"
+import {reviewList} from "@/api/vm/exam";
 export default {
   name: "Task",
   data() {
@@ -103,7 +69,7 @@ export default {
       // 总条数
       total: 0,
       // 作业表格数据
-      examList: [],
+      reviewList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -112,35 +78,40 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        courseId: null,
         title: null,
+        singleCount: null,
+        multipleCount: null,
+        judgment: null,
+        fillCount: null,
+        aqCount: null
       },
-      statusOptions:[],
-      openTypes:[]
+      // 表单参数
+      form: {},
+      // 表单校验
+      rules: {
+        createTime: [
+          {required: true, message: "创建时间不能为空", trigger: "blur"}
+        ],
+        updateTime: [
+          {required: true, message: "更新时间不能为空", trigger: "blur"}
+        ],
+      },
+      openTypes: []
     };
   },
   created() {
     this.getList();
-    this.getDicts("vm_job_status").then(response => {
-      this.statusOptions = response.data;
-    });
     this.getDicts("vm_open_type").then(response => {
       this.openTypes = response.data;
     });
   },
   methods: {
-    // 操作日志状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
-    openTypeFormat(row, column) {
-      console.log("row",row)
-      return this.selectDictLabel(this.openTypes, row.openType);
-    },
     /** 查询作业列表 */
     getList() {
       this.loading = true;
-      listExam(this.queryParams).then(response => {
-        this.examList = response.rows;
+      reviewList(this.queryParams).then(response => {
+        this.reviewList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -149,6 +120,22 @@ export default {
     cancel() {
       this.open = false;
       this.reset();
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        id: null,
+        courseId: null,
+        title: null,
+        singleCount: null,
+        multipleCount: null,
+        createTime: null,
+        updateTime: null,
+        judgment: null,
+        fillCount: null,
+        aqCount: null
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -168,32 +155,33 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.$router.push('/vm/exam/form/')
+      this.reset();
+      // this.open = true;
+      // this.title = "添加作业";
+      this.$router.push('/vm/question/form/')
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-
-      this.$router.push('/vm/exam/form/update/'+this.ids[0])
-      // this.reset();
-      // const id = row.id || this.ids
-      // getExam(id).then(response => {
-      //   this.form = response.data;
-      //   this.open = true;
-      //   this.title = "修改作业";
-      // });
+      this.reset();
+      const id = row.id || this.ids
+      getTask(id).then(response => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改作业";
+      });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateExam(this.form).then(response => {
+            updateTask(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addExam(this.form).then(response => {
+            addTask(this.form).then(response => {
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -214,7 +202,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(function () {
-        return delExam(ids);
+        return delTask(ids);
       }).then(() => {
         this.getList();
         this.msgSuccess("删除成功");
@@ -230,13 +218,17 @@ export default {
         type: "warning"
       }).then(() => {
         this.exportLoading = true;
-        return exportExam(queryParams);
+        return exportTask(queryParams);
       }).then(response => {
         this.download(response.msg);
         this.exportLoading = false;
       }).catch(() => {
       });
-    }
+    },
+    openTypeFormat(row, column) {
+      console.log("row",row)
+      return this.selectDictLabel(this.openTypes, row.openType);
+    },
   }
 };
 </script>

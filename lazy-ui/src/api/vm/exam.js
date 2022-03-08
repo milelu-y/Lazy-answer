@@ -9,6 +9,14 @@ export function listExam(query) {
   })
 }
 
+export function reviewList(query) {
+  return request({
+    url: '/vm/exam/review',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询试卷添加列表
 export function listUserExam(query) {
   return request({
@@ -65,6 +73,15 @@ export function delExam(id) {
 export function exportExam(query) {
   return request({
     url: '/vm/exam/export',
+    method: 'get',
+    params: query
+  })
+}
+
+//查询统计学员概览
+export function userStat(query) {
+  return request({
+    url: '/vm/exam/userStat',
     method: 'get',
     params: query
   })

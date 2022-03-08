@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.lazy.vm.domain.vo.ExamCourseDto;
 import com.lazy.vm.domain.vo.ExamVo;
+import com.lazy.vm.domain.vo.Stat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,17 @@ public class ExamController extends BaseController
     {
         startPage();
         List<Exam> list = examService.selectExamList(exam);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询作业批阅信息
+     */
+    @PreAuthorize("@ss.hasPermi('vm:exam:list')")
+    @GetMapping("/review")
+    public TableDataInfo reviewList(Exam exam){
+        startPage();
+        List<Exam> list =examService.selectExamReviewList(exam);
         return getDataTable(list);
     }
 
@@ -125,5 +137,13 @@ public class ExamController extends BaseController
     public AjaxResult remove(@PathVariable String[] ids)
     {
         return toAjax(examService.deleteExamByIds(ids));
+    }
+
+
+    @GetMapping("/userStat")
+    public TableDataInfo userStat(Stat stat){
+        startPage();
+        List<Stat> list = examService.userStat(stat);
+        return getDataTable(list);
     }
 }

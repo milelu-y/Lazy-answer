@@ -15,6 +15,7 @@
         <result property="abc" column="abc"/>
         <result property="answer" column="answer"/>
         <result property="quId" column="qu_id"/>
+        <result property="isRight" column="is_right"/>
     </resultMap>
 
     <sql id="selectExamAnswerOptionsVo">
@@ -27,7 +28,8 @@
                answer_id,
                abc,
                answer,
-               qu_id
+               qu_id,
+               is_right
         from edu_exam_answer_options
     </sql>
 
@@ -43,6 +45,7 @@
             <if test="abc != null  and abc != ''">and abc = #{abc}</if>
             <if test="answer != null  and answer != ''">and answer = #{answer}</if>
             <if test="quId != null  and quId != ''">and qu_id = #{quId}</if>
+            <if test="isRight != null  and isRight != ''">and is_right = #{isRight}</if>
         </where>
     </select>
 
@@ -57,12 +60,14 @@
                content,
                path_score pathScore,
                checked,
-               answer_id answerId,
+               answer_id  answerId,
                abc,
                answer,
-               qu_id quId
+               qu_id      quId,
+               is_right   isRight
         from edu_exam_answer_options
-        where paper_id = #{paperId} and qu_id = #{quId}
+        where paper_id = #{paperId}
+          and qu_id = #{quId}
     </select>
 
     <insert id="insertExamAnswerOptions" parameterType="ExamAnswerOptions">
@@ -78,6 +83,7 @@
             <if test="abc != null and abc != ''">abc,</if>
             <if test="answer != null">answer,</if>
             <if test="quId != null">qu_id,</if>
+            <if test="isRight != null">is_right,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -90,6 +96,7 @@
             <if test="abc != null and abc != ''">#{abc},</if>
             <if test="answer != null">#{answer},</if>
             <if test="quId != null">#{quId},</if>
+            <if test="isRight != null">#{isRight},</if>
         </trim>
     </insert>
 
@@ -105,6 +112,7 @@
             <if test="abc != null and abc != ''">abc = #{abc},</if>
             <if test="answer != null">answer = #{answer},</if>
             <if test="quId != null">qu_id = #{quId},</if>
+            <if test="isRight != null">is_right = #{isRight},</if>
         </trim>
         where id = #{id}
     </update>

@@ -97,4 +97,18 @@ public interface IExamPaperService
      * @return
      */
     AjaxResult paperResult(String id);
+
+    /**
+     * 查询待阅卷的试卷
+     * @param examPaper
+     * @return
+     */
+    List<ExamPaper> selectPendReviewList(ExamPaper examPaper);
+
+    /**
+     * 提交阅题
+     * @param paperAdaptedVo
+     * @return
+     */
+    AjaxResult reviewPaper(PaperAdaptedVo paperAdaptedVo);
 }

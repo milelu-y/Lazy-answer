@@ -57,17 +57,9 @@ public class ExamPaper extends BaseEntity
     @Excel(name = "考试id")
     private String examId;
 
-    /** 预留 */
+    /** 状态 */
     @Excel(name = "预留")
-    private String status;
-
-    /** 预留 */
-    @Excel(name = "预留")
-    private String reserveField4;
-
-    /** 预留 */
-    @Excel(name = "预留")
-    private String reserveField5;
+    private Integer status;
 
     /** 创建时间 */
     @CreateTime
@@ -81,6 +73,9 @@ public class ExamPaper extends BaseEntity
     @UpdateTime
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
+
+
+    private Integer qualifyScore;
 
     public void setId(String id)
     {
@@ -154,32 +149,13 @@ public class ExamPaper extends BaseEntity
     {
         return examId;
     }
-    public void setStatus(String status)
-    {
-        this.status = status;
-    }
 
-    public String getStatus()
-    {
+    public Integer getStatus() {
         return status;
     }
-    public void setReserveField4(String reserveField4)
-    {
-        this.reserveField4 = reserveField4;
-    }
 
-    public String getReserveField4()
-    {
-        return reserveField4;
-    }
-    public void setReserveField5(String reserveField5)
-    {
-        this.reserveField5 = reserveField5;
-    }
-
-    public String getReserveField5()
-    {
-        return reserveField5;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     @Override
@@ -221,6 +197,13 @@ public class ExamPaper extends BaseEntity
         this.userScore = userScore;
     }
 
+    public Integer getQualifyScore() {
+        return qualifyScore;
+    }
+
+    public void setQualifyScore(Integer qualifyScore) {
+        this.qualifyScore = qualifyScore;
+    }
 
     @Override
     public String toString() {
@@ -236,9 +219,6 @@ public class ExamPaper extends BaseEntity
             .append("createTime", getCreateTime())
             .append("updateTime", getUpdateTime())
             .append("status", getStatus())
-            .append("reserveField4", getReserveField4())
-            .append("reserveField5", getReserveField5())
-
             .toString();
     }
 }

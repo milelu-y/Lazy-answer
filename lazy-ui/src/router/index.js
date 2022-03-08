@@ -212,6 +212,45 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/vm/exam/stat',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/vm/exam/stat'], resolve),
+        name: 'stat',
+        meta: {title: '作业统计', activeMenu: '/vm/exam'}
+      }
+    ]
+  },
+  {
+    path: '/vm/review/reviewList',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/vm/review/reviewList'], resolve),
+        name: 'reviewList',
+        meta: {title: '阅卷列表', activeMenu: '/vm/review'}
+      }
+    ]
+  },
+  {
+    path: '/vm/review/reviewDetail',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: ':id?',
+        component: (resolve) => require(['@/views/vm/review/reviewDetail'], resolve),
+        name: 'reviewDetail',
+        meta: {title: '作业详情', activeMenu: '/vm/review'}
+      }
+    ]
+  },
+  {
     path: '/vm/exam/form/update',
     component: Layout,
     hidden: true,

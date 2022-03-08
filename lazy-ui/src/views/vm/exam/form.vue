@@ -83,12 +83,23 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="限制答题时间" prop="limitTime">
+                <el-form-item label="答题时间" prop="limitTime">
                   <el-switch
                     v-model="postForm.limitTime"
                     active-text="是"
                     inactive-text="否">
                   </el-switch>
+                </el-form-item>
+              </el-col>
+              <el-col :span="24" v-if="postForm.limitTime">
+                <el-form-item label="时间设置" prop="limitTime">
+                <el-date-picker
+                  v-model="time"
+                  type="datetimerange"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期">
+                </el-date-picker>
                 </el-form-item>
               </el-col>
               <el-col :span="24">
@@ -178,6 +189,7 @@ export default {
       total: 0,
       // 遮罩层
       loading: true,
+      time:null,
       postForm: {
         // 试卷ID
         paperId: null,
@@ -350,6 +362,10 @@ export default {
     submitForm() {
       var _this3 = this;
       this.postForm.deptIds = this.getDeptAllCheckedKeys();
+      if (this.postForm.limitTime){
+        this.postForm.startTime=this.time[0];
+        this.postForm.endTime=this.time[1];
+      }
       if (this.postForm.id != null && this.postForm.id != '') {
         updateExam(this.postForm).then(response => {
           if (response.code === 200) {

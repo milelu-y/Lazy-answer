@@ -35,7 +35,7 @@
               <el-divider/>
             </el-col>
             <el-col :span="24" style="padding-left: 5px; padding-right: 5px;">
-              <el-button type="warning" @click="handHandExam">提交试卷</el-button>
+              <el-button type="warning" @click="handHandExam">提交作业</el-button>
             </el-col>
             <el-col :span="24" style="padding-left: 5px; padding-right: 5px;">
               <el-divider/>

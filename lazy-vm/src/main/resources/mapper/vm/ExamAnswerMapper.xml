@@ -5,38 +5,82 @@
 <mapper namespace="com.lazy.vm.mapper.ExamAnswerMapper">
 
     <resultMap type="ExamAnswer" id="ExamAnswerResult">
-        <result property="id"    column="id"    />
-        <result property="quId"    column="qu_id"    />
-        <result property="type"    column="type"    />
-        <result property="level"    column="level"    />
-        <result property="answerd"    column="answerd"    />
-        <result property="paperId"    column="paper_id"    />
-        <result property="sort"    column="sort"    />
-        <result property="mark"    column="mark"    />
-        <result property="score"    column="score"    />
-        <result property="isRight"    column="is_right"    />
-        <result property="groupId"    column="group_id"    />
-        <result property="createTime"    column="create_time"    />
-        <result property="updateTime"    column="update_time"    />
+        <result property="id" column="id"/>
+        <result property="quId" column="qu_id"/>
+        <result property="type" column="type"/>
+        <result property="level" column="level"/>
+        <result property="answerd" column="answerd"/>
+        <result property="paperId" column="paper_id"/>
+        <result property="sort" column="sort"/>
+        <result property="mark" column="mark"/>
+        <result property="score" column="score"/>
+        <result property="isRight" column="is_right"/>
+        <result property="groupId" column="group_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
     </resultMap>
 
+    <resultMap type="ExamAnswerVo" id="ExamAnswerVoResult">
+        <result property="id" column="id"/>
+        <result property="quId" column="qu_id"/>
+        <result property="type" column="type"/>
+        <result property="level" column="level"/>
+        <result property="answerd" column="answerd"/>
+        <result property="actualScore" column="actualScore"/>
+        <result property="paperId" column="paper_id"/>
+        <result property="content" column="content"/>
+        <result property="contentText" column="contentText"/>
+        <result property="analysis" column="analysis"/>
+        <result property="sort" column="sort"/>
+        <result property="mark" column="mark"/>
+        <result property="score" column="score"/>
+        <result property="isRight" column="is_right"/>
+        <result property="groupId" column="group_id"/>
+        <collection property="answerList"
+                    resultMap="OptionsResult"/>
+    </resultMap>
+    <resultMap type="ExamAnswerOptions" id="OptionsResult">
+        <result property="id" column="o_id"/>
+        <result property="paperId" column="o_paper_id"/>
+        <result property="groupId" column="o_group_id"/>
+        <result property="content" column="o_content"/>
+        <result property="pathScore" column="path_score"/>
+        <result property="checked" column="checked"/>
+        <result property="answerId" column="o_answer_id"/>
+        <result property="abc" column="abc"/>
+        <result property="answer" column="o_answer"/>
+        <result property="quId" column="o_qu_id"/>
+    </resultMap>
     <sql id="selectExamAnswerVo">
-        select id, qu_id, type, level, answerd, paper_id, sort, mark, score, is_right, group_id, create_time, update_time from edu_exam_answer
+        select id,
+               qu_id,
+               type,
+               level,
+               answerd,
+               paper_id,
+               sort,
+               mark,
+               score,
+               is_right,
+               group_id,
+               create_time,
+               update_time
+        from edu_exam_answer
     </sql>
 
     <select id="selectExamAnswerList" parameterType="ExamAnswer" resultMap="ExamAnswerResult">
         <include refid="selectExamAnswerVo"/>
         <where>
-            <if test="quId != null  and quId != ''"> and qu_id = #{quId}</if>
-            <if test="type != null "> and type = #{type}</if>
-            <if test="level != null "> and level = #{level}</if>
-            <if test="answerd != null "> and answerd = #{answerd}</if>
-            <if test="paperId != null  and paperId != ''"> and paper_id = #{paperId}</if>
-            <if test="sort != null "> and sort = #{sort}</if>
-            <if test="mark != null "> and mark = #{mark}</if>
-            <if test="score != null "> and score = #{score}</if>
-            <if test="isRight != null "> and is_right = #{isRight}</if>
-            <if test="groupId != null  and groupId != ''"> and group_id = #{groupId}</if>
+            <if test="quId != null  and quId != ''">and qu_id = #{quId}</if>
+            <if test="type != null ">and type = #{type}</if>
+            <if test="level != null ">and level = #{level}</if>
+            <if test="answerd != null ">and answerd = #{answerd}</if>
+            <if test="paperId != null  and paperId != ''">and paper_id = #{paperId}</if>
+            <if test="sort != null ">and sort = #{sort}</if>
+            <if test="mark != null ">and mark = #{mark}</if>
+            <if test="score != null ">and score = #{score}</if>
+            <if test="isRight != null ">and is_right = #{isRight}</if>
+            <if test="groupId != null  and groupId != ''">and group_id = #{groupId}</if>
         </where>
     </select>
 
@@ -45,14 +89,93 @@
         where id = #{id}
     </select>
     <select id="selectExamAnswerByQuId" resultType="com.lazy.vm.domain.vo.ExamAnswerVo">
-        select id, qu_id quId, type, level, answerd,answer,paper_id paperId, sort, mark, score, is_right isRight, group_id groupId from edu_exam_answer
-        where paper_id= #{paperId} and  qu_id = #{quId}
+        select id,
+               qu_id    quId,
+               type,
+               level,
+               answerd,
+               answer,
+               paper_id paperId,
+               sort,
+               mark,
+               score,
+               is_right isRight,
+               group_id groupId
+        from edu_exam_answer
+        where paper_id = #{paperId}
+          and qu_id = #{quId}
     </select>
     <select id="deleteExamAnswerByQuId" resultType="com.lazy.vm.domain.vo.ExamAnswerVo">
-        delete from edu_exam_answer where  qu_id = #{quId}
+        delete
+        from edu_exam_answer
+        where qu_id = #{quId}
     </select>
     <select id="getExamAnswerByQuId" resultType="int">
-        SELECT count(*) from edu_exam_answer where qu_id=#{quId}
+        SELECT count(*)
+        from edu_exam_answer
+        where qu_id = #{quId}
+    </select>
+
+    <select id="selectExamAnswerByGroupId" resultMap="ExamAnswerVoResult">
+        SELECT
+        a.id ,
+        a.qu_id,
+        a.type,
+        a.`level`,
+        a.answerd,
+        IF(a.is_right=1,a.score,0) actualScore,
+        a.answer,
+        a.paper_id,
+        a.sort,
+        a.mark,
+        a.score,
+        a.is_right,
+        a.group_id,
+        b.content o_content,
+        b.id o_id,
+        b.paper_id o_paper_id,
+        b.group_id o_group_id,
+        b.checked checked,
+        b.answer_id o_answer_id,
+        b.qu_id o_qu_id,
+        c.content_text content
+        FROM
+        edu_exam_answer a
+        LEFT JOIN edu_answer c
+        ON a.qu_id = c.id
+        LEFT JOIN edu_exam_answer_options b ON a.qu_id = b.qu_id
+        where a.paper_id= #{paperId} and a.group_id = #{groupId}
+        and b.paper_id= #{paperId}
+    </select>
+    <select id="selectExamAnswerByGroupIdType" resultMap="ExamAnswerVoResult">
+        SELECT
+            a.id ,
+            a.qu_id,
+            a.type,
+            a.`level`,
+            a.answerd,
+            a.answer,
+            IF(a.is_right=1,a.score,0) actualScore,
+            a.paper_id,
+            a.sort,
+            a.mark,
+            a.score,
+            a.is_right,
+            a.group_id,
+            b.content o_content,
+            b.id o_id,
+            b.paper_id o_paper_id,
+            b.group_id o_group_id,
+            b.checked checked,
+            b.answer_id o_answer_id,
+            b.qu_id o_qu_id,
+            c.content_text content
+        FROM
+            edu_exam_answer a
+                LEFT JOIN edu_answer c
+                          ON a.qu_id = c.id
+                LEFT JOIN edu_exam_answer_options b ON a.qu_id = b.qu_id
+        where a.paper_id= #{paperId} and a.group_id = #{groupId}
     </select>
 
     <insert id="insertExamAnswer" parameterType="ExamAnswer">
@@ -108,9 +231,14 @@
         </trim>
         where id = #{id}
     </update>
+    <update id="updateBatchExamAnswer">
+
+    </update>
 
     <delete id="deleteExamAnswerById" parameterType="String">
-        delete from edu_exam_answer where id = #{id}
+        delete
+        from edu_exam_answer
+        where id = #{id}
     </delete>
 
     <delete id="deleteExamAnswerByIds" parameterType="String">

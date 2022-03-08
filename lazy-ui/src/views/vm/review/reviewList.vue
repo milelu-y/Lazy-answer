@@ -2,69 +2,41 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item prop="title">
-        <el-input
-          v-model="queryParams.title"
-          placeholder="作业名称"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-          @change="handleQuery"
-        />
+        <el-select v-model="queryParams.status" @change="getList" placeholder="请选择">
+          <el-option
+            v-for="item in paperStates"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </el-form-item>
+<!--      <el-form-item prop="title">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.title"-->
+<!--          placeholder="作业名称"-->
+<!--          clearable-->
+<!--          size="small"-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--          @input="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+
     </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['vm:exam:add']"
-        >新增
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['vm:exam:edit']"
-        >修改
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['vm:exam:remove']"
-        >删除
-        </el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
-    <el-table border v-loading="loading" :data="examList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="作业名称" align="center" prop="title">
-      </el-table-column>
-      <el-table-column label="开放权限" align="center" :formatter="openTypeFormat" prop="openType"/>
-      <el-table-column label="作业时间" align="center" prop="totalTime"/>
+    <el-table border v-loading="loading" :data="reviewList">
+      <el-table-column label="人员" align="center" prop="userId"></el-table-column>
+      <el-table-column label="作业时间" align="center" prop="createTime"/>
+      <el-table-column label="答题时长" align="center" prop="totalTime" />
+      <el-table-column label="学员总分" align="center" prop="userScore"/>
+      <el-table-column label="合格分" align="center" prop="qualifyScore"/>
       <el-table-column label="作业总分" align="center" prop="totalScore"/>
-      <el-table-column label="及格线" align="center" prop="qualifyScore"/>
-      <el-table-column label="状态" :formatter="statusFormat" align="center" prop="status"/>
+      <el-table-column label="状态" align="center" prop="status" :formatter="statusFormat"/>
+<!--      <el-table-column label="阅题人" align="center" prop="status"/>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <router-link :to="{ name: 'stat', params:{id: scope.row.id}}" style="color: #00afff">
-            <i class="el-icon-pie-chart"></i> 统计分析
+          <router-link :to="{ name: 'reviewDetail', params:{id: scope.row.id}}" style="color: #00afff">
+            <i class="el-icon-document"></i> 查看/批阅
           </router-link>
         </template>
       </el-table-column>
@@ -81,13 +53,27 @@
 </template>
 
 <script>
-import {addExam, delExam, exportExam, getExam, listExam, updateExam} from "@/api/vm/exam";
-import {delTestPaper} from "@/api/vm/testPaper";
-
+import {listTask, getTask, delTask, addTask, updateTask, exportTask} from "@/api/vm/task";
+import {listCourse} from "@/api/vm/course";
+import _ from "lodash"
+import {reviewExamList} from "@/api/vm/testPaper";
 export default {
-  name: "Task",
+  name: "reviewList",
   data() {
     return {
+      paperStates: [{
+        value: 0,
+        label: '进行中'
+      }, {
+        value: 1,
+        label: '待阅题'
+      }, {
+        value: 2,
+        label: '已阅题'
+      }, {
+        value: 3,
+        label: '!已废弃'
+      }],
       // 遮罩层
       loading: true,
       // 导出遮罩层
@@ -103,7 +89,7 @@ export default {
       // 总条数
       total: 0,
       // 作业表格数据
-      examList: [],
+      reviewList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -112,35 +98,30 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        title: null,
+        id: null,
+        status:1
       },
-      statusOptions:[],
-      openTypes:[]
+      // 表单参数
+      form: {},
+      openTypes: [],
+      statusOptions: [],
+      id:null
     };
   },
   created() {
+    this.id = this.$route.params.id
+    this.queryParams.id=this.id;
     this.getList();
     this.getDicts("vm_job_status").then(response => {
       this.statusOptions = response.data;
     });
-    this.getDicts("vm_open_type").then(response => {
-      this.openTypes = response.data;
-    });
   },
   methods: {
-    // 操作日志状态字典翻译
-    statusFormat(row, column) {
-      return this.selectDictLabel(this.statusOptions, row.status);
-    },
-    openTypeFormat(row, column) {
-      console.log("row",row)
-      return this.selectDictLabel(this.openTypes, row.openType);
-    },
     /** 查询作业列表 */
     getList() {
       this.loading = true;
-      listExam(this.queryParams).then(response => {
-        this.examList = response.rows;
+      reviewExamList(this.queryParams).then(response => {
+        this.reviewList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -149,6 +130,22 @@ export default {
     cancel() {
       this.open = false;
       this.reset();
+    },
+    // 表单重置
+    reset() {
+      this.form = {
+        id: null,
+        courseId: null,
+        title: null,
+        singleCount: null,
+        multipleCount: null,
+        createTime: null,
+        updateTime: null,
+        judgment: null,
+        fillCount: null,
+        aqCount: null
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -168,32 +165,33 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.$router.push('/vm/exam/form/')
+      this.reset();
+      // this.open = true;
+      // this.title = "添加作业";
+      this.$router.push('/vm/question/form/')
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-
-      this.$router.push('/vm/exam/form/update/'+this.ids[0])
-      // this.reset();
-      // const id = row.id || this.ids
-      // getExam(id).then(response => {
-      //   this.form = response.data;
-      //   this.open = true;
-      //   this.title = "修改作业";
-      // });
+      this.reset();
+      const id = row.id || this.ids
+      getTask(id).then(response => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改作业";
+      });
     },
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateExam(this.form).then(response => {
+            updateTask(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addExam(this.form).then(response => {
+            addTask(this.form).then(response => {
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -214,7 +212,7 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(function () {
-        return delExam(ids);
+        return delTask(ids);
       }).then(() => {
         this.getList();
         this.msgSuccess("删除成功");
@@ -230,13 +228,16 @@ export default {
         type: "warning"
       }).then(() => {
         this.exportLoading = true;
-        return exportExam(queryParams);
+        return exportTask(queryParams);
       }).then(response => {
         this.download(response.msg);
         this.exportLoading = false;
       }).catch(() => {
       });
-    }
+    },
+    statusFormat(row, column) {
+      return this.selectDictLabel(this.statusOptions, row.status);
+    },
   }
 };
 </script>

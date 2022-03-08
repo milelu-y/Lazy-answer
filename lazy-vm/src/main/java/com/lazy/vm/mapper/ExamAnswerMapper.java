@@ -70,4 +70,19 @@ public interface ExamAnswerMapper
     void deleteExamAnswerByQuId(String quId);
 
     int getExamAnswerByQuId(String quId);
+
+    /**
+     * 根据分组id查询已经答题的题目
+     * @param groupId
+     * @return
+     */
+    List<ExamAnswerVo> selectExamAnswerByGroupId(@Param("paperId") String paperId,@Param("groupId") String groupId);
+    List<ExamAnswerVo> selectExamAnswerByGroupIdType(@Param("paperId") String paperId,@Param("groupId") String groupId);
+
+    /**
+     * 批量修改答题后的题目
+     * @param quList
+     * @return
+     */
+    int updateBatchExamAnswer(List<ExamAnswerVo> quList);
 }

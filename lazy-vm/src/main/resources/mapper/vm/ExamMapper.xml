@@ -99,7 +99,7 @@
         where id = #{id}
     </select>
     <select id="selectExamJoinPaperList" resultType="com.lazy.vm.domain.Exam">
-        select a.id, a.paper_id paperId, a.title, a.qualify_score qualifyScore, a.total_time totalTime,a.total_score
+        select a.id, a.paper_id paperId, a.title, a.qualify_score qualifyScore,a.start_time startTime,a.end_time endTime, a.total_time totalTime,a.total_score
         totalScore, a.limit_count limitCount, a.limit_time limitTime,content, status FROM
         edu_exam a inner JOIN edu_test_paper b on a.paper_id =b.id left join edu_exam_dept c on a.id = c.exam_id
         <where>
@@ -113,6 +113,28 @@
                 and c.dept_id=#{deptId}
             </if>
         </where>
+    </select>
+    <select id="selectExamReviewList" resultType="com.lazy.vm.domain.vo.ExamVo">
+        SELECT
+            e.id,
+            e.title title,
+            e.open_type openType,
+            e.paper_id paperId,
+            ( SELECT count(*) FROM edu_exam_paper WHERE exam_id = e.id ) examUser,(
+                SELECT
+                    count(*)
+                FROM
+                    edu_exam_paper
+                WHERE
+                    exam_id = e.id
+                  AND status = 1
+            ) unreadPaper
+        FROM
+            edu_exam e
+
+        <if test="title!=null and title!=''">
+            WHERE e.title like concat('%',#{title},'%')
+        </if>
     </select>
 
     <insert id="insertExam" parameterType="Exam">

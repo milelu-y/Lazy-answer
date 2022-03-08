@@ -17,23 +17,22 @@
         <result property="updateTime" column="update_time"/>
         <result property="userScore" column="user_score"/>
         <result property="status" column="status"/>
-        <result property="reserveField5" column="reserve_field5"/>
+        <result property="qualifyScore" column="qualifyScore"/>
     </resultMap>
 
     <sql id="selectExamPaperVo">
         select id,
-               user_id,
-               title,
-               total_score,
-               type,
-               category,
-               qu_count,
-               exam_id,
-               create_time,
-               update_time,
-               user_score,
-               status,
-               reserve_field5
+        user_id,
+        title,
+        total_score,
+        type,
+        category,
+        qu_count,
+        exam_id,
+        create_time,
+        update_time,
+        user_score,
+        status
         from edu_exam_paper
     </sql>
 
@@ -49,7 +48,6 @@
             <if test="examId != null  and examId != ''">and exam_id = #{examId}</if>
             <if test="userScore != null ">and user_score = #{userScore}</if>
             <if test="status != null  and status != ''">and status = #{status}</if>
-            <if test="reserveField5 != null  and reserveField5 != ''">and reserve_field5 = #{reserveField5}</if>
         </where>
     </select>
 
@@ -67,28 +65,30 @@
     </select>
 
     <select id="selectExamAndPaper" resultType="com.lazy.vm.domain.vo.PaperAdaptedVo">
-        SELECT paper.id          id,
-               user_id           userId,
-               paper.title,
-               paper.total_score totalScore,
-               qu_count          quCount,
-               exam.id           examId,
-               user_score        userScore,
-               qualify_score     qualifyScore,
-               total_time        totalTime,
-               limit_count       limitCount,
-               limit_time        limitTime,
-               paper.status      status,
-               exam.thanks       thanks
+        SELECT paper.id id,
+        paper.user_id userId,
+        u.nick_name nickName,
+        paper.title,
+        paper.total_score totalScore,
+        qu_count quCount,
+        exam.id examId,
+        user_score userScore,
+        qualify_score qualifyScore,
+        total_time totalTime,
+        limit_count limitCount,
+        limit_time limitTime,
+        paper.status status,
+        exam.thanks thanks
         FROM edu_exam_paper paper
-                 LEFT JOIN edu_exam exam ON exam.id = paper.exam_id
+        LEFT JOIN edu_exam exam ON exam.id = paper.exam_id
+        LEFT JOIN sys_user u on paper.user_id = u.user_id
         WHERE paper.id = #{id}
     </select>
     <select id="selectExamCount" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM edu_exam_paper
         WHERE exam_id = #{examId}
-          and user_id = #{userId}
+        and user_id = #{userId}
     </select>
 
     <insert id="insertExamPaper" parameterType="ExamPaper">
@@ -105,8 +105,7 @@
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
             <if test="userScore != null">user_score,</if>
-            <if test="status != null">status,</if>
-            <if test="reserveField5 != null">reserve_field5,</if>
+            <if test="status != null">status</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
@@ -120,8 +119,7 @@
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
             <if test="userScore != null">#{userScore},</if>
-            <if test="status != null">#{status},</if>
-            <if test="reserveField5 != null">#{reserveField5},</if>
+            <if test="status != null">#{status}</if>
         </trim>
     </insert>
 
@@ -138,8 +136,7 @@
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="userScore != null">user_score = #{userScore},</if>
-            <if test="status != null">status = #{status},</if>
-            <if test="reserveField5 != null">reserve_field5 = #{reserveField5},</if>
+            <if test="status != null">status = #{status}</if>
         </trim>
         where id = #{id}
     </update>
@@ -159,20 +156,57 @@
 
     <select id="selectUserExamPaperByUserId" parameterType="String" resultMap="ExamPaperResult">
         select id,
-               user_id,
-               title,
-               total_score,
-               type,
-               category,
-               qu_count,
-               exam_id,
-               create_time,
-               update_time,
-               user_score,
-               status,
-               reserve_field5
-        from edu_exam_paper  where user_id = #{userid}
+        user_id,
+        title,
+        total_score,
+        type,
+        category,
+        qu_count,
+        exam_id,
+        create_time,
+        update_time,
+        user_score,
+        status
+        from edu_exam_paper
+        where user_id = #{userid}
 
+    </select>
+    <select id="selectExamPaperByExamId" resultType="ExamPaper">
+        select e.id,
+        s.nick_name userId,
+        e.title,
+        e.`type`,
+        e.category,
+        e.qu_count quCount,
+        e.exam_id examId,
+        e.create_time createTime,
+        e.update_time updateTime,
+        e.user_score userScore,
+        e.total_score totalScore,
+        e.status,
+        a.qualify_score qualifyScore
+        from edu_exam_paper e left join sys_user s on e.user_id=s.user_id
+        left join edu_exam a on a.id = e.exam_id
+        <where>
+            exam_id = #{id}
+            <if test="status != null">and e.status = #{status}</if>
+        </where>
+        ORDER BY e.create_time DESC
+    </select>
+    <select id="userStat" resultType="com.lazy.vm.domain.vo.Stat">
+        SELECT
+        x.qualify_score qualifyScore,
+        p.exam_id examId,
+        u.nick_name nickName,
+        count(*) `count`,
+        max(user_score) `max`
+        FROM edu_exam_paper p
+        left join sys_user u on p.user_id = u.user_id
+        WHERE p.exam_id = #{examId}
+        <if test="nickName!=null and nickName!=''">
+            and u.nick_name like concat('%',#{nickName},'%')
+        </if>
+        GROUP BY p.user_id
     </select>
 
 </mapper>

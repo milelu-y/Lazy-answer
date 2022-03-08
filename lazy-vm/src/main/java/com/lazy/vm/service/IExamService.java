@@ -4,6 +4,7 @@ import java.util.List;
 import com.lazy.vm.domain.Exam;
 import com.lazy.vm.domain.vo.ExamCourseDto;
 import com.lazy.vm.domain.vo.ExamVo;
+import com.lazy.vm.domain.vo.Stat;
 
 /**
  * 试卷添加Service接口
@@ -71,4 +72,13 @@ public interface IExamService
 
 
     public List<Exam> selectExamJoinPaperList(ExamCourseDto examCourseDto);
+
+    /**
+     * 查询作业批阅
+     * @param exam
+     * @return
+     */
+    List<Exam> selectExamReviewList(Exam exam);
+
+    List<Stat> userStat(Stat stat);
 }

@@ -108,3 +108,19 @@ export function paperResult(data) {
     method: 'get',
   })
 }
+export function reviewExamList(query) {
+  return request({
+    url: '/vm/examPaper/reviewList',
+    method: 'get',
+    params:query
+  })
+}
+
+export function reviewPaper(data) {
+  return request({
+    url: '/vm/examPaper/reviewPaper',
+    method: 'post',
+    data:data
+  })
+}
+

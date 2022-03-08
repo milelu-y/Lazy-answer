@@ -24,15 +24,15 @@ public class ExamAnswerOptions
     private String id;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "试卷id", readConverterExp = "$column.readConverterExp()")
     private String paperId;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "组", readConverterExp = "$column.readConverterExp()")
     private String groupId;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "内容", readConverterExp = "$column.readConverterExp()")
     private String content;
 
     /** $column.columnComment */
@@ -40,7 +40,7 @@ public class ExamAnswerOptions
     private Integer pathScore;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "选中", readConverterExp = "$column.readConverterExp()")
     private Boolean checked;
 
     /** $column.columnComment */
@@ -48,17 +48,18 @@ public class ExamAnswerOptions
     private String answerId;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "abc", readConverterExp = "$column.readConverterExp()")
     private String abc;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "答案", readConverterExp = "$column.readConverterExp()")
     private String answer;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "{题目ID", readConverterExp = "$column.readConverterExp()")
     private String quId;
-
+    @Excel(name = "是否为正确答案")
+    private Boolean isRight;
     public void setId(String id)
     {
         this.id = id;
@@ -148,6 +149,14 @@ public class ExamAnswerOptions
     public String getQuId()
     {
         return quId;
+    }
+
+    public Boolean getIsRight() {
+        return isRight;
+    }
+
+    public void setIsRight(Boolean right) {
+        isRight = right;
     }
 
     @Override

@@ -3,10 +3,7 @@ package com.lazy.web.controller.vm;
 import java.util.List;
 import java.util.Map;
 
-import com.lazy.vm.domain.vo.ExamAnswerVo;
-import com.lazy.vm.domain.vo.FullAnswerVo;
-import com.lazy.vm.domain.vo.PaperCreateVo;
-import com.lazy.vm.domain.vo.PaperQuQueryDTO;
+import com.lazy.vm.domain.vo.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +45,20 @@ public class ExamPaperController extends BaseController
     {
         startPage();
         List<ExamPaper> list = examPaperService.selectExamPaperList(examPaper);
+        return getDataTable(list);
+    }
+
+    /**
+     * 查询待阅卷的试卷
+     * @param examPaper
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('vm:examPaper:list')")
+    @GetMapping("/reviewList")
+    public TableDataInfo pendReviewList(ExamPaper examPaper)
+    {
+        startPage();
+        List<ExamPaper> list = examPaperService.selectPendReviewList(examPaper);
         return getDataTable(list);
     }
 
@@ -154,5 +165,11 @@ public class ExamPaperController extends BaseController
     @GetMapping("/paperResult/{id}")
     public AjaxResult paperResult(@PathVariable("id") String id) {
         return examPaperService.paperResult(id);
+    }
+
+
+    @PostMapping("/reviewPaper")
+    public AjaxResult reviewPaper(@RequestBody  PaperAdaptedVo paperAdaptedVo){
+        return  examPaperService.reviewPaper(paperAdaptedVo);
     }
 }

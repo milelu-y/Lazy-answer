@@ -68,6 +68,7 @@ public class ExamAnswerVo {
      */
     private Boolean answerd;
 
+    private Integer actualScore;
     private String answer;
 
     /**
@@ -260,6 +261,14 @@ public class ExamAnswerVo {
 
     public void setAnswer(String answer) {
         this.answer = answer;
+    }
+
+    public Integer getActualScore() {
+        return actualScore;
+    }
+
+    public void setActualScore(Integer actualScore) {
+        this.actualScore = actualScore;
     }
 
     @Override

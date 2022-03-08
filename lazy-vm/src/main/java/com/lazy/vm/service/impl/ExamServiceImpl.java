@@ -1,6 +1,7 @@
 package com.lazy.vm.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.lazy.common.utils.DateUtils;
@@ -9,7 +10,9 @@ import com.lazy.common.utils.uuid.SnowflakeIdWorker;
 import com.lazy.vm.domain.ExamDept;
 import com.lazy.vm.domain.vo.ExamCourseDto;
 import com.lazy.vm.domain.vo.ExamVo;
+import com.lazy.vm.domain.vo.Stat;
 import com.lazy.vm.mapper.ExamDeptMapper;
+import com.lazy.vm.mapper.ExamPaperMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,8 @@ public class ExamServiceImpl implements IExamService {
     @Autowired
     private ExamDeptMapper examDeptMapper;
 
+    @Autowired
+    private ExamPaperMapper examPaperMapper;
     /**
      * 查询试卷添加
      *
@@ -62,6 +67,19 @@ public class ExamServiceImpl implements IExamService {
         return examMapper.selectExamList(exam);
     }
 
+    /**
+     * 查询作业批阅信息
+     *
+     * @param exam
+     * @return
+     */
+    @Override
+    public List<Exam> selectExamReviewList(Exam exam) {
+        //TODO:
+        List<Exam> examList = examMapper.selectExamReviewList(exam);
+        return examList;
+    }
+
     @Override
     public List<Exam> selectUserExamList(Exam exam) {
         Long deptId = SecurityUtils.getLoginUser().getUser().getDeptId();
@@ -89,7 +107,7 @@ public class ExamServiceImpl implements IExamService {
             exam.setStatus(0);
         }
         insertExamDept(examVo);
-        return  examMapper.insertExam(exam);
+        return examMapper.insertExam(exam);
     }
 
     /**
@@ -104,12 +122,14 @@ public class ExamServiceImpl implements IExamService {
         Exam exam = new Exam();
         exam.setUpdateTime(DateUtils.getNowDate());
         BeanUtils.copyProperties(examVo, exam);
+//        examMapper.updateExam(exam);
+        if (examVo.getOpenType() == 2) {
+            //先删除，后插入
+            examDeptMapper.deleteExamDeptById(exam.getId());
 
-        examMapper.updateExam(exam);
-        //先删除，后插入
-        examDeptMapper.deleteExamDeptById(exam.getId());
-
-        return insertExamDept(examVo);
+            return insertExamDept(examVo);
+        }
+        return examMapper.updateExam(exam);
     }
 
     /**
@@ -134,13 +154,13 @@ public class ExamServiceImpl implements IExamService {
     public int deleteExamById(String id) {
         //删除部门
         examDeptMapper.deleteExamDeptById(id);
-        return  examMapper.deleteExamById(id);
+        return examMapper.deleteExamById(id);
     }
 
     @Override
     public List<Exam> selectExamJoinPaperList(ExamCourseDto examCourseDto) {
         Long deptId = SecurityUtils.getLoginUser().getUser().getDeptId();
-       // examCourseDto.setDeptId(deptId.intValue());
+        // examCourseDto.setDeptId(deptId.intValue());
         return examMapper.selectExamJoinPaperList(examCourseDto);
     }
 
@@ -153,7 +173,7 @@ public class ExamServiceImpl implements IExamService {
             examDeptList.add(examDept);
         }
 //        if (examDeptList.size() > 0) {
-            return examDeptMapper.batchExamDept(examDeptList);
+        return examDeptMapper.batchExamDept(examDeptList);
 //        }
 //        return 0;
     }
@@ -161,5 +181,12 @@ public class ExamServiceImpl implements IExamService {
     public List<Integer> getExamDeptIds(Integer deptId) {
         List<Integer> deptIds = examDeptMapper.selectExamDeptById(deptId);
         return deptIds;
+    }
+
+    @Override
+    public List<Stat> userStat(Stat stat) {
+        String nickName = stat.getNickName();
+        List <Stat> list =examPaperMapper.userStat(stat.getExamId(),nickName);
+        return list;
     }
 }
