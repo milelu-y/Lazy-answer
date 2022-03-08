@@ -86,3 +86,12 @@ export function userStat(query) {
     params: query
   })
 }
+//查询学员做题记录
+export function paging(query) {
+  return request({
+    url: '/vm/exam/paging',
+    method: 'get',
+    params: query
+  })
+}
+

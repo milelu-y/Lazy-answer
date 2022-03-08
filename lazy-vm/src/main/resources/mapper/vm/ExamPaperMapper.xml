@@ -22,17 +22,17 @@
 
     <sql id="selectExamPaperVo">
         select id,
-        user_id,
-        title,
-        total_score,
-        type,
-        category,
-        qu_count,
-        exam_id,
-        create_time,
-        update_time,
-        user_score,
-        status
+               user_id,
+               title,
+               total_score,
+               type,
+               category,
+               qu_count,
+               exam_id,
+               create_time,
+               update_time,
+               user_score,
+               status
         from edu_exam_paper
     </sql>
 
@@ -65,30 +65,30 @@
     </select>
 
     <select id="selectExamAndPaper" resultType="com.lazy.vm.domain.vo.PaperAdaptedVo">
-        SELECT paper.id id,
-        paper.user_id userId,
-        u.nick_name nickName,
-        paper.title,
-        paper.total_score totalScore,
-        qu_count quCount,
-        exam.id examId,
-        user_score userScore,
-        qualify_score qualifyScore,
-        total_time totalTime,
-        limit_count limitCount,
-        limit_time limitTime,
-        paper.status status,
-        exam.thanks thanks
+        SELECT paper.id          id,
+               paper.user_id     userId,
+               u.nick_name       nickName,
+               paper.title,
+               paper.total_score totalScore,
+               qu_count          quCount,
+               exam.id           examId,
+               user_score        userScore,
+               qualify_score     qualifyScore,
+               total_time        totalTime,
+               limit_count       limitCount,
+               limit_time        limitTime,
+               paper.status      status,
+               exam.thanks       thanks
         FROM edu_exam_paper paper
-        LEFT JOIN edu_exam exam ON exam.id = paper.exam_id
-        LEFT JOIN sys_user u on paper.user_id = u.user_id
+                 LEFT JOIN edu_exam exam ON exam.id = paper.exam_id
+                 LEFT JOIN sys_user u on paper.user_id = u.user_id
         WHERE paper.id = #{id}
     </select>
     <select id="selectExamCount" resultType="java.lang.Integer">
         SELECT COUNT(*)
         FROM edu_exam_paper
         WHERE exam_id = #{examId}
-        and user_id = #{userId}
+          and user_id = #{userId}
     </select>
 
     <insert id="insertExamPaper" parameterType="ExamPaper">
@@ -156,17 +156,17 @@
 
     <select id="selectUserExamPaperByUserId" parameterType="String" resultMap="ExamPaperResult">
         select id,
-        user_id,
-        title,
-        total_score,
-        type,
-        category,
-        qu_count,
-        exam_id,
-        create_time,
-        update_time,
-        user_score,
-        status
+               user_id,
+               title,
+               total_score,
+               type,
+               category,
+               qu_count,
+               exam_id,
+               create_time,
+               update_time,
+               user_score,
+               status
         from edu_exam_paper
         where user_id = #{userid}
 
@@ -195,18 +195,38 @@
     </select>
     <select id="userStat" resultType="com.lazy.vm.domain.vo.Stat">
         SELECT
-        x.qualify_score qualifyScore,
+        IF(max(user_score) > x.qualify_score,true,false) passed,
         p.exam_id examId,
         u.nick_name nickName,
+        u.user_id userId,
         count(*) `count`,
         max(user_score) `max`
         FROM edu_exam_paper p
+        left join edu_exam x on p.exam_id = x.id
         left join sys_user u on p.user_id = u.user_id
         WHERE p.exam_id = #{examId}
         <if test="nickName!=null and nickName!=''">
             and u.nick_name like concat('%',#{nickName},'%')
         </if>
         GROUP BY p.user_id
+    </select>
+    <select id="selectPaging" resultType="com.lazy.vm.domain.vo.PaperAdaptedVo">
+        SELECT
+               p.id,
+               p.exam_id examId,
+               e.limit_count limitCount,
+               e.limit_time limitTime,
+               e.qualify_score qualifyScore,
+               e.total_score totalScore,
+               e.total_time totalTime,
+               p.user_id userId,
+               p.status,
+               p.user_score userScore,
+               p.create_time createTime
+        FROM edu_exam_paper p
+                 left join edu_exam e on p.exam_id = e.id
+        where p.exam_id = #{examId}
+          and p.user_id = #{userId}
     </select>
 
 </mapper>

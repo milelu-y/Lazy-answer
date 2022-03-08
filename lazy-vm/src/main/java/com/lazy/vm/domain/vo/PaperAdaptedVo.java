@@ -1,5 +1,6 @@
 package com.lazy.vm.domain.vo;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,6 +64,8 @@ public class PaperAdaptedVo {
     private Integer status;
 
     private String thanks;
+
+    private Date createTime;
 
     private List<ExamGroupVo> groupList;
 
@@ -184,5 +187,13 @@ public class PaperAdaptedVo {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

@@ -10,6 +10,7 @@ import com.lazy.common.utils.uuid.SnowflakeIdWorker;
 import com.lazy.vm.domain.ExamDept;
 import com.lazy.vm.domain.vo.ExamCourseDto;
 import com.lazy.vm.domain.vo.ExamVo;
+import com.lazy.vm.domain.vo.PaperAdaptedVo;
 import com.lazy.vm.domain.vo.Stat;
 import com.lazy.vm.mapper.ExamDeptMapper;
 import com.lazy.vm.mapper.ExamPaperMapper;
@@ -187,6 +188,12 @@ public class ExamServiceImpl implements IExamService {
     public List<Stat> userStat(Stat stat) {
         String nickName = stat.getNickName();
         List <Stat> list =examPaperMapper.userStat(stat.getExamId(),nickName);
+        return list;
+    }
+
+    @Override
+    public List<PaperAdaptedVo> paging(Stat stat) {
+        List <PaperAdaptedVo> list=examPaperMapper.selectPaging(stat.getExamId(),stat.getUserId());
         return list;
     }
 }

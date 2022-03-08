@@ -9,10 +9,11 @@ public class Stat {
     private String examId;
 
     private String nickName;
-
+    private String userId;
     private Integer count;
 
     private Integer max;
+    private Boolean passed;
 
     public String getNickName() {
         return nickName;
@@ -44,5 +45,21 @@ public class Stat {
 
     public void setMax(Integer max) {
         this.max = max;
+    }
+
+    public Boolean getPassed() {
+        return passed;
+    }
+
+    public void setPassed(Boolean passed) {
+        this.passed = passed;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

@@ -35,11 +35,20 @@
               label="最高分">
             </el-table-column>
             <el-table-column
-              prop="adopt"
-              label="是否通过">
+              prop="passed"
+              label="是否通过" :formatter="passedFormatter">
             </el-table-column>
             <el-table-column
               label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-view"
+                  @click="handleView(scope.row)"
+                >查看
+                </el-button>
+              </template>
             </el-table-column>
           </el-table>
           <pagination
@@ -49,6 +58,28 @@
             :limit.sync="queryParams.pageSize"
             @pagination="getUserStat"
           />
+          <el-drawer
+            append-to-body
+            title="答题记录"
+            :visible.sync="userDrawer"
+            direction="rtl">
+            <el-card shadow="always" v-for="(row , index) in pagingData">
+              <el-col :span="12" style="margin: 5px 0px 5px 0px">答题时间：{{ row.createTime }}</el-col>
+              <el-col :span="12" style="margin: 5px 0px 5px 0px">用时：</el-col>
+              <el-col :span="12" style="margin: 5px 0px 5px 0px">得分：{{ row.userScore }}</el-col>
+              <el-col :span="12" style="margin: 5px 0px 5px 0px">
+                是否合格：{{ row.userScore >= row.qualifyScore ? '是' : '否' }}
+              </el-col>
+              <el-col :span="12" style="margin: 5px 0px 5px 0px">状态：
+                <span v-if="row.status===0">进行中</span>
+                <span v-if="row.status===1">待阅题</span>
+                <span v-if="row.status===2">已阅题</span>
+              </el-col>
+              <el-col :span="24" style="margin-top: 10px;margin-bottom: 10px">
+                <el-button @click="reviewDetail(row.id)">查看作业</el-button>
+              </el-col>
+            </el-card>
+          </el-drawer>
         </el-tab-pane>
         <el-tab-pane label="错题分析" name="error">错题分析</el-tab-pane>
       </el-tabs>
@@ -57,7 +88,7 @@
 </template>
 
 <script>
-import {userStat} from "@/api/vm/exam";
+import {paging, userStat} from "@/api/vm/exam";
 
 export default {
   name: "stat",
@@ -65,8 +96,9 @@ export default {
     return {
       activeName: 'user',
       userTableData: [],
-      total:0,
-
+      pagingData: [],
+      total: 0,
+      userDrawer: false,
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -77,7 +109,7 @@ export default {
   created() {
     var id = this.$route.params.id;
     console.log("id", id)
-    this.queryParams.examId=id;
+    this.queryParams.examId = id;
     //查询学员统计
     this.getUserStat();
   },
@@ -88,13 +120,33 @@ export default {
     handleQuery() {
       this.getUserStat();
     },
-    getUserStat(){
+    getUserStat() {
       this.userLoading = true
       userStat(this.queryParams).then(response => {
         this.userTableData = response.rows;
         this.total = response.total;
         this.userLoading = false
       })
+    },
+    //打开作业答题记录列表进行查看
+    handleView(row) {
+      this.userDrawer = true;
+      this.queryParams.userId = row.userId
+      paging(this.queryParams).then(response => {
+        console.log(response);
+        this.pagingData = response
+      })
+    },
+    reviewDetail(id){
+      this.$router.push({name:'reviewDetail',params: {id:id}})
+    },
+    passedFormatter(row) {
+      console.log(row)
+      if (row.passed) {
+        return <span style="color:0ceb5f">通过</span>
+      } else {
+        return <span style="color:red">未通过</span>
+      }
     }
   }
 

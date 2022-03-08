@@ -4,6 +4,7 @@ import java.util.List;
 import com.lazy.vm.domain.Exam;
 import com.lazy.vm.domain.vo.ExamCourseDto;
 import com.lazy.vm.domain.vo.ExamVo;
+import com.lazy.vm.domain.vo.PaperAdaptedVo;
 import com.lazy.vm.domain.vo.Stat;
 
 /**
@@ -80,5 +81,17 @@ public interface IExamService
      */
     List<Exam> selectExamReviewList(Exam exam);
 
+    /**
+     * 统计用户概览
+     * @param stat
+     * @return
+     */
     List<Stat> userStat(Stat stat);
+
+    /**
+     * 查看学员答题记录
+     * @param stat
+     * @return
+     */
+    List<PaperAdaptedVo> paging(Stat stat);
 }

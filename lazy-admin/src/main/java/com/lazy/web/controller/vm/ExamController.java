@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.lazy.vm.domain.vo.ExamCourseDto;
 import com.lazy.vm.domain.vo.ExamVo;
+import com.lazy.vm.domain.vo.PaperAdaptedVo;
 import com.lazy.vm.domain.vo.Stat;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -146,4 +147,11 @@ public class ExamController extends BaseController
         List<Stat> list = examService.userStat(stat);
         return getDataTable(list);
     }
+
+    @GetMapping("/paging")
+    public List<PaperAdaptedVo> paging(Stat stat){
+        List<PaperAdaptedVo> list = examService.paging(stat);
+        return list;
+    }
+
 }
