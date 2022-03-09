@@ -111,4 +111,7 @@ public interface IExamPaperService
      * @return
      */
     AjaxResult reviewPaper(PaperAdaptedVo paperAdaptedVo);
+
+    AjaxResult allPaper();
+
 }

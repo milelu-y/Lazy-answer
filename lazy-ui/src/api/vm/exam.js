@@ -86,6 +86,13 @@ export function userStat(query) {
     params: query
   })
 }
+export function errorStat(query) {
+  return request({
+    url: '/vm/exam/errorStat',
+    method: 'get',
+    params: query
+  })
+}
 //查询学员做题记录
 export function paging(query) {
   return request({

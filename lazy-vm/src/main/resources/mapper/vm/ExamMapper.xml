@@ -136,6 +136,40 @@
             WHERE e.title like concat('%',#{title},'%')
         </if>
     </select>
+    <select id="errorStat" resultType="com.lazy.vm.domain.vo.ErrorStatVo">
+        SELECT
+            c.content_text content,
+            count(*) `count`,
+            a.type type,
+            count(
+                    IF
+                        ( b.is_right != 1, 1, NULL )) errorCount,
+            CONCAT( ROUND( COUNT( IF ( b.is_right != 1, 1, NULL ))/ count(*)* 100, 1 ), '', '%' ) errorPro
+        FROM
+            edu_exam e
+                LEFT JOIN edu_exam_paper a ON e.id = a.exam_id
+                LEFT JOIN edu_exam_answer b ON a.id = b.paper_id
+                LEFT JOIN edu_answer c ON b.qu_id = c.id
+        WHERE
+            e.id = #{examId}
+        GROUP BY
+            c.id
+    </select>
+    <select id="avgMaxMin" resultType="com.lazy.vm.domain.vo.AvgMaxMinStatVo">
+        SELECT
+            e.title title,
+            COUNT(DISTINCT p.user_id) userCount,
+            count(*) `count`,
+            AVG( p.user_score ) `avg`,
+            SUM(p.user_score) `sum`,
+            MAX(user_score) `max`,
+            MIN(user_score) `min`
+        FROM
+            edu_exam e
+                LEFT JOIN edu_exam_paper p ON e.id = p.exam_id
+        GROUP BY
+            e.id
+    </select>
 
     <insert id="insertExam" parameterType="Exam">
         insert into edu_exam

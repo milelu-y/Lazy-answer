@@ -8,10 +8,7 @@ import com.lazy.common.utils.DateUtils;
 import com.lazy.common.utils.SecurityUtils;
 import com.lazy.common.utils.uuid.SnowflakeIdWorker;
 import com.lazy.vm.domain.ExamDept;
-import com.lazy.vm.domain.vo.ExamCourseDto;
-import com.lazy.vm.domain.vo.ExamVo;
-import com.lazy.vm.domain.vo.PaperAdaptedVo;
-import com.lazy.vm.domain.vo.Stat;
+import com.lazy.vm.domain.vo.*;
 import com.lazy.vm.mapper.ExamDeptMapper;
 import com.lazy.vm.mapper.ExamPaperMapper;
 import org.springframework.beans.BeanUtils;
@@ -195,5 +192,15 @@ public class ExamServiceImpl implements IExamService {
     public List<PaperAdaptedVo> paging(Stat stat) {
         List <PaperAdaptedVo> list=examPaperMapper.selectPaging(stat.getExamId(),stat.getUserId());
         return list;
+    }
+
+    @Override
+    public List<ErrorStatVo> errorStat(ErrorStatVo error) {
+        return examMapper.errorStat(error.getExamId());
+    }
+
+    @Override
+    public List<AvgMaxMinStatVo> avgMaxMin(AvgMaxMinStatVo stat) {
+        return examMapper.avgMaxMin();
     }
 }

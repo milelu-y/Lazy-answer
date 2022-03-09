@@ -229,4 +229,59 @@
           and p.user_id = #{userId}
     </select>
 
+
+
+
+    <resultMap type="PaperAdaptedVo" id="AllExamPaper">
+        <result property="id" column="pid"/>
+        <result property="userId" column="puserId"/>
+        <result property="nickName" column="nickName"/>
+        <result property="title" column="ptitle"/>
+        <result property="totalScore" column="ptotalScore"/>
+        <result property="quCount" column="pquCount"/>
+        <result property="userScore" column="puserScore"/>
+        <result property="examId" column="pexamId"/>
+        <result property="qualifyScore" column="pqualifyScore"/>
+        <result property="totalTime" column="ptotalTime"/>
+        <result property="createTime" column="pcreateTime"/>
+        <collection property="groupList" javaType="List" resultMap="examGroupVo"/>
+    </resultMap>
+    <resultMap id="examGroupVo" type="examGroupVo">
+        <result property="id" column="gid"/>
+        <result property="paperId" column="gpaperId"/>
+        <result property="paperId" column="gpaperId"/>
+        <result property="perScore" column="gperScore"/>
+        <result property="quCount" column="gquCount"/>
+        <result property="title" column="gtitle"/>
+        <result property="totalScore" column="gtotalScore"/>
+        <collection property="quList" resultMap="com.lazy.vm.mapper.ExamAnswerMapper.ExamAnswerVoResult" ></collection>
+    </resultMap>
+    <select id="selectAllPaper" resultMap="AllExamPaper">
+
+        SELECT
+            p.id pid,
+            p.user_id puserId,
+            u.nick_name nickName,
+            p.create_time pcreateTime,
+            p.title ptitle,
+            p.total_score ptotalScore,
+            p.qu_count pquCount,
+            p.user_score puserScore,
+            p.exam_id pexamId,
+            g.id gid,
+            g.paper_id gpaperId,
+            g.per_score gperScore,
+            g.qu_count gquCount,
+            g.title gtitle,
+            g.total_score gtotalScore,
+            a.id id,
+            a.is_right
+        FROM
+            edu_exam_paper p
+                LEFT JOIN sys_user u on u.user_id = p.user_id
+                LEFT JOIN edu_exam_group g ON p.id = g.paper_id
+                LEFT JOIN edu_exam_answer a ON a.group_id = g.id
+
+    </select>
+
 </mapper>

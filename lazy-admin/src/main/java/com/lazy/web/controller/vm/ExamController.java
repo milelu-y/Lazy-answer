@@ -2,10 +2,7 @@ package com.lazy.web.controller.vm;
 
 import java.util.List;
 
-import com.lazy.vm.domain.vo.ExamCourseDto;
-import com.lazy.vm.domain.vo.ExamVo;
-import com.lazy.vm.domain.vo.PaperAdaptedVo;
-import com.lazy.vm.domain.vo.Stat;
+import com.lazy.vm.domain.vo.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -148,10 +145,22 @@ public class ExamController extends BaseController
         return getDataTable(list);
     }
 
+    @GetMapping("/errorStat")
+    public TableDataInfo errorStat(ErrorStatVo error){
+        startPage();
+        List<ErrorStatVo> list = examService.errorStat(error);
+        return getDataTable(list);
+    }
+
     @GetMapping("/paging")
     public List<PaperAdaptedVo> paging(Stat stat){
         List<PaperAdaptedVo> list = examService.paging(stat);
         return list;
     }
 
+    @GetMapping("/avgMaxMin")
+    public List<AvgMaxMinStatVo> avgMaxMin(AvgMaxMinStatVo stat){
+        List<AvgMaxMinStatVo> list = examService.avgMaxMin(stat);
+        return list;
+    }
 }

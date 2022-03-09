@@ -1,5 +1,7 @@
 package com.lazy.vm.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Date;
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  * @author Lazy
  * @date 2021/11/3 19:10
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PaperAdaptedVo {
 
     private String id;

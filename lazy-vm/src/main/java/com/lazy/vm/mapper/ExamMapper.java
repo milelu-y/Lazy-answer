@@ -2,6 +2,8 @@ package com.lazy.vm.mapper;
 
 import java.util.List;
 import com.lazy.vm.domain.Exam;
+import com.lazy.vm.domain.vo.AvgMaxMinStatVo;
+import com.lazy.vm.domain.vo.ErrorStatVo;
 import com.lazy.vm.domain.vo.ExamCourseDto;
 
 /**
@@ -70,4 +72,9 @@ public interface ExamMapper
      * @return
      */
     List<Exam> selectExamReviewList(Exam exam);
+
+    List<ErrorStatVo> errorStat(String examId);
+
+    List<AvgMaxMinStatVo> avgMaxMin();
+
 }

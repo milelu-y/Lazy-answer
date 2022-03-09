@@ -2,10 +2,7 @@ package com.lazy.vm.service;
 
 import java.util.List;
 import com.lazy.vm.domain.Exam;
-import com.lazy.vm.domain.vo.ExamCourseDto;
-import com.lazy.vm.domain.vo.ExamVo;
-import com.lazy.vm.domain.vo.PaperAdaptedVo;
-import com.lazy.vm.domain.vo.Stat;
+import com.lazy.vm.domain.vo.*;
 
 /**
  * 试卷添加Service接口
@@ -94,4 +91,13 @@ public interface IExamService
      * @return
      */
     List<PaperAdaptedVo> paging(Stat stat);
+
+    /**
+     * 统计错误率
+     * @param error
+     * @return
+     */
+    List<ErrorStatVo> errorStat(ErrorStatVo error);
+
+    List<AvgMaxMinStatVo> avgMaxMin(AvgMaxMinStatVo stat);
 }

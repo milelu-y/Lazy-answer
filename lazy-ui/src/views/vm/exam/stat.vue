@@ -16,6 +16,7 @@
             </el-form-item>
           </el-form>
           <el-table
+            v-loading="errorLoading"
             :data="userTableData"
             height="250"
             border
@@ -64,7 +65,8 @@
             :visible.sync="userDrawer"
             direction="rtl">
             <el-card shadow="always" v-for="(row , index) in pagingData">
-              <el-col :span="12" style="margin: 5px 0px 5px 0px">答题时间：{{ row.createTime }}</el-col>
+              <el-col :span="12" style="margin: 5px 0px 5px 0px">答题时间：{{
+                  parseTime(new Date(row.createTime)) }}</el-col>
               <el-col :span="12" style="margin: 5px 0px 5px 0px">用时：</el-col>
               <el-col :span="12" style="margin: 5px 0px 5px 0px">得分：{{ row.userScore }}</el-col>
               <el-col :span="12" style="margin: 5px 0px 5px 0px">
@@ -81,42 +83,101 @@
             </el-card>
           </el-drawer>
         </el-tab-pane>
-        <el-tab-pane label="错题分析" name="error">错题分析</el-tab-pane>
+        <el-tab-pane label="错题分析" name="error">
+<!--          <el-form :model="queryErrorParams" ref="queryForm" :inline="true" label-width="68px">-->
+<!--            <el-form-item prop="title">-->
+<!--              <el-input-->
+<!--                v-model="queryParams.nickName"-->
+<!--                placeholder="搜索人员"-->
+<!--                clearable-->
+<!--                size="small"-->
+<!--                @change="handleQuery"-->
+<!--              />-->
+<!--            </el-form-item>-->
+<!--          </el-form>-->
+          <el-table
+            :data="errorTableData"
+            height="250"
+            border
+            style="width: 100%">
+            <el-table-column
+              prop="content"
+              show-overflow-tooltip
+              label="试题内容"
+              width="350">
+            </el-table-column>
+            <el-table-column
+              prop="type"
+              label="试题类型" :formatter="typeFormat">
+            </el-table-column>
+            <el-table-column
+              prop="count"
+              label="答题次数"
+              width="100">
+            </el-table-column>
+            <el-table-column
+              prop="errorCount"
+              label="错误次数">
+            </el-table-column>
+            <el-table-column
+              prop="errorPro"
+              label="错误率">
+            </el-table-column>
+          </el-table>
+          <pagination
+            v-show="errorTotal>0"
+            :total="errorTotal"
+            :page.sync="queryErrorParams.pageNum"
+            :limit.sync="queryErrorParams.pageSize"
+            @pagination="getErrorStat"
+          />
+        </el-tab-pane>
       </el-tabs>
     </el-card>
   </div>
 </template>
 
 <script>
-import {paging, userStat} from "@/api/vm/exam";
-
+import {errorStat, paging, userStat} from "@/api/vm/exam";
 export default {
   name: "stat",
   data() {
     return {
+      errorLoading:false,
       activeName: 'user',
       userTableData: [],
+      errorTableData: [],
       pagingData: [],
       total: 0,
+      errorTotal: 0,
       userDrawer: false,
+      types:[],
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-
+      },
+      queryErrorParams: {
+        pageNum: 1,
+        pageSize: 10,
       }
     };
   },
   created() {
     var id = this.$route.params.id;
-    console.log("id", id)
     this.queryParams.examId = id;
+    this.queryErrorParams.examId = id;
     //查询学员统计
     this.getUserStat();
+    this.getErrorStat();
+    this.getDicts("vm_qu_type").then(response => {
+      this.types = response.data;
+    });
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+
     handleQuery() {
       this.getUserStat();
     },
@@ -126,6 +187,14 @@ export default {
         this.userTableData = response.rows;
         this.total = response.total;
         this.userLoading = false
+      })
+    },
+    getErrorStat(){
+      this.errorLoading = true
+      errorStat(this.queryErrorParams).then(response=>{
+        this.errorTableData = response.rows;
+        this.errorTotal = response.total;
+        this.errorLoading=false
       })
     },
     //打开作业答题记录列表进行查看
@@ -147,7 +216,10 @@ export default {
       } else {
         return <span style="color:red">未通过</span>
       }
-    }
+    },
+    typeFormat(row, column) {
+      return this.selectDictLabel(this.types, row.type);
+    },
   }
 
 }
