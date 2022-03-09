@@ -124,3 +124,11 @@ export function reviewPaper(data) {
   })
 }
 
+export function allPaper() {
+  return request({
+    url: '/vm/examPaper/allPaper',
+    method: 'get',
+    
+  })
+}
+

@@ -23,16 +23,22 @@
     </el-form>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
+        <!-- <download-excel 
+          class="export-excel-wrapper"
+          :fetch = "fetchData"
+          :data= "json_data"
+          :fields = "json_fields"
+          name = "作业得分情况.xls"
+        >
+          <el-button
           type="warning"
           plain
           icon="el-icon-download"
           size="mini"
-          :loading="exportLoading"
-          @click="handleExport"
           v-hasPermi="['vm:task:export']"
         >导出
         </el-button>
+        </download-excel> -->
       </el-col>
     </el-row>
 
@@ -49,31 +55,47 @@
         >
       </el-table-column>
       <el-table-column
-        prop="nums"
+        prop="userCount"
         label="提交人数"
         align="center"
         >
       </el-table-column>
+       <el-table-column
+        prop="count"
+        label="提交次数"
+        align="center">
+      </el-table-column>
       <el-table-column
-        prop="numbers"
+        prop="max"
+        label="最高分"
+        align="center">
+      </el-table-column>
+      <el-table-column
+        prop="min"
+        label="最低分"
+        align="center">
+      </el-table-column>
+      <el-table-column
+        prop="agv"
         label="平均分"
         align="center">
       </el-table-column>
       <el-table-column
-        prop="total"
+        prop="sum"
         label="总分"
         align="center">
       </el-table-column>
-       <el-table-column
+     
+       <!-- <el-table-column
         prop="totalScore"
         label="操作"
         align="center">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope)" type="text" size="small">统计分析</el-button>
           </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
-    <el-dialog
+    <!-- <el-dialog
       title="统计情况"
       :visible.sync="open"
       width="30%"
@@ -82,10 +104,10 @@
       <div class="items">最低分：</div>
       <div class="items">平均分：</div>
       <span slot="footer" class="dialog-footer">
-        <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisiblelist">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <user-select ref="userSelect" @selectHandle="selectHandle"></user-select>
     <exam-select ref="examSelect" @selectHandle="selectExamHandle"></exam-select>
   </div>
@@ -97,6 +119,7 @@ import UserSelect from "@/components/UserSelect";
 import ExamSelect from "@/components/ExamSelect";
 import {userCurrentWork} from "@/api/vm/report";
 import {exportTask} from "@/api/vm/task";
+import {errorStat} from "@/api/vm/exam";
 
 export default {
   name: "UserCurrentWork",
@@ -121,15 +144,37 @@ export default {
       data:[],
       loading: false,
       total: 0,
-      tableData: [{title:'第一章',nums:'48',numbers:'78',total:'3744'}],
+      tableData: [],
       open:false,
       handleClose:false,
       //导出弹出层
-      exportLoading:false
+      exportLoading:false,
+      //导出xls数据
+      json_fields:{
+        "章节":"name",
+        "提交人数":"userCount",
+        "提交次数":"count",
+        "最高分":"max",
+        "最低分":"min",
+        "平均分":"agv"
+      },
+      
+      json_meta: [
+        [
+          {
+            " key ": " charset ",
+            " value ": " utf- 8 "
+          }
+        ]
+      ]
     }
   },
   created() {
-
+    errorStat().then(response=>{
+      console.log('接口',response)
+      this.tableData = response
+    })
+    
   },
   methods: {
     selectUser() {

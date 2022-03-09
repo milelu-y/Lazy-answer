@@ -14,17 +14,24 @@
       </el-form-item>
     </el-form>
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
+      <!-- <el-col :span="1.5">
+        <download-excel 
+          class="export-excel-wrapper"
+          :data= "json_data"
+          :fields = "json_fields"
+          name = "作业得分情况.xls"
+        >
+          <el-button
           type="warning"
           plain
           icon="el-icon-download"
           size="mini"
-          @click="handleExport()"
           v-hasPermi="['vm:task:export']"
         >导出
         </el-button>
-      </el-col>
+        </download-excel>
+        
+      </el-col> -->
       <!-- <el-col :span="1.5">
         <el-button
           type="primary"
@@ -51,25 +58,25 @@
         >
       </el-table-column> -->
       <el-table-column
-        prop="names"
+        prop="nickName"
         label="姓名"
         align="center"
         >
       </el-table-column>
       <el-table-column
-        prop="jobname"
+        prop="title"
         label="作业名称"
         align="center"
         >
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="subittime"
         label="提交时间"
         align="center"
         >
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
-        prop="score"
+        prop="userScore"
         label="得分"
         align="center"
         >
@@ -79,56 +86,35 @@
         label="总分"
         align="center">
       </el-table-column> -->
-      <el-table-column
+      <!-- <el-table-column
         prop="operation"
         label="操作"
         align="center">
           <template slot-scope="scope">
             <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
           </template>
-        </el-table-column>
+        </el-table-column> -->
     </el-table>
     <!-- 查看作业情况 -->
-    <el-dialog
+    <!-- <el-dialog
       title="作业得分情况"
       :visible.sync="open"
       width="30%"
       :before-close="handleClose">
-      <div class="choice">选择题：
+      <div class="choice" v-for="(item,index) in groupList ">{{item.title}}：
         <el-tag
           style="margin:0 5px"
-          v-for="item in items"
-          :key="item.label"
-          :type="item.type"
+         
           effect="dark">
           {{ item.label }}
         </el-tag>
       </div>
-      <div class="judge">判断题：
-        <el-tag
-          style="margin:0 5px"
-          v-for="item in judge"
-          :key="item.label"
-          :type="item.type"
-          effect="dark">
-          {{ item.label }}
-        </el-tag>
-      </div>
-      <div class="answer">简答题：
-        <el-tag
-          style="margin:0 5px"
-          v-for="item in answer"
-          :key="item.label"
-          :type="item.type"
-          effect="dark">
-          {{ item.label }}
-        </el-tag>
-      </div>
+    
       <span slot="footer" class="dialog-footer">
-        <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisiblelist">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
     <!-- 统计得分情况 -->
     <el-dialog
       title="得分情况"
@@ -148,6 +134,7 @@
 import UserSelect from "@/components/UserSelect";
 import {userAllWork} from "@/api/vm/report";
 import {exportTask} from "@/api/vm/task";
+import {allPaper} from "@/api/vm/testPaper";
 
 export default {
   name: "UserAllWork",
@@ -175,46 +162,27 @@ export default {
       data: [],
       loading: false,
       total: 0,
-      tableData: [
-        {names:'张三',jobname:'第一章',subittime:'2022-3-3 11:20:30',score:'60',totalScore:'60',},
-        {names:'admin',jobname:'第二章',subittime:'2022-3-3 11:50:30',score:'80',totalScore:'80',},
-        ],
+      tableData: [],
       // 查看弹出层
       open:false,
       //统计弹出层
       opennice:false,
       exportLoading:false,
       //弹出层得分情况
-      items: [
-          { type: 'success', label: '1' },
-          { type: 'success', label: '2' },
-          { type: 'danger', label: '3' },
-          { type: 'danger', label: '4' },
-          { type: 'success', label: '5' },
-          { type: 'success', label: '6' },
-          { type: 'success', label: '7' },
-          { type: 'success', label: '8' },
-          { type: 'success', label: '9' },
-          { type: 'success', label: '10' }
-        ],
-        judge:[
-          { type: 'success', label: '11' },
-          { type: 'success', label: '12' },
-          { type: 'danger', label: '13' },
-          { type: 'danger', label: '14' },
-          { type: 'success', label: '15' },
-        ],
-        answer:[
-          { type: 'success', label: '16' },
-          { type: 'success', label: '17' },
-          { type: 'danger', label: '18' },
-        ],
+      groupList:[],
       // 非单个禁用
       // single: true,
     }
   },
   created(){
-    
+    allPaper().then(response =>{
+      this.tableData = response.data
+      console.log("查看",this.tableData)
+      // this.groupList =  response.data.groupList
+    })
+    // var arr = this.tableData.forEach(el=>{
+    //   return 
+    // })
   },
   methods: {
     selectUser() {

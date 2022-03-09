@@ -39,8 +39,10 @@ import VueMeta from 'vue-meta'
 
 import tinymce from 'tinymce'
 import VueTinymce from '@packy-tang/vue-tinymce'
+import JsonExcel from "vue-json-excel"
 // import 'tinymce/tinymce.min.js'
 // 全局方法挂载
+
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey
 Vue.prototype.parseTime = parseTime
@@ -71,6 +73,7 @@ Vue.component('RightToolbar', RightToolbar)
 Vue.component('Editor', Editor)
 Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
+Vue.component("downloadExcel",JsonExcel)
 
 Vue.use(directive)
 Vue.use(VueMeta)
