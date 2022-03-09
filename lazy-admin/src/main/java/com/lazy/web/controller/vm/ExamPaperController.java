@@ -172,4 +172,9 @@ public class ExamPaperController extends BaseController
     public AjaxResult reviewPaper(@RequestBody  PaperAdaptedVo paperAdaptedVo){
         return  examPaperService.reviewPaper(paperAdaptedVo);
     }
+
+    @GetMapping("/allPaper")
+    public AjaxResult allPaper(){
+        return  examPaperService.allPaper();
+    }
 }

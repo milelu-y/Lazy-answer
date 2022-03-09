@@ -451,4 +451,10 @@ public class ExamPaperServiceImpl implements IExamPaperService {
         }
         return AjaxResult.error();
     }
+
+    @Override
+    public AjaxResult allPaper() {
+        List<PaperAdaptedVo > list = examPaperMapper.selectAllPaper();
+        return AjaxResult.success(list);
+    }
 }

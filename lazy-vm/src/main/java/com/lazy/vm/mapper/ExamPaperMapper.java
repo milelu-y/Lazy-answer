@@ -91,4 +91,7 @@ public interface ExamPaperMapper
     List<Stat> userStat(@Param("examId") String examId, @Param("nickName") String nickName);
 
     List<PaperAdaptedVo> selectPaging(@Param("examId") String examId, @Param("userId") String userId);
+
+    List<PaperAdaptedVo> selectAllPaper();
+
 }
