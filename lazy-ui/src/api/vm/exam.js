@@ -102,7 +102,7 @@ export function paging(query) {
   })
 }
 //查询作业得分情况
-export function errorStat(query) {
+export function avgMaxMin(query) {
   return request({
     url:'/vm/exam/avgMaxMin',
     method:'get',

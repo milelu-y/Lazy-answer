@@ -119,7 +119,7 @@ import UserSelect from "@/components/UserSelect";
 import ExamSelect from "@/components/ExamSelect";
 import {userCurrentWork} from "@/api/vm/report";
 import {exportTask} from "@/api/vm/task";
-import {errorStat} from "@/api/vm/exam";
+import {avgMaxMin} from "@/api/vm/exam";
 
 export default {
   name: "UserCurrentWork",
@@ -170,7 +170,7 @@ export default {
     }
   },
   created() {
-    errorStat().then(response=>{
+    avgMaxMin().then(response=>{
       console.log('接口',response)
       this.tableData = response
     })
